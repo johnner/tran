@@ -1,0 +1,8 @@
+.__mtt_translate_dialog__ {
+    position: absolute;
+    background-color: #ffffff;
+    z-index: 999999;
+    padding: 15px;
+    border: 1px solid #aaa;
+    border-radius: 3px;
+}

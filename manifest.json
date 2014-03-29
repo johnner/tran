@@ -1,0 +1,32 @@
+{
+    "name": "Tran",
+    "version": "0.1",
+    "manifest_version": 2,
+    "description": "Chrome extension for quick translating with multitran.ru",
+    "background": {
+        "persistent": true,
+        "page": "background.html"
+    },
+    "browser_action": {
+        "default_icon": "img/logo.png",
+        "default_title": "Translate",
+        "default_popup": "popup.html"
+    },
+
+    "permissions": [
+        "contextMenus",
+        "browsingData",
+        "tabs",
+        "http://www.multitran.ru/"
+    ],
+    "icons": {
+      "16": "img/tran.png"
+    },
+    "content_scripts": [
+    {
+      "matches": ["*://*/*"],
+      "css": ["css/dialog.css"],
+      "js": ["js/content_script.js"]
+    }
+  ]
+}
