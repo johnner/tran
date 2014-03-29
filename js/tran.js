@@ -58,7 +58,7 @@ tran = {
     var imgs = fragment.querySelectorAll('img');
     for (var i = 0; i < imgs.length; i ++ ) {
       if (imgs[i].src.indexOf(imgHost) == -1) {
-        
+
         imgs[i].src = imgHost +  imgs[i].src;
       }
     }
