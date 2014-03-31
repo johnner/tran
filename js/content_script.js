@@ -1,7 +1,8 @@
 /*global chrome*/
 (function(){
   "use strict";
-  /*lo-dash debounce and throttle http://lodash.com */
+
+  var DIALOG_CLASS = "__mtt_translate_dialog__v-0-3";
   var cs = {
     mouseX: 0,
     mouseY: 0
@@ -19,12 +20,12 @@
   Dialog.prototype = {
     createEl: function () {
       var el = document.createElement('div');
-      el.className = '__mtt_translate_dialog__';
+      el.className = DIALOG_CLASS;
       return el;
     },
 
     setListeners: function () {
-      document.body.addEventListener('click', this.destroy.bind(this));
+      document.addEventListener('click', this.destroy.bind(this));
       this.el.addEventListener('click', function (e) {
         e.stopPropagation();
       });
@@ -38,7 +39,9 @@
     },
 
     destroy: function () {
-      this.el.parentNode.removeChild(this.el);
+      if (this.el.parentNode == document.body) {
+        document.body.removeChild(this.el);
+      }
     }
   };
 

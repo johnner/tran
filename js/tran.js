@@ -5,6 +5,8 @@ var tran = window.tran = {};
   "use strict";
 
 tran = {
+  protocol: 'http',
+  host: 'www.multitran.ru',
   xhr: {},
   // context menu click handler
   click: function (data) {
@@ -22,11 +24,17 @@ tran = {
       var doc = tran.stripScripts(e.target.response);
       var fragment = tran.makeFragment(doc);
       if (fragment) {
-        fragment = tran.fixImages(fragment);
         var translate = fragment.querySelector('#translation ~ table');
-        translate = translate || "Не удалось перевести";
+        if (translate) {
+          translate.className = "___mtt_translate_table";
+          translate.setAttribute("cellpadding", "5");
+          tran.fixImages(translate);
+          tran.fixLinks(translate);
+        } else {
+          translate = translate || "Не удалось перевести";
+        }
         chrome.tabs.getSelected(null, function(tab) {
-          chrome.tabs.sendMessage(tab.id, {action:  "open_dialog_box", data: translate.innerHTML});
+          chrome.tabs.sendMessage(tab.id, {action:  "open_dialog_box", data: translate.outerHTML});
         });
       }
     }
@@ -54,15 +62,28 @@ tran = {
   },
 
   fixImages: function (fragment) {
-    var imgHost = 'http://www.multitran.ru';
-    var imgs = fragment.querySelectorAll('img');
-    for (var i = 0; i < imgs.length; i ++ ) {
-      if (imgs[i].src.indexOf(imgHost) == -1) {
-
-        imgs[i].src = imgHost +  imgs[i].src;
-      }
-    }
+    this.fixUrl(fragment, 'img', 'src');
     return fragment;
+  },
+
+  fixLinks: function (fragment) {
+    this.fixUrl(fragment, 'a', 'href');
+    return fragment;
+  },
+
+  fixUrl: function (fragment, tag, attr) {
+    var tags =  fragment.querySelectorAll(tag);
+    var parser = document.createElement('a');
+    for (var i = 0; i < tags.length; i ++ ) {
+      parser.href = tags[i][attr];
+      parser.host = tran.host;
+      parser.protocol = tran.protocol;
+      //fix relative links
+      if (parser.pathname.indexOf('m.exe') !== -1) {
+        parser.pathname = '/c'+parser.pathname;
+      }
+      tags[i][attr] = parser.href;
+    }
   }
 };
 
