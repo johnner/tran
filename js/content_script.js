@@ -12,30 +12,37 @@
   }
   document.addEventListener('contextmenu', mouseHandler);
   var Dialog = function () {
-    this.el = document.createElement('div');
+    this.el = this.createEl();
     this.setListeners();
   };
+
   Dialog.prototype = {
+    createEl: function () {
+      var el = document.createElement('div');
+      el.className = '__mtt_translate_dialog__';
+      return el;
+    },
+
     setListeners: function () {
-      var self = this;
-      document.body.addEventListener('click', function (e) {
-        self.el.style.display = 'none';
+      document.body.addEventListener('click', this.destroy.bind(this));
+      this.el.addEventListener('click', function (e) {
+        e.stopPropagation();
       });
     },
+
     render: function (data) {
-      var div = this.el;
-      div.className = '__mtt_translate_dialog__';
-      div.innerHTML = data;
-      document.body.appendChild(div);
-      div.style.left = cs.mouseX + 'px';
-      div.style.top = cs.mouseY + 'px';
-      div.addEventListener('click', function (e) {
-         e.stopPropagation();
-      });
+      this.el.innerHTML = data;
+      this.el.style.left = cs.mouseX + 'px';
+      this.el.style.top = cs.mouseY + 'px';
+      document.body.appendChild(this.el);
+    },
+
+    destroy: function () {
+      this.el.parentNode.removeChild(this.el);
     }
   };
 
-  chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
+  chrome.runtime.onMessage.addListener(function (msg) {
     if (msg.action === 'open_dialog_box') {
       var dialog = new Dialog();
       dialog.render(msg.data);

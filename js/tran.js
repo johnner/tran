@@ -11,7 +11,7 @@ tran = {
     //http://www.multitran.ru/c/m.exe?l1=1&l2=2&s=hi
     var xhr = tran.xhr = new XMLHttpRequest();
     xhr.onreadystatechange = tran.requestHandler; // Implemented elsewhere.
-    xhr.open("GET", "http://www.multitran.ru/c/m.exe?l1=1&l2=2&s="+data.selectionText, true);
+    xhr.open("GET", "http://www.multitran.ru/c/m.exe?l1=1&l2=2&s=" + data.selectionText, true);
     xhr.send();
   },
   requestHandler: function (e) {

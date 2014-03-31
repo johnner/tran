@@ -1,8 +1,8 @@
 {
     "name": "Tran",
-    "version": "0.2",
+    "version": "0.3",
     "manifest_version": 2,
-    "description": "Chrome extension for quick translating with multitran.ru",
+    "description": "Quick translation with multitran (multitran.ru)",
     "background": {
         "persistent": true,
         "page": "background.html"
