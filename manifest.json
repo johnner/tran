@@ -20,7 +20,9 @@
         "http://www.multitran.ru/"
     ],
     "icons": {
-      "16": "img/tran.png"
+      "16": "img/logo16.png",
+      "48": "img/logo48.png",
+      "128": "img/logo128.png"
     },
     "content_scripts": [
     {
