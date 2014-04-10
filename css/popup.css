@@ -1,4 +1,12 @@
 #content {
+    width: 320px;
+    height:190px;
+}
+#tran-form {
     width: 300px;
-    height:60px;
+    padding: 20px;
+}
+.dropdown-menu.pull-right {
+    max-height: 90px;
+    overflow: auto;
 }
