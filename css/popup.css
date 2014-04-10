@@ -1,10 +1,15 @@
 #content {
     width: 320px;
-    height:190px;
+    max-height: 500px;
+    overflow: auto;
 }
 #tran-form {
-    width: 300px;
+    width: 305px;
     padding: 20px;
+    margin-bottom: 0;
+}
+#result .___mtt_translate_table{
+    font-size: 12px;
 }
 .dropdown-menu.pull-right {
     max-height: 90px;

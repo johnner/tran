@@ -3,43 +3,46 @@
     <meta charset="utf-8">
     <title>Multitran translate</title>
 	<link href="css/popup.css" rel="stylesheet" type="text/css" />
-    <link href="css/bootstrap.css" rel="stylesheet" type="text/css" />
-    <script src="js/popup.js"></script>
+  <link href="css/bootstrap.css" rel="stylesheet" type="text/css" />
+	<script src="js/tran.js"></script>
+  <script src="js/popup.js"></script>
 <body>
 	<div id="content">
-        <form id="tran-form" class="form-horizontal">
-            <fieldset>
-                <!-- Form Name -->
-                <legend>Multitran</legend>
+		<form id="tran-form" class="form-horizontal">
+			<fieldset>
+				<!-- Form Name -->
+				<legend>Multitran</legend>
 
-                <!-- Button Drop Down -->
-                <div class="form-group">
-                    <label class="col-md-4 control-label" for="translate-txt"></label>
-                    <div class="col-md-4">
-                        <div class="input-group">
-                            <input id="translate-txt" name="translate-txt" class="form-control" placeholder="Введите слово для перевода" type="text">
-                            <div class="input-group-btn">
-                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                                    Язык
-                                    <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu pull-right">
-                                    <li><a href="#">Английский</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+				<!-- Button Drop Down -->
+				<div class="form-group">
+					<label class="col-md-4 control-label" for="translate-txt"></label>
+					<div class="col-md-4">
+						<div class="input-group">
+							<input id="translate-txt" name="translate-txt" class="form-control" placeholder="Введите слово для перевода" type="text">
+							<div class="input-group-btn">
+								<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+									Язык
+									<span class="caret"></span>
+								</button>
+								<ul class="dropdown-menu pull-right">
+									<li><a href="#">Английский</a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
 
-                <!-- Button -->
-                <div class="form-group">
-                    <label class="col-md-4 control-label" for="translate-btn"></label>
-                    <div class="col-md-4">
-                        <button id="translate-btn" name="translate-btn" class="btn btn-primary">Перевести</button>
-                    </div>
-                </div>
-            </fieldset>
-        </form>
+				<!-- Button -->
+				<div class="form-group">
+					<label class="col-md-4 control-label" for="translate-btn"></label>
+					<div class="col-md-4">
+						<button id="translate-btn" name="translate-btn" class="btn btn-primary">Перевести</button>
+					</div>
+				</div>
+			</fieldset>
+		</form>
+
+		<div id="result"></div>
 	</div>
 </body>
 </html>

@@ -21,10 +21,18 @@ tran = {
     if(xhr.readyState < 4) { return; }
     if(xhr.status !== 200) { return; }
     if(xhr.readyState === 4) {
-      var doc = tran.stripScripts(e.target.response);
+      var translate = tran.getTranslation(e.target.response);
+      chrome.tabs.getSelected(null, function(tab) {
+        chrome.tabs.sendMessage(tab.id, {action:  "open_dialog_box", data: translate.outerHTML});
+      });
+    }
+  },
+  getTranslation: function (response) {
+      var doc = tran.stripScripts(response);
       var fragment = tran.makeFragment(doc);
+      var translate;
       if (fragment) {
-        var translate = fragment.querySelector('#translation ~ table');
+        translate = fragment.querySelector('#translation ~ table');
         if (translate) {
           translate.className = "___mtt_translate_table";
           translate.setAttribute("cellpadding", "5");
@@ -33,11 +41,8 @@ tran = {
         } else {
           translate = translate || "Не удалось перевести";
         }
-        chrome.tabs.getSelected(null, function(tab) {
-          chrome.tabs.sendMessage(tab.id, {action:  "open_dialog_box", data: translate.outerHTML});
-        });
       }
-    }
+      return translate;
   },
 
   stripScripts: function (s) {
