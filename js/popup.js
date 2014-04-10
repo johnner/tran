@@ -42,10 +42,10 @@ var Search = function (form) {
 Search.prototype = {
   addListeners: function () {
     this.form.addEventListener('submit', this.search.bind(this));
+    this.result.addEventListener('click', this.resultClickHandler.bind(this));
   },
   search: function (e) {
-    e.preventDefault();
-    console.log(this.input.value);
+    if (e) { e.preventDefault(); }
     var xhr = this.xhr = new XMLHttpRequest();
     xhr.onreadystatechange = this.successHandler.bind(this); // Implemented elsewhere.
     xhr.open("GET", "http://www.multitran.ru/c/m.exe?l1=1&l2=2&s=" + this.input.value, true);
@@ -64,6 +64,15 @@ Search.prototype = {
   clean: function (el) {
     while (el.lastChild) {
       el.removeChild(el.lastChild);
+    }
+  },
+  resultClickHandler: function (e) {
+    e.preventDefault();
+    console.log(e.target.tagName);
+    if (e.target.tagName === 'A' || e.target.tagName === 'a') {
+      var href = e.target.getAttribute('href');
+      this.input.value = e.target.innerText;
+      this.search(e);
     }
   }
 };

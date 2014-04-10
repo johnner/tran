@@ -34,6 +34,7 @@
     padding: 0;
     box-sizing: border-box;
     text-align: left;
+    border: none!important;
 }
 .__mtt_translate_dialog__v-0-3 a,.__mtt_translate_dialog__v-0-3 a:link,.__mtt_translate_dialog__v-0-3 a:visited {
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
