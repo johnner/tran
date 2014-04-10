@@ -39,7 +39,9 @@ tran = {
           tran.fixImages(translate);
           tran.fixLinks(translate);
         } else {
-          translate = translate || "Не удалось перевести";
+          translate =  document.createElement('div');
+          translate.className = 'failTranslate';
+          translate.innerText = "Не удалось перевести";
         }
       }
       return translate;
