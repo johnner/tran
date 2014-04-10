@@ -68,7 +68,6 @@ Search.prototype = {
   },
   resultClickHandler: function (e) {
     e.preventDefault();
-    console.log(e.target.tagName);
     if (e.target.tagName === 'A' || e.target.tagName === 'a') {
       var href = e.target.getAttribute('href');
       this.input.value = e.target.innerText;
