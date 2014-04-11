@@ -25,7 +25,8 @@
     },
 
     setListeners: function () {
-      document.addEventListener('click', this.destroy.bind(this));
+      window.addEventListener('click', this.destroy.bind(this));
+      window.addEventListener('blur', this.destroy.bind(this));
       this.el.addEventListener('click', function (e) {
         e.stopPropagation();
       });
