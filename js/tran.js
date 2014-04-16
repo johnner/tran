@@ -17,6 +17,10 @@ tran = {
 
   // context menu click handler
   click: function (data) {
+    tran.request(data);
+  },
+
+  request: function (data) {
     var url = [tran.protocol, '://',
               tran.host,
               tran.path,
@@ -53,7 +57,6 @@ tran = {
       var translate;
       if (fragment) {
         translate = fragment.querySelector('#translation ~ table');
-        console.log(translate)
         if (translate) {
           translate.className = tran.TABLE_CLASS;
           translate.setAttribute("cellpadding", "5");
