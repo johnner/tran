@@ -1,13 +1,14 @@
 /*global chrome*/
 /**
- * Translation-module that makes requests to language-engine parses
- * results and sends global plugin message with translation data
+ * Translation-module that makes requests to language-engine,
+ * parses results and sends plugin-global message with translation data
  */
 var tran = window.tran = {};
 (function () {
   "use strict";
 
 tran = {
+  TABLE_CLASS: "___mtt_translate_table",
   protocol: 'http',
   host: 'www.multitran.ru',
   path: '/c/m.exe',
@@ -54,7 +55,7 @@ tran = {
         translate = fragment.querySelector('#translation ~ table');
         console.log(translate)
         if (translate) {
-          translate.className = "___mtt_translate_table";
+          translate.className = tran.TABLE_CLASS;
           translate.setAttribute("cellpadding", "5");
           tran.fixImages(translate);
           tran.fixLinks(translate);
