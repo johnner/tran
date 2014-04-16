@@ -1,17 +1,18 @@
 /*global chrome*/
+/**
+ * Script that is embedded on each user page
+ * Listens messages from translation module and renders popup
+ * with translated text
+ */
 (function(){
   "use strict";
 
   var DIALOG_CLASS = "__mtt_translate_dialog__v-0-3";
-  var cs = {
-    mouseX: 0,
-    mouseY: 0
+  var pageData = {
+      mouseX: 0,
+      mouseY: 0
   };
-  function mouseHandler (e) {
-    cs.mouseX = e.pageX;
-    cs.mouseY = e.pageY;
-  }
-  document.addEventListener('contextmenu', mouseHandler);
+
   var Dialog = function () {
     this.el = this.createEl();
     this.setListeners();
@@ -34,8 +35,8 @@
 
     render: function (data) {
       this.el.innerHTML = data;
-      this.el.style.left = cs.mouseX + 'px';
-      this.el.style.top = cs.mouseY + 'px';
+      this.el.style.left = pageData.mouseX + 'px';
+      this.el.style.top = pageData.mouseY + 'px';
       document.body.appendChild(this.el);
     },
 
@@ -46,13 +47,21 @@
     }
   };
 
-  chrome.runtime.onMessage.addListener(function (msg) {
-    if (msg.action === 'open_dialog_box') {
-      var dialog = new Dialog();
-      dialog.render(msg.data);
+  function main () {
+    function saveMousePosition (e) {
+      pageData.mouseX = e.pageX;
+      pageData.mouseY = e.pageY;
     }
-    return true;
-  });
+    document.addEventListener('contextmenu', saveMousePosition);
 
+    chrome.runtime.onMessage.addListener(function (msg) {
+      if (msg.action === 'open_dialog_box') {
+        var dialog = new Dialog();
+        dialog.render(msg.data);
+      }
+      return true;
+    });
+  }
 
+  main();
 })();
