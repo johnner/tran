@@ -73,7 +73,7 @@ tran = {
         } else {
           translate = document.createElement('div');
           translate.className = 'failTranslate';
-          translate.innerText = "Sorry, translation failed";
+          translate.innerText = "Unfortunately, could not translate";
         }
       }
       return translate;
