@@ -63,7 +63,6 @@ tran = {
   },
 
   parse: function (response) {
-      console.log(response);
       var doc = tran.stripScripts(response);
       var fragment = tran.makeFragment(doc);
       var translate;
