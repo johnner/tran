@@ -12,46 +12,54 @@ tran = {
   protocol: 'http',
   host: 'www.multitran.ru',
   path: '/c/m.exe',
-  query: '?s=',
+  query: '?l1=1&l2=&s=',
   xhr: {},
 
   // context menu click handler
   click: function (data) {
-    tran.request(data);
+    tran.search(data.selectionText, tran.successtHandler);
   },
 
-  request: function (data) {
+  /**
+   * Request translation and run callback function
+   * passing translated result or error to callback
+   **/
+  search: function (value, callback, err) {
     var url = [tran.protocol, '://',
               tran.host,
               tran.path,
               tran.query,
-              encodeURI(data.selectionText) ].join('');
+              encodeURI(value) ].join('');
     var xhr = tran.xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = tran.requestHandler;
+    xhr.onreadystatechange = function (e) {
+      var xhr = tran.xhr;
+      if (xhr.readyState < 4) { return; }
+      if (xhr.status !== 200) { if (typeof err == 'function') err(); return;}
+      if (xhr.readyState === 4) {
+        if (typeof callback == 'function') {
+          var translated = tran.parse(e.target.response);
+          return callback(translated);
+        }
+      }
+    }
     xhr.open("GET", url, true);
     xhr.send();
   },
 
   /**
-   * Recieving data from translataion-engine, parse
-   * and send ready message with data
+   * Recieving data from translataion-engine and send ready message with data
    */
-  requestHandler: function (e) {
-    var xhr = tran.xhr;
-    if(xhr.readyState < 4) { return; }
-    if(xhr.status !== 200) { return; }
-    if(xhr.readyState === 4) {
-      var translate = tran.parse(e.target.response);
+  successtHandler: function (translated) {
       chrome.tabs.getSelected(null, function(tab) {
         chrome.tabs.sendMessage(tab.id, {
           action:  "open_dialog_box",
-          data: translate.outerHTML
+          data: translated.outerHTML
         });
       });
-    }
   },
 
   parse: function (response) {
+      console.log(response);
       var doc = tran.stripScripts(response);
       var fragment = tran.makeFragment(doc);
       var translate;

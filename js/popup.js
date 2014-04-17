@@ -1,17 +1,19 @@
 /*global tran*/
 var Dropdown = function (el) {
   this.el = el;
-  this.menu = document.querySelector('.dropdown-menu');
+  this.button = el.querySelector('.dropdown-toggle');
+  this.menu = el.querySelector('.dropdown-menu');
   this.menu.style.display = 'none';
   this.addListeners();
 };
 
 Dropdown.prototype = {
   addListeners: function () {
-    this.el.addEventListener('click', this.toggle.bind(this));
+    this.button.addEventListener('click', this.toggle.bind(this));
     document.addEventListener('click', this.hide.bind(this));
     this.menu.addEventListener('click', this.choose.bind(this));
   },
+
   toggle: function (e) {
     e.stopPropagation();
     if (this.menu.style.display === 'none') {
@@ -20,12 +22,15 @@ Dropdown.prototype = {
       this.hide();
     }
   },
+
   hide: function () {
     this.menu.style.display = 'none';
   },
+
   show: function () {
     this.menu.style.display = 'block';
   },
+
   choose: function (e) {
     e.stopPropagation();
     this.hide();
@@ -45,31 +50,19 @@ var Search = function (form) {
 };
 
 Search.prototype = {
-  url: 'http://www.multitran.ru/c/m.exe',
-  params: '?l1=1&l2=2&s=',
-
   addListeners: function () {
     this.form.addEventListener('submit', this.search.bind(this));
     this.result.addEventListener('click', this.resultClickHandler.bind(this));
   },
 
   search: function (e) {
-    if (e) { e.preventDefault(); }
-    var xhr = this.xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = this.successHandler.bind(this); // Implemented elsewhere.
-    xhr.open("GET", this.url + this.params + this.input.value, true);
-    xhr.send();
+    e.preventDefault();
+    tran.search(this.input.value, this.successHandler.bind(this));
   },
 
-  successHandler: function (e) {
-    var xhr = this.xhr;
-    if(xhr.readyState < 4) { return; }
-    if(xhr.status !== 200) { return; }
-    if(xhr.readyState === 4) {
-      var translate = tran.parse(e.target.response);
+  successHandler: function (response) {
       this.clean(this.result);
-      this.result.appendChild(translate);
-    }
+      this.result.appendChild(response);
   },
 
   clean: function (el) {
@@ -89,6 +82,6 @@ Search.prototype = {
 };
 
 document.addEventListener("DOMContentLoaded", function onDom() {
-  var dropdown = new Dropdown(document.querySelector('.dropdown-toggle'));
+  var dropdown = new Dropdown(document.querySelector('.dropdown-el'));
   var form = new Search(document.getElementById('tran-form'));
 });
