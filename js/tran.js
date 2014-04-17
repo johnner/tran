@@ -25,11 +25,7 @@ tran = {
    * passing translated result or error to callback
    **/
   search: function (value, callback, err) {
-    var url = [tran.protocol, '://',
-              tran.host,
-              tran.path,
-              tran.query,
-              encodeURI(value) ].join('');
+    var url = tran.makeUrl(value);
     var xhr = tran.xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function (e) {
       var xhr = tran.xhr;
@@ -46,6 +42,14 @@ tran = {
     xhr.send();
   },
 
+  makeUrl: function (value) {
+    var url = [tran.protocol, '://',
+              tran.host,
+              tran.path,
+              tran.query,
+              encodeURI(value) ].join('');
+    return url;
+  },
   /**
    * Recieving data from translataion-engine and send ready message with data
    */
