@@ -12,11 +12,12 @@
         "default_title": "Translate",
         "default_popup": "popup.html"
     },
-
+    "options_page": "options.html",
     "permissions": [
         "contextMenus",
         "browsingData",
         "tabs",
+        "storage",
         "http://www.multitran.ru/"
     ],
     "icons": {
