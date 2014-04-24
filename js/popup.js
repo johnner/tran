@@ -1,4 +1,13 @@
 /*global tran*/
+/**
+ * Dropdown language menu
+ * @param opts takes element and onSelect handler
+ * example:
+ * new Dropdown({
+ *  el: document.getElementById('#menu');
+ *  onSelect: function () {}
+ * })
+ */
 var Dropdown = function (opts) {
   var el = this.el = opts.el;
   this.onSelect = opts.onSelect;
