@@ -19,12 +19,6 @@ tran = {
   // context menu click handler
   click: function (data) {
     tran.search(data.selectionText, tran.successtHandler);
-//    chrome.storage.sync.get({
-//      language: '1'
-//    }, function(items) {
-//      tran.setLanguage(items.language);
-//      tran.search(data.selectionText, tran.successtHandler);
-//    });
   },
 
   setLanguage: function (language) {
@@ -66,6 +60,7 @@ tran = {
               encodeURI(value) ].join('');
     return url;
   },
+
   /**
    * Recieving data from translataion-engine and send ready message with data
    */
