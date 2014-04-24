@@ -1,6 +1,6 @@
 {
     "name": "Tran",
-    "version": "0.4",
+    "version": "0.40",
     "manifest_version": 2,
     "description": "Quick translation with multitran (multitran.ru)",
     "background": {
