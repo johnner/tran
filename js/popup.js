@@ -106,9 +106,19 @@ Search.prototype = {
       this.input.value = e.target.innerText;
       this.search(e);
     }
+  },
+
+  getValue: function () {
+    return this.input.value;
   }
 };
 
 document.addEventListener("DOMContentLoaded", function onDom() {
   var form = new Search(document.getElementById('tran-form'));
+  var link = document.getElementById('header-link');
+  link.addEventListener('click', function (e) {
+    e.preventDefault();
+    var href = e.target.getAttribute('href') + form.getValue();
+    chrome.tabs.create({ url: href });
+  })
 });
