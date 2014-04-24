@@ -1,6 +1,7 @@
 /*global tran*/
-var Dropdown = function (el) {
-  this.el = el;
+var Dropdown = function (opts) {
+  var el = this.el = opts.el;
+  this.onSelect = opts.onSelect;
   this.button = el.querySelector('.dropdown-toggle');
   this.menu = el.querySelector('.dropdown-menu');
   this.menu.style.display = 'none';
@@ -54,9 +55,7 @@ Dropdown.prototype = {
     e.stopPropagation();
     e.preventDefault();
     var language = e.target.getAttribute('data-val');
-    chrome.storage.sync.set({
-      language: language
-    });
+    chrome.storage.sync.set({language: language}, this.onSelect);
     this.hide();
   }
 };
@@ -71,6 +70,10 @@ var Search = function (form) {
   this.input = document.getElementById('translate-txt');
   this.result = document.getElementById('result');
   this.addListeners();
+  this.dropdown = new Dropdown({
+    el: document.querySelector('.dropdown-el'),
+    onSelect: this.search.bind(this)
+  });
 };
 
 Search.prototype = {
@@ -80,8 +83,10 @@ Search.prototype = {
   },
 
   search: function (e) {
-    e.preventDefault();
-    tran.search(this.input.value, this.successHandler.bind(this));
+    e && e.preventDefault && e.preventDefault();
+    if (this.input.value.length > 0) {
+      tran.search(this.input.value, this.successHandler.bind(this));
+    }
   },
 
   successHandler: function (response) {
@@ -105,6 +110,5 @@ Search.prototype = {
 };
 
 document.addEventListener("DOMContentLoaded", function onDom() {
-  var dropdown = new Dropdown(document.querySelector('.dropdown-el'));
   var form = new Search(document.getElementById('tran-form'));
 });
