@@ -4,6 +4,7 @@ var Dropdown = function (el) {
   this.button = el.querySelector('.dropdown-toggle');
   this.menu = el.querySelector('.dropdown-menu');
   this.menu.style.display = 'none';
+  this.items = this.menu.getElementsByClassName('language-type');
   this.addListeners();
 };
 
@@ -16,11 +17,29 @@ Dropdown.prototype = {
 
   toggle: function (e) {
     e.stopPropagation();
+    this.setActiveItem();
     if (this.menu.style.display === 'none') {
       this.show();
     } else {
       this.hide();
     }
+  },
+
+  // Read current language from Chrome Storage and color active line
+  setActiveItem: function () {
+    var self = this;
+    chrome.storage.sync.get({
+      language: '1'
+    }, function(store) {
+      for (var i = 0; i < self.items.length; i ++) {
+        var item = self.items[i];
+        if (item.getAttribute('data-val') == store.language) {
+          item.classList.add('active');
+        } else {
+          item.classList.remove('active');
+        }
+      }
+    });
   },
 
   hide: function () {
@@ -33,6 +52,11 @@ Dropdown.prototype = {
 
   choose: function (e) {
     e.stopPropagation();
+    e.preventDefault();
+    var language = e.target.getAttribute('data-val');
+    chrome.storage.sync.set({
+      language: language
+    });
     this.hide();
   }
 };

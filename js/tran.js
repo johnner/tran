@@ -12,40 +12,56 @@ tran = {
   protocol: 'http',
   host: 'www.multitran.ru',
   path: '/c/m.exe',
-  query: '?l1=1&l2=&s=',
+  query: '&s=',
+  lang: '?l1=2&l2=1', //from russian to english by default
   xhr: {},
 
   // context menu click handler
   click: function (data) {
     tran.search(data.selectionText, tran.successtHandler);
+//    chrome.storage.sync.get({
+//      language: '1'
+//    }, function(items) {
+//      tran.setLanguage(items.language);
+//      tran.search(data.selectionText, tran.successtHandler);
+//    });
   },
 
+  setLanguage: function (language) {
+    tran.lang = '?l1=2&l2=' + language;
+  },
   /**
    * Request translation and run callback function
    * passing translated result or error to callback
    **/
   search: function (value, callback, err) {
-    var url = tran.makeUrl(value);
-    var xhr = tran.xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = function (e) {
-      var xhr = tran.xhr;
-      if (xhr.readyState < 4) { return; }
-      if (xhr.status !== 200) { if (typeof err == 'function') err(); return;}
-      if (xhr.readyState === 4) {
-        if (typeof callback == 'function') {
-          var translated = tran.parse(e.target.response);
-          return callback(translated);
+    chrome.storage.sync.get({
+      language: '1'
+    }, function(items) {
+      tran.setLanguage(items.language);
+      var url = tran.makeUrl(value);
+      var xhr = tran.xhr = new XMLHttpRequest();
+      xhr.onreadystatechange = function (e) {
+        var xhr = tran.xhr;
+        if (xhr.readyState < 4) { return; }
+        if (xhr.status !== 200) { if (typeof err == 'function') err(); return;}
+        if (xhr.readyState === 4) {
+          if (typeof callback == 'function') {
+            var translated = tran.parse(e.target.response);
+            return callback(translated);
+          }
         }
       }
-    }
-    xhr.open("GET", url, true);
-    xhr.send();
+      xhr.open("GET", url, true);
+      xhr.send();
+    });
   },
 
   makeUrl: function (value) {
     var url = [tran.protocol, '://',
               tran.host,
               tran.path,
+              tran.lang,
               tran.query,
               encodeURI(value) ].join('');
     return url;
@@ -128,5 +144,4 @@ tran = {
     }
   }
 };
-
 }());
