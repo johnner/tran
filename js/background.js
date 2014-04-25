@@ -1,7 +1,7 @@
 /*global tran, chrome*/
 (function () {
 "use strict";
-// generates a context menu and launches setupQR() every time an item is rightclicked
+// generates a context menu
 chrome.contextMenus.create({
   title: 'Multitran: "%s"',
   contexts: ["page", "frame", "editable", "image",
