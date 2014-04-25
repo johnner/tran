@@ -61,6 +61,25 @@
       }
       return true;
     });
+
+    window.addEventListener('mouseup', mouseUpEvent);
+
+    function mouseUpEvent (e) {
+      saveMousePosition(e);
+      var selection = window.getSelection().toString();
+      if (selection.length > 0) {
+        chrome.runtime.sendMessage({method: "get_fast_option"}, function(response) {
+          //if quick selection search is active
+          if (response.fast) {
+            //read selection and request translation
+            chrome.runtime.sendMessage({
+              method: "request_search",
+              data: {selectionText: selection}
+            });
+          }
+        });
+      }
+    }
   }
 
   main();

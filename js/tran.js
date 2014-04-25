@@ -18,12 +18,14 @@ tran = {
 
   // context menu click handler
   click: function (data) {
+    console.log(data.selectionText);
     tran.search(data.selectionText, tran.successtHandler);
   },
 
   setLanguage: function (language) {
     tran.lang = '?l1=2&l2=' + language;
   },
+
   /**
    * Request translation and run callback function
    * passing translated result or error to callback

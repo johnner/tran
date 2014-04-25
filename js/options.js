@@ -1,8 +1,10 @@
 // Saves options to chrome.storage
 function save_options() {
   var language = document.getElementById('language').value;
+  var fast = document.getElementById('fast').checked;
   chrome.storage.sync.set({
-    language: language
+    language: language,
+    fast: fast
   }, function() {
     // Update status to let user know options were saved.
     var status = document.getElementById('status');
@@ -18,9 +20,11 @@ function save_options() {
 function restore_options() {
   // Use default value color = 'red' and likesColor = true.
   chrome.storage.sync.get({
-    language: 'english'
+    language: 'english',
+    fast: false
   }, function(items) {
     document.getElementById('language').value = items.language;
+    document.getElementById('fast').checked = items.fast;
   });
 }
 document.addEventListener('DOMContentLoaded', restore_options);
