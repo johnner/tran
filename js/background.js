@@ -24,10 +24,12 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     }
 });
 
+/**
+ * Fast translation initiate search with 'request_search' message from
+ * content_script
+ */
 chrome.runtime.onMessage.addListener(function (msg) {
-  console.log(msg.method);
   if (msg.method === 'request_search') {
-    console.log(msg);
     tran.click(msg.data);
   }
   return true;
