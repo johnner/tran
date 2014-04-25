@@ -47,8 +47,8 @@
 
   function main () {
     function saveMousePosition (e) {
-      pageData.mouseX = e.pageX;
-      pageData.mouseY = e.pageY;
+      pageData.mouseX = e.pageX + 5;
+      pageData.mouseY = e.pageY + 10;
     }
     document.addEventListener('contextmenu', saveMousePosition);
 

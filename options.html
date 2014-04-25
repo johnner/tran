@@ -2,12 +2,14 @@
     <head>
         <meta charset="utf-8">
         <title>Translate options</title>
+		<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+		<link type="text/css" rel="stylesheet" href="css/options.css" />
     </head>
     <body>
     <p>
         <span>Choose language:</span>
         <select id="language">
-            <option value="1">Английский</option>
+            <option value="1" selected="selected">Английский</option>
             <option value="3">Немецкий</option>
             <option value="4">Французский</option>
             <option value="5">Испанский</option>
@@ -22,7 +24,9 @@
     </p>
     <p>
         <span>Fast translation:</span>
-        <input id="fast" type="checkbox"/>
+        <input id="fast" type="checkbox" checked/><br />
+		<b class="description">If enabled, then translation dialog would appear when
+		you select text or double click the word</b>
     </p>
     <div id="status"></div>
     <button id="save">Save</button>
