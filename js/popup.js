@@ -1,4 +1,4 @@
-/*global tran*/
+/*global tran, chrome*/
 /**
  * Dropdown language menu
  * @param opts takes element and onSelect handler
@@ -43,7 +43,7 @@ Dropdown.prototype = {
     }, function(store) {
       for (var i = 0; i < self.items.length; i ++) {
         var item = self.items[i];
-        if (item.getAttribute('data-val') == store.language) {
+        if (item.getAttribute('data-val') === store.language) {
           item.classList.add('active');
         } else {
           item.classList.remove('active');
@@ -129,5 +129,5 @@ document.addEventListener("DOMContentLoaded", function onDom() {
     e.preventDefault();
     var href = e.target.getAttribute('href') + form.getValue();
     chrome.tabs.create({ url: href });
-  })
+  });
 });
