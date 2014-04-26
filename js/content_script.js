@@ -27,6 +27,7 @@
 
     setListeners: function () {
       window.addEventListener('click', this.destroy.bind(this));
+			document.addEventListener('click', this.destroy.bind(this));
       window.addEventListener('blur', this.destroy.bind(this));
       this.el.addEventListener('click', function (e) { e.stopPropagation(); });
     },
@@ -63,20 +64,22 @@
     window.addEventListener('mouseup', mouseUpEvent);
 
     function mouseUpEvent (e) {
-      saveMousePosition(e);
-      var selection = window.getSelection().toString();
-      if (selection.length > 0) {
-        chrome.runtime.sendMessage({method: "get_fast_option"}, function(response) {
-          //if quick selection search is active
-          if (response.fast) {
-            //read selection and request translation
-            chrome.runtime.sendMessage({
-              method: "request_search",
-              data: {selectionText: selection}
-            });
-          }
-        });
-      }
+			setTimeout(function () {
+				saveMousePosition(e);
+				var selection = window.getSelection().toString();
+				if (selection.length > 0) {
+					chrome.runtime.sendMessage({method: "get_fast_option"}, function(response) {
+						//if quick selection search is active
+						if (response.fast) {
+							//read selection and request translation
+							chrome.runtime.sendMessage({
+								method: "request_search",
+								data: {selectionText: selection}
+							});
+						}
+					});
+				}
+			}, 10);
     }
   }
 
