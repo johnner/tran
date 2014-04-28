@@ -64,14 +64,15 @@
     window.addEventListener('mouseup', mouseUpEvent);
 
     function mouseUpEvent (e) {
+      //fix for accidental dialog appearance when clicked on text
 			setTimeout(function () {
 				saveMousePosition(e);
 				var selection = window.getSelection().toString();
 				if (selection.length > 0) {
 					chrome.runtime.sendMessage({method: "get_fast_option"}, function(response) {
-						//if quick selection search is active
+						//if fast translation option is active
+            //then request translation for selection
 						if (response.fast) {
-							//read selection and request translation
 							chrome.runtime.sendMessage({
 								method: "request_search",
 								data: {selectionText: selection}
