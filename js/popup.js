@@ -8,6 +8,20 @@
  *  onSelect: function () {}
  * })
  */
+var LANG_CODE = {
+  '1': 'Eng',
+  '2': 'Rus',
+  '3': 'Ger',
+  '4': 'Fre',
+  '5': 'Spa',
+  '23': 'Ita',
+  '24': 'Dut',
+  '26': 'Est',
+  '27': 'Lav',
+  '31': 'Afr',
+  '34': 'Epo',
+  '35': 'Xal'
+}
 var Dropdown = function (opts) {
   var el = this.el = opts.el;
   this.onSelect = opts.onSelect;
@@ -16,6 +30,7 @@ var Dropdown = function (opts) {
   this.menu.style.display = 'none';
   this.items = this.menu.getElementsByClassName('language-type');
   this.addListeners();
+  this.initLanguage();
 };
 
 Dropdown.prototype = {
@@ -23,6 +38,16 @@ Dropdown.prototype = {
     this.button.addEventListener('click', this.toggle.bind(this));
     document.addEventListener('click', this.hide.bind(this));
     this.menu.addEventListener('click', this.choose.bind(this));
+  },
+
+  // Set language on popup init
+  initLanguage: function () {
+    var self = this;
+    chrome.storage.sync.get({
+      language: '1'
+    }, function(store) {
+      self.setTitle(store.language);
+    });
   },
 
   toggle: function (e) {
@@ -65,7 +90,13 @@ Dropdown.prototype = {
     e.preventDefault();
     var language = e.target.getAttribute('data-val');
     chrome.storage.sync.set({language: language}, this.onSelect);
+    this.setTitle(language);
     this.hide();
+  },
+
+  setTitle: function (language) {
+    var html = LANG_CODE[language] + ' <span class="caret"></span>';
+    this.button.innerHTML = html;
   }
 };
 
