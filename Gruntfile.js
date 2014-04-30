@@ -22,7 +22,7 @@ module.exports = function(grunt) {
 				files: [
 					// includes files within path
 					{expand: true, src: ['img/*'], dest: 'build/', filter: 'isFile'},
-					{expand: true, src: ['css/*'], dest: 'build/', filter: 'isFile'},
+					//{expand: true, src: ['styles/css/*'], dest: 'build/css/', filter: 'isFile'},
 					{expand: true, src: ['background.html'], dest: 'build/', filter: 'isFile'},
 					{expand: true, src: ['manifest.json'], dest: 'build/', filter: 'isFile'},
 					{expand: true, src: ['options.html'], dest: 'build/', filter: 'isFile'},
@@ -40,7 +40,22 @@ module.exports = function(grunt) {
 					{cwd: 'build/', src: ['**/*'], dest: '/'} // includes files in path
 				]
 			}
-		}
+		},
+
+    less: {
+      development: {
+        options: {
+          compress: true,
+          cleancss: true
+        },
+        files: {
+          "build/css/bootstrap.css": "less/bootstrap.less",
+          "build/css/dialog.css": "less/dialog.less",
+          "build/css/options.css": "less/options.less",
+          "build/css/popup.css": "less/popup.less"
+        }
+      }
+    }
   });
 	//Compress files and folders.
 	grunt.loadNpmTasks('grunt-contrib-compress');
@@ -48,8 +63,10 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-copy');
   // Load the plugin that provides the "uglify" task.
   grunt.loadNpmTasks('grunt-contrib-uglify');
+  // LESS compiler
+  grunt.loadNpmTasks('grunt-contrib-less');
 
   // Default task(s).
-  grunt.registerTask('default', ['uglify', 'copy', 'compress']);
+  grunt.registerTask('default', ['uglify', 'copy', 'less', 'compress']);
 
 };
