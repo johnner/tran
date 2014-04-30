@@ -1,3 +1,5 @@
+@font-helvetica: "Helvetica Neue",Helvetica,Arial,sans-serif;
+
 .__mtt_translate_dialog__v-0-3 {
     position: absolute!important;
     background-color: #ffffff !important;
@@ -8,51 +10,54 @@
     max-width: 745px;
     max-height: 450px;
     overflow: auto;
-    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-family: @font-helvetica;
     font-size: 14px;
     line-height: 1.42857143;
     color: #333!important;
     box-sizing: border-box;
-}
 
-.__mtt_translate_dialog__v-0-3 .___mtt_translate_table {
-    box-sizing: border-box;
-    border-spacing: 0px;
-    border-collapse: separate;
-    display: table;
-    border-color: gray;
-    max-width: 100%;
-    background-color: transparent;
-    border-top-width: 0px;
-    border-right-width: 0px;
-    border-bottom-width: 0px;
-    border-left-width: 0px;
-    border-spacing: 0px;
-}
-.__mtt_translate_dialog__v-0-3 .___mtt_translate_table tr {}
-.__mtt_translate_dialog__v-0-3 .___mtt_translate_table td {
-    padding: 0;
-    box-sizing: border-box;
-    text-align: left;
-    border: none!important;
-}
-.__mtt_translate_dialog__v-0-3 a,.__mtt_translate_dialog__v-0-3 a:link,.__mtt_translate_dialog__v-0-3 a:visited {
-    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-    font-size: 14px;
-    line-height: 1.42857143;
-    color: #428bca;
-    text-decoration: none;
-    background: 0 0;
-    box-sizing: border-box;
-}
-.__mtt_translate_dialog__v-0-3 a:hover,.__mtt_translate_dialog__v-0-3 a:active.__mtt_translate_dialog__v-0-3 a:focus {
-    color: #2a6496;
-    text-decoration: underline;
-}
+    .___mtt_translate_table {
+        box-sizing: border-box;
+        border-spacing: 0px;
+        border-collapse: separate;
+        display: table;
+        border-color: gray;
+        max-width: 100%;
+        background-color: transparent;
+        border-top-width: 0px;
+        border-right-width: 0px;
+        border-bottom-width: 0px;
+        border-left-width: 0px;
+        border-spacing: 0px;
 
-.__mtt_translate_dialog__v-0-3 .___mtt_translate_table span {
-    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-    font-size: 14px;
-    line-height: 1.42857143;
-    color: #333!important;
+        td {
+          padding: 0;
+          box-sizing: border-box;
+          text-align: left;
+          border: none!important;
+        }
+        span {
+            font-family: @font-helvetica;
+            font-size: 14px;
+            line-height: 1.42857143;
+            color: #333!important;
+        }
+    }
+    .styledLinks {
+      font-family: @font-helvetica;
+      font-size: 14px;
+      line-height: 1.42857143;
+      color: #428bca;
+      text-decoration: none;
+      background: 0 0;
+      box-sizing: border-box;
+    }
+    a {
+      .styledLinks;
+      &:link, &:visited { .styledLinks }
+      &:hover, &:active, &:focus {
+        color: #2a6496;
+        text-decoration: underline;
+      }
+    }
 }
