@@ -29,10 +29,10 @@
     },
 
     setListeners: function () {
-      window.addEventListener('click', this.destroy.bind(this));
-			document.addEventListener('click', this.destroy.bind(this));
+      window.addEventListener('mousedown', this.destroy.bind(this));
+			document.addEventListener('mousedown', this.destroy.bind(this));
       window.addEventListener('blur', this.destroy.bind(this));
-      window.addEventListener('keypress', this.destroy.bind(this));
+      window.addEventListener('keydown', this.destroy.bind(this));
     },
 
     render: function (data) {
