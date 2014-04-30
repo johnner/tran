@@ -69,8 +69,9 @@ tran = {
   successtHandler: function (translated) {
       chrome.tabs.getSelected(null, function(tab) {
         chrome.tabs.sendMessage(tab.id, {
-          action:  "open_dialog_box",
-          data: translated.outerHTML
+          action:  "open_tooltip",
+          data: translated.outerHTML,
+          success: !translated.classList.contains('failTranslate')
         });
       });
   },
