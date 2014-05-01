@@ -48,6 +48,7 @@ module.exports = function(grunt) {
 		// make a zipfile
 		zip: {
 			tran: {
+				cwd: 'build/',
 				src: 'build/**/*',
 				dest: 'tran.zip'
 			}
