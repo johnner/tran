@@ -30,17 +30,6 @@ module.exports = function(grunt) {
 				]
 			}
 		},
-		// make a zipfile
-		compress: {
-			main: {
-				options: {
-					archive: 'tran.zip'
-				},
-				files: [
-					{cwd: 'build/', src: ['**/*'], dest: '/'} // includes files in path
-				]
-			}
-		},
 
     less: {
       development: {
@@ -55,10 +44,17 @@ module.exports = function(grunt) {
           "build/css/popup.css": "less/popup.less"
         }
       }
-    }
+    },
+		// make a zipfile
+		zip: {
+			tran: {
+				src: 'build/**/*',
+				dest: 'tran.zip'
+			}
+		}
   });
 	//Compress files and folders.
-	grunt.loadNpmTasks('grunt-contrib-compress');
+	grunt.loadNpmTasks('grunt-zip');
 	// Copy files and folders.
 	grunt.loadNpmTasks('grunt-contrib-copy');
   // Load the plugin that provides the "uglify" task.
@@ -67,6 +63,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-less');
 
   // Default task(s).
-  grunt.registerTask('default', ['uglify', 'copy', 'less', 'compress']);
+  grunt.registerTask('default', ['uglify','less','copy', 'zip']);
 
 };

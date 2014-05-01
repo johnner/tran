@@ -21,11 +21,9 @@
 
   Tooltip.prototype = {
     createEl: function () {
-      var el = document.createElement('div');
-      el.className = TOOLTIP_CLASS;
-      this.el = el;
+      this.el = document.createElement('div');
+      this.el.className = TOOLTIP_CLASS;
       this.el.addEventListener('click', function (e) { e.stopPropagation(); });
-      return el;
     },
 
     setListeners: function () {
