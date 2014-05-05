@@ -124,13 +124,11 @@ class Search
   getValue: ->
     return @input.value
 
-document.addEventListener("DOMContentLoaded", ->
-  form = new Search(document.getElementById('tran-form'))
+document.addEventListener "DOMContentLoaded", ->
+  form = new Search document.getElementById('tran-form')
   link = document.getElementById('header-link')
   if link
-    link.addEventListener('click', (e) ->
+    link.addEventListener 'click', (e) ->
       e.preventDefault();
       href = e.target.getAttribute('href') + form.getValue()
       chrome.tabs.create({ url: href })
-    )
-)
