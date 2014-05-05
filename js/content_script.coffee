@@ -16,31 +16,32 @@ do ->
 
   class Tooltip
     constructor: ->
-      this.setListeners()
+      @setListeners()
 
     createEl: ->
-      this.el = document.createElement('div');
-      this.el.className = TOOLTIP_CLASS;
-      this.el.addEventListener 'click', (e) -> e.stopPropagation()
+      @el = document.createElement('div');
+      @el.className = TOOLTIP_CLASS;
+      @el.addEventListener 'mousedown', (e) -> e.stopPropagation()
 
     setListeners: ->
-      window.addEventListener 'mousedown', => @destroy()
-      document.addEventListener 'mousedown', => @destroy()
-      window.addEventListener 'blur', => @destroy()
-      window.addEventListener 'keydown', => @destroy()
+      window.addEventListener 'mousedown', (e) => @destroy(e)
+      document.addEventListener 'mousedown', (e) => @destroy(e)
+      window.addEventListener 'blur', (e) => @destroy(e)
+      window.addEventListener 'keydown', (e) => @destroy(e)
+      document.addEventListener 'keydown', (e) => @destroy(e)
 
     render: (data) ->
-      if not this.el
-        this.createEl()
-      this.el.innerHTML = data;
-      this.el.style.left = pageData.mouseX + 'px';
-      this.el.style.top = pageData.mouseY + 'px';
-      document.body.appendChild(this.el);
+      if not @el
+        @createEl()
+      @el.innerHTML = data;
+      @el.style.left = pageData.mouseX + 'px';
+      @el.style.top = pageData.mouseY + 'px';
+      document.body.appendChild(@el);
 
     destroy: ->
-      if this.el and this.el.parentNode is document.body
-        document.body.removeChild(this.el)
-        this.el = null
+      if @el and @el.parentNode is document.body
+        document.body.removeChild(@el)
+        @el = null
         clickTarget = null # reset clicktarget
 
   class main
