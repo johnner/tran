@@ -56,13 +56,12 @@ class Dropdown
 
   # Read current language from Chrome Storage and color active line
   setActiveItem: ->
-    chrome.storage.sync.get({language: '1'}, (store) =>
+    chrome.storage.sync.get {language: '1'}, (store) =>
       for item in @items
         if item.getAttribute('data-val') == store.language
           item.classList.add('active')
         else
           item.classList.remove('active')
-    )
 
   hide: ->
     @menu.style.display = 'none'
