@@ -1,12 +1,21 @@
 {
   "name": "tran",
-  "version": "0.3.4",
+  "version": "0.5.6",
+  "description": "Translation plugin for Chrome",
+  "author": "Anton Zhusman",
   "devDependencies": {
     "grunt": "~0.4.4",
     "grunt-contrib-jshint": "~0.6.3",
     "grunt-contrib-uglify": "~0.2.2",
     "grunt-contrib-copy": "~0.5.0",
     "grunt-contrib-less": "~0.11.0",
-    "grunt-zip": "~0.13.0"
+    "grunt-zip": "~0.13.0",
+    "grunt-contrib-coffee": "~0.10.1",
+    "karma": "~0.12.14",
+    "karma-jasmine": "~0.1.5",
+    "karma-chrome-launcher": "~0.1.3",
+    "grunt-karma": "~0.8.3",
+    "karma-coffee-preprocessor": "~0.2.1",
+    "karma-sinon-chai": "~0.1.5"
   }
 }

@@ -1,3 +1,4 @@
+/*global module*/
 module.exports = function(grunt) {
 
   // Project configuration.
@@ -8,7 +9,7 @@ module.exports = function(grunt) {
 				files: [
 					{
 						expand: true,     // Enable dynamic expansion.
-						cwd: 'js/',      // Src matches are relative to this path.
+						cwd: 'build/js',      // Src matches are relative to this path.
 						src: ['*.js'], // Actual pattern(s) to match.
 						dest: 'build/js/',   // Destination path prefix.
 						ext: '.js',   // Dest filepaths will have this extension.
@@ -45,6 +46,7 @@ module.exports = function(grunt) {
         }
       }
     },
+
 		// make a zipfile
 		zip: {
 			tran: {
@@ -52,7 +54,28 @@ module.exports = function(grunt) {
 				src: 'build/**/*',
 				dest: 'tran.zip'
 			}
-		}
+		},
+
+		coffee: {
+			compile: {
+				options: {
+					sourceMap: false
+				},
+				files: {
+					'build/js/background.js': 'js/background.coffee',
+					'build/js/content_script.js': 'js/content_script.coffee',
+					'build/js/options.js': 'js/options.coffee',
+					'build/js/popup.js': 'js/popup.coffee',
+					'build/js/tran.js': 'js/tran.coffee'
+				}
+			}
+		},
+
+    karma: {
+      unit: {
+        configFile: 'karma.conf.js'
+      }
+    }
   });
 	//Compress files and folders.
 	grunt.loadNpmTasks('grunt-zip');
@@ -62,8 +85,10 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-uglify');
   // LESS compiler
   grunt.loadNpmTasks('grunt-contrib-less');
-
+	// Coffee compiler
+	grunt.loadNpmTasks('grunt-contrib-coffee');
+  // Test app with karma
+  grunt.loadNpmTasks('grunt-karma');
   // Default task(s).
-  grunt.registerTask('default', ['uglify','less','copy', 'zip']);
-
+  grunt.registerTask('default', ['coffee', 'uglify','less','copy', 'zip']);
 };
