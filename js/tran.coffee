@@ -122,8 +122,12 @@ window.tran =
         parser.host = tran.host
         parser.protocol = tran.protocol
         #fix relative links
-        if tag.tagName == 'A' and parser.pathname.indexOf('m.exe') isnt -1
-          parser.pathname = '/c' + parser.pathname
-          tag.setAttribute('target', '_blank')
+        if tag.tagName == 'A'
+          tag.classList.add 'mtt_link'
+          if parser.pathname.indexOf('m.exe') isnt -1
+            parser.pathname = '/c' + parser.pathname
+            tag.setAttribute('target', '_blank')
+        else if tag.tagName == 'IMG'
+          tag.classList.add 'mtt_img'
 
         tag.setAttribute(attr, parser.href)
