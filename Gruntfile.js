@@ -23,11 +23,8 @@ module.exports = function(grunt) {
 				files: [
 					// includes files within path
 					{expand: true, src: ['img/*'], dest: 'build/', filter: 'isFile'},
-					//{expand: true, src: ['styles/css/*'], dest: 'build/css/', filter: 'isFile'},
-					{expand: true, src: ['background.html'], dest: 'build/', filter: 'isFile'},
-					{expand: true, src: ['manifest.json'], dest: 'build/', filter: 'isFile'},
-					{expand: true, src: ['options.html'], dest: 'build/', filter: 'isFile'},
-					{expand: true, src: ['popup.html'], dest: 'build/', filter: 'isFile'}
+					{expand: true, flatten: true, src: ['pages/*.html'], dest: 'build/', filter: 'isFile'},
+					{expand: true, src: ['manifest.json'], dest: 'build/', filter: 'isFile'}
 				]
 			}
 		},
@@ -65,7 +62,7 @@ module.exports = function(grunt) {
 					'build/js/background.js': 'js/background.coffee',
 					//'build/js/content_script.js': 'js/content_script.coffee',
 					'build/js/options.js': 'js/options.coffee',
-					'build/js/popup.js': 'js/popup.coffee',
+					//'build/js/popup.js': 'js/popup.coffee',
 					'build/js/tran.js': 'js/tran.coffee'
 				}
 			}
@@ -80,7 +77,8 @@ module.exports = function(grunt) {
     browserify: {
       dist: {
         files: {
-          'build/js/content_script.js': ['js/content_script/content.coffee']
+          'build/js/content_script.js': ['js/content_script/content.coffee'],
+          'build/js/popup.js': ['js/popup/popup.coffee']
         },
         options: {
           transform: ['coffeeify'],
