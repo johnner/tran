@@ -118,10 +118,12 @@ window.tran =
       tags =  fragment.querySelectorAll(tag)
       parser = document.createElement('a')
       for tag in tags
-        parser.href = tag[attr];
-        parser.host = tran.host;
-        parser.protocol = tran.protocol;
+        parser.href = tag[attr]
+        parser.host = tran.host
+        parser.protocol = tran.protocol
         #fix relative links
-        if 'm.exe' in parser.pathname
-          parser.pathname = '/c'+parser.pathname
-        tag[attr] = parser.href
+        if tag.tagName == 'A' and parser.pathname.indexOf('m.exe') isnt -1
+          parser.pathname = '/c' + parser.pathname
+          tag.setAttribute('target', '_blank')
+
+        tag.setAttribute(attr, parser.href)

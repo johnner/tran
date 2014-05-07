@@ -63,7 +63,7 @@ module.exports = function(grunt) {
 				},
 				files: {
 					'build/js/background.js': 'js/background.coffee',
-					'build/js/content_script.js': 'js/content_script.coffee',
+					//'build/js/content_script.js': 'js/content_script.coffee',
 					'build/js/options.js': 'js/options.coffee',
 					'build/js/popup.js': 'js/popup.coffee',
 					'build/js/tran.js': 'js/tran.coffee'
@@ -74,6 +74,19 @@ module.exports = function(grunt) {
     karma: {
       unit: {
         configFile: 'karma.conf.js'
+      }
+    },
+
+    browserify: {
+      dist: {
+        files: {
+          'build/js/content_script.js': ['js/content_script/content.coffee']
+        },
+        options: {
+          transform: ['coffeeify'],
+          debug: true,
+          bundleOptions: {debug: true}
+        }
       }
     }
   });
@@ -89,6 +102,8 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-coffee');
   // Test app with karma
   grunt.loadNpmTasks('grunt-karma');
+  // browserify things
+  grunt.loadNpmTasks('grunt-browserify');
   // Default task(s).
-  grunt.registerTask('default', ['coffee', 'uglify','less','copy', 'zip']);
+  grunt.registerTask('default', ['browserify', 'coffee', 'uglify','less','copy', 'zip']);
 };
