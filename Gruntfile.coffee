@@ -67,7 +67,7 @@ module.exports = (grunt) ->
 
     karma: {
       unit: {
-        configFile: 'karma.conf.js'
+        configFile: 'karma.conf.coffee'
       }
     },
 
@@ -100,4 +100,4 @@ module.exports = (grunt) ->
   # browserify things
   grunt.loadNpmTasks('grunt-browserify')
   # Default task(s).
-  grunt.registerTask('default', ['browserify', 'coffee', 'uglify','less','copy', 'zip'])
+  grunt.registerTask('default', ['browserify', 'coffee', 'uglify','less','copy', 'karma', 'zip'])
