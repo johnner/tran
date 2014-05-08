@@ -13,9 +13,7 @@ module.exports = (config) ->
     # list of files / patterns to load in the browser
     files: [
       'test/spec/globals.coffee' # enviroment globals
-#      'js/tran.coffee'
-#      'js/content_script.coffee'
-#      'js/popup.coffee'
+      'test/lib/sinon-1.9.1.js' #sinon
       'test/spec/*.spec.coffee'
     ]
 

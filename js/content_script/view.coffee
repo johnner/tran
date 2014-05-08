@@ -7,10 +7,10 @@ class Main
     document.addEventListener 'mousedown', (e) => @mouseDownEvent(e)
     window.addEventListener 'mouseup', (e) => @mouseUpEvent(e)
     document.addEventListener 'contextmenu', (e) => @saveMousePosition(e)
-    @pageData =
-      mouseX: 0,
+    @coordinates =
+      mouseX: 0
       mouseY: 0
-    @tooltip = tooltip = new Tooltip(@pageData);
+    @tooltip = tooltip = new Tooltip(@coordinates);
 
     chrome.runtime.onMessage.addListener (msg) =>
       if msg.action == 'open_tooltip'
@@ -22,9 +22,9 @@ class Main
       return true
 
   saveMousePosition: (e) ->
-    @pageData.mouseX = e.pageX + 5
-    @pageData.mouseY = e.pageY + 10
-    @tooltip.setPageData(@pageData)
+    @coordinates.mouseX = e.pageX + 5
+    @coordinates.mouseY = e.pageY + 10
+    @tooltip.setCoordinates(@coordinates)
 
   mouseDownEvent: (e) ->
     tag = e.target.tagName.toLowerCase()

@@ -1,7 +1,7 @@
 TOOLTIP_CLASS = '__mtt_translate_dialog__v-0-3'
 
 class Tooltip
-  constructor: (@pageData) ->
+  constructor: (@coordinates) ->
     @setListeners()
     @clickTarget = {}
 
@@ -21,8 +21,8 @@ class Tooltip
     if not @el
       @createEl()
     @el.innerHTML = data;
-    @el.style.left = @pageData.mouseX + 'px';
-    @el.style.top = @pageData.mouseY + 'px';
+    @el.style.left = @coordinates.mouseX + 'px';
+    @el.style.top = @coordinates.mouseY + 'px';
     document.body.appendChild(@el);
 
   destroy: ->
@@ -31,7 +31,7 @@ class Tooltip
       @el = null
       clickTarget = null # reset clicktarget
 
-  setPageData: (pageData) ->
-    @pageData = pageData
+  setCoordinates: (coordinates) ->
+    @coordinates = coordinates
 
 module.exports = Tooltip
