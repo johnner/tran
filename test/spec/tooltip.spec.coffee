@@ -16,3 +16,6 @@ describe 'Tooltip', ->
     listenersSpy = sinon.spy(tooltip, 'setListeners')
     tooltip.constructor()
     expect(listenersSpy.called).toBeTruthy()
+
+  it 'should initiate clickTarget field', ->
+    

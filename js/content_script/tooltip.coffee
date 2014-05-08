@@ -3,7 +3,7 @@ TOOLTIP_CLASS = '__mtt_translate_dialog__v-0-3'
 class Tooltip
   constructor: (@coordinates) ->
     @setListeners()
-    @clickTarget = {}
+    @clickTarget = null
 
   createEl: ->
     @el = document.createElement('div');
@@ -29,7 +29,7 @@ class Tooltip
     if @el and @el.parentNode is document.body
       document.body.removeChild(@el)
       @el = null
-      clickTarget = null # reset clicktarget
+      @clickTarget = null # reset clicktarget
 
   setCoordinates: (coordinates) ->
     @coordinates = coordinates
