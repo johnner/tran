@@ -10,7 +10,7 @@ class Main
     @coordinates =
       mouseX: 0
       mouseY: 0
-    @tooltip = tooltip = new Tooltip(@coordinates);
+    @tooltip = new Tooltip(@coordinates);
 
     chrome.runtime.onMessage.addListener (msg) =>
       if msg.action == 'open_tooltip'

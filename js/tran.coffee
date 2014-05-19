@@ -19,9 +19,9 @@ window.tran =
   setLanguage: (language) ->
     tran.lang = '?l1=2&l2=' + language
 
+
   ###
-    Request translation and run callback function
-    passing translated result or error to callback
+    Initiate translation search
   ###
   search: (value, callback, err) ->
     chrome.storage.sync.get({language: '1'}, (items) ->
@@ -29,23 +29,35 @@ window.tran =
         language = '1'
       tran.setLanguage(items.language)
       url = tran.makeUrl(value);
-      xhr = tran.xhr = new XMLHttpRequest();
-      xhr.onreadystatechange = (e) ->
-        xhr = tran.xhr
-        if xhr.readyState < 4
-          return;
-        else if xhr.status != 200
-          tran.errorHandler(xhr)
-          if (typeof err == 'function')
-            err()
-          return
-        else if xhr.readyState == 4
-          if typeof callback == 'function'
-            translated = tran.parse(e.target.response)
-            return callback(translated)
-      xhr.open("GET", url, true);
-      xhr.send();
+      tran.request(
+        url: url,
+        success: callback,
+        error: err
+      )
     )
+
+  ###
+    Request translation and run callback function
+    passing translated result or error to callback
+  ###
+  request: (opts) ->
+    xhr = tran.xhr = new XMLHttpRequest()
+    xhr.onreadystatechange = (e) ->
+      xhr = tran.xhr
+      if xhr.readyState < 4
+        return;
+      else if xhr.status != 200
+        tran.errorHandler(xhr)
+        if (typeof opts.error == 'function')
+          opts.error()
+        return
+      else if xhr.readyState == 4
+        if typeof opts.success == 'function'
+          translated = tran.parse(e.target.response)
+          return opts.success(translated)
+    xhr.open("GET", opts.url, true);
+    xhr.send();
+
 
   makeUrl: (value) ->
     url = [tran.protocol, '://',
@@ -71,6 +83,9 @@ window.tran =
         })
       )
 
+  ###
+    Parse response from translation engine
+  ###
   parse: (response, translate = null) ->
       doc = tran.stripScripts(response)
       fragment = tran.makeFragment(doc)
@@ -88,6 +103,9 @@ window.tran =
 
       return translate;
 
+  ###
+    Strip script tags from response html
+  ###
   stripScripts: (s) ->
     div = document.createElement('div')
     div.innerHTML = s
