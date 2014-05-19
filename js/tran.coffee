@@ -12,29 +12,37 @@ window.tran =
   lang: '?l1=2&l2=1', #from russian to english by default
   xhr: {},
 
-  # context menu click handler
+  ###
+    Context menu click handler
+  ###
   click: (data) ->
-    tran.search(data.selectionText, tran.successtHandler)
-
-  setLanguage: (language) ->
-    tran.lang = '?l1=2&l2=' + language
-
+    if typeof data.silent == undefined || data.silent == null
+      data.silent = true # true by default
+    tran.search
+        value: data.selectionText
+        success: tran.successtHandler
+        silent: data.silent  # if translation failed do not show dialog
 
   ###
     Initiate translation search
   ###
-  search: (value, callback, err) ->
+  search: (params) ->
+    #value, callback, err
     chrome.storage.sync.get({language: '1'}, (items) ->
       if language is ''
         language = '1'
       tran.setLanguage(items.language)
-      url = tran.makeUrl(value);
+      url = tran.makeUrl(params.value);
       tran.request(
         url: url,
-        success: callback,
-        error: err
+        success: params.success,
+        error: params.error,
+        silent: params.silent
       )
     )
+
+  setLanguage: (language) ->
+    tran.lang = '?l1=2&l2=' + language
 
   ###
     Request translation and run callback function
@@ -53,7 +61,7 @@ window.tran =
         return
       else if xhr.readyState == 4
         if typeof opts.success == 'function'
-          translated = tran.parse(e.target.response)
+          translated = tran.parse(e.target.response, opts.silent)
           return opts.success(translated)
     xhr.open("GET", opts.url, true);
     xhr.send();
@@ -86,7 +94,7 @@ window.tran =
   ###
     Parse response from translation engine
   ###
-  parse: (response, translate = null) ->
+  parse: (response, silent, translate = null) ->
       doc = tran.stripScripts(response)
       fragment = tran.makeFragment(doc)
       if fragment
@@ -96,7 +104,7 @@ window.tran =
           translate.setAttribute("cellpadding", "5")
           tran.fixImages(translate)
           tran.fixLinks(translate)
-        else
+        else if not silent
           translate = document.createElement('div')
           translate.className = 'failTranslate'
           translate.innerText = "Unfortunately, could not translate"

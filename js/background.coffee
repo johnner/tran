@@ -3,7 +3,9 @@
 chrome.contextMenus.create(
   title:  'Multitran: "%s"'
   contexts: ["page", "frame", "editable", "image", "video", "audio", "link", "selection"]
-  onclick:  tran.click
+  onclick:  (data) ->
+    data.silent = false
+    tran.click(data)
 )
 
 ###
@@ -20,6 +22,7 @@ chrome.runtime.onMessage.addListener (request, sender, sendResponse) ->
   #Fast translation initiate search with 'request_search' message from
   #content_script
   else if request.method == 'request_search'
+    request.data.silent = true
     tran.click(request.data)
   true
 

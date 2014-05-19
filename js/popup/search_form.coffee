@@ -23,7 +23,9 @@ class SearchForm
   search: (e) ->
     e && e.preventDefault && e.preventDefault();
     if @input.value.length > 0
-      tran.search(@input.value, @successHandler.bind(@))
+      tran.search
+        value: @input.value
+        success: @successHandler.bind(@)
 
   successHandler: (response) ->
       @clean(@result)
