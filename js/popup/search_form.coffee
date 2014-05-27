@@ -8,12 +8,15 @@ Dropdown = require('./dropdown.coffee')
 class SearchForm
   constructor: (@form) ->
     @input = document.getElementById('translate-txt')
+    @input.focus()
+
     @result = document.getElementById('result')
     @addListeners();
     @dropdown = new Dropdown({
       el: document.querySelector('.dropdown-el'),
       onSelect: => @search()
     });
+
 
   addListeners: ->
     if @form and @result
