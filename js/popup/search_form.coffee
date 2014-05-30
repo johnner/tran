@@ -49,6 +49,11 @@ class SearchForm
 
   inputHandler: (e) ->
     value = @input.value
+    tran.request(
+      url: url,
+      success: params.success,
+      error: params.error
+    )
 
 
 

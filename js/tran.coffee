@@ -39,7 +39,7 @@ window.tran =
         translated = tran.parse(response, params.silent)
         origSuccess(translated)
 
-      # make request
+      # make request (GET request with query parameters in url)
       tran.request(
         url: url,
         success: params.success,
