@@ -100,4 +100,12 @@ module.exports = (grunt) ->
   # browserify things
   grunt.loadNpmTasks('grunt-browserify')
   # Default task(s).
-  grunt.registerTask('default', ['browserify', 'coffee', 'uglify','less','copy', 'karma', 'zip'])
+  grunt.registerTask('default', [
+    'browserify',
+    'coffee',
+    'uglify',
+    'less',
+    'copy',
+    #'karma',  # run jasmine tests in browser
+    'zip'
+  ])

@@ -33,11 +33,17 @@ window.tran =
         language = '1'
       tran.setLanguage(items.language)
       url = tran.makeUrl(params.value);
+      # decorate success to make preliminary parsing
+      origSuccess = params.success
+      params.success = (response) ->
+        translated = tran.parse(response, params.silent)
+        origSuccess(translated)
+
+      # make request
       tran.request(
         url: url,
         success: params.success,
-        error: params.error,
-        silent: params.silent
+        error: params.error
       )
     )
 
@@ -53,16 +59,15 @@ window.tran =
     xhr.onreadystatechange = (e) ->
       xhr = tran.xhr
       if xhr.readyState < 4
-        return;
+        return
       else if xhr.status != 200
         tran.errorHandler(xhr)
         if (typeof opts.error == 'function')
           opts.error()
         return
       else if xhr.readyState == 4
-        if typeof opts.success == 'function'
-          translated = tran.parse(e.target.response, opts.silent)
-          return opts.success(translated)
+          return opts.success(e.target.response)
+
     xhr.open("GET", opts.url, true);
     xhr.send();
 

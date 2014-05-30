@@ -17,14 +17,13 @@ class SearchForm
       onSelect: => @search()
     });
 
-
   addListeners: ->
     if @form and @result
       @form.addEventListener 'submit', (e) => @search(e)
       @result.addEventListener 'click', (e) => @resultClickHandler(e)
 
   search: (e) ->
-    e && e.preventDefault && e.preventDefault();
+    e && e.preventDefault && e.preventDefault()
     if @input.value.length > 0
       tran.search
         value: @input.value
@@ -47,6 +46,10 @@ class SearchForm
 
   getValue: ->
     return @input.value
+
+  inputHandler: (e) ->
+    value = @input.value
+
 
 
 module.exports = SearchForm
