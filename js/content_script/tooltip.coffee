@@ -17,10 +17,11 @@ class Tooltip
     window.addEventListener 'keydown', (e) => @destroy(e)
     document.addEventListener 'keydown', (e) => @destroy(e)
 
-  render: (data) ->
+  render: (data, transform = null) ->
     if not @el
       @createEl()
     @el.innerHTML = data;
+    transform @el if transform?
     @el.style.left = @coordinates.mouseX + 'px';
     @el.style.top = @coordinates.mouseY + 'px';
     document.body.appendChild(@el);

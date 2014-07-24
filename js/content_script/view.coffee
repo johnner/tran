@@ -13,13 +13,21 @@ class Main
     @tooltip = new Tooltip(@coordinates);
 
     chrome.runtime.onMessage.addListener (msg) =>
-      if msg.action == 'open_tooltip'
+      if msg.action == 'open_tooltip' or msg.action == 'similar_words'
         #don't show annoying tooltip when typing
         if not msg.success and @tooltip.clickTarget is 'textbox'
           return
+        else if msg.action is 'similar_words'
+          @tooltip.render msg.data, @attachSimilarWordsHandlers.bind this
         else
           @tooltip.render(msg.data)
       return true
+
+  requestSearch: (selection) ->
+    chrome.runtime.sendMessage
+      method: "request_search"
+      data:
+        selectionText: selection
 
   saveMousePosition: (e) ->
     @coordinates.mouseX = e.pageX + 5
@@ -37,16 +45,24 @@ class Main
       @saveMousePosition(e)
       selection = window.getSelection().toString()
       if selection.length > 0
-        chrome.runtime.sendMessage method: "get_fast_option", (response) ->
+        chrome.runtime.sendMessage method: "get_fast_option", (response) =>
           # if fast translation option is active
           # then request translation for selection
           if response.fast
-            chrome.runtime.sendMessage
-              method: "request_search"
-              data:
-                selectionText: selection
+            @requestSearch selection
           return true
     setTimeout handler, 10
+    return true
+
+  attachSimilarWordsHandlers: (fragment) ->
+    for link in fragment.querySelectorAll 'a'
+      do (word = link.textContent) =>
+        # Prevent link from being followed.
+        link.addEventListener 'click', (e) -> e.preventDefault()
+        # Don't let @mouseUpEvent fire again with the wrong word.
+        link.addEventListener 'mouseup', (e) =>
+          e.stopPropagation()
+          @requestSearch word
     return true
 
 module.exports = Main
