@@ -90,7 +90,7 @@ window.tran =
   successtHandler: (translated) ->
       chrome.tabs.getSelected(null, (tab) ->
         chrome.tabs.sendMessage(tab.id, {
-          action: tran.messageType translated,
+          action: tran.messageType translated
           data: translated.outerHTML,
           success: !translated.classList.contains('failTranslate')
         })
