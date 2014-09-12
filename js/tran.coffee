@@ -18,10 +18,17 @@ window.tran =
   click: (data) ->
     if typeof data.silent == undefined || data.silent == null
       data.silent = true # true by default
+    selectionText = tran.removeHyphenation data.selectionText
     tran.search
-        value: data.selectionText
+        value: selectionText
         success: tran.successtHandler
         silent: data.silent  # if translation failed do not show dialog
+
+  ###
+    Discard soft hyphen character (U+00AD, &shy;) from the input
+  ###
+  removeHyphenation: (text) ->
+    text.replace /\xad/g, ''
 
   ###
     Initiate translation search
