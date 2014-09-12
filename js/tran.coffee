@@ -92,16 +92,22 @@ window.tran =
     console.log('error', xhr)
 
   ###
-   Recieving data from translataion-engine and send ready message with data
+   Receiving data from translation-engine and send ready message with data
   ###
   successtHandler: (translated) ->
       chrome.tabs.getSelected(null, (tab) ->
         chrome.tabs.sendMessage(tab.id, {
-          action:  "open_tooltip",
+          action: tran.messageType translated
           data: translated.outerHTML,
           success: !translated.classList.contains('failTranslate')
         })
       )
+
+  messageType: (translated) ->
+    if translated?.rows?.length == 1
+      'similar_words'
+    else
+      'open_tooltip'
 
   ###
     Parse response from translation engine
