@@ -1,9 +1,20 @@
 ###
- Serves search input and form
- @param form
- @constructor
+  Serves search input and form
+
+  @param form DOM elemnt
+  @constructor
 ###
 Dropdown = require('./dropdown.coffee')
+
+#translate engines
+tran = require('../tran.coffee')
+turkishdictionary = require('../turkishdictionary.coffee')
+
+
+#Translate engines
+TRANSLATE_ENGINES =
+  'multitran': tran
+  'turkish': turkishdictionary
 
 class SearchForm
   constructor: (@form) ->
@@ -25,9 +36,12 @@ class SearchForm
   search: (e) ->
     e && e.preventDefault && e.preventDefault()
     if @input.value.length > 0
-      tran.search
-        value: @input.value
-        success: @successHandler.bind(@)
+      #choose engine and search for translation (by default english-multitran)
+      chrome.storage.sync.get({language: '1', dictionary: 'multitran'}, (items) =>
+        TRANSLATE_ENGINES[items.dictionary].search
+          value: @input.value
+          success: @successHandler.bind(@)
+      )
 
   successHandler: (response) ->
       @clean(@result)

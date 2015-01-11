@@ -55,19 +55,14 @@ module.exports = (grunt) ->
     coffee: {
       compile: {
         options: {
-          sourceMap: false
+          sourceMap: true
+          debug: true
         },
         files: {
-          'build/js/background.js': 'js/background.coffee',
-          'build/js/options.js': 'js/options.coffee',
+          #'build/js/background.js': 'js/background.coffee',
+          'build/js/options.js': 'js/options.coffee'
           'build/js/tran.js': 'js/tran.coffee'
         }
-      }
-    },
-
-    karma: {
-      unit: {
-        configFile: 'karma.conf.coffee'
       }
     },
 
@@ -76,6 +71,9 @@ module.exports = (grunt) ->
         files: {
           'build/js/content_script.js': ['js/content_script/content.coffee'],
           'build/js/popup.js': ['js/popup/popup.coffee']
+          'build/js/tran.js': ['js/tran.coffee']
+          'build/js/turkishdictionary.js': ['js/turkishdictionary.coffee'],
+          'build/js/background.js': 'js/background.coffee'
         },
         options: {
           transform: ['coffeeify'],
@@ -95,8 +93,6 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks('grunt-contrib-less')
   # Coffee compiler
   grunt.loadNpmTasks('grunt-contrib-coffee')
-  # Test app with karma
-  grunt.loadNpmTasks('grunt-karma')
   # browserify things
   grunt.loadNpmTasks('grunt-browserify')
   # Default task(s).

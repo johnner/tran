@@ -1,7 +1,7 @@
 tran
 ====
 
-Chrome extension for quick translating with multitran.ru
+Chrome extension for quick translating with multitran.ru (or some other translate engines)
 
 https://chrome.google.com/webstore/detail/lhjldahfbiadelganmhjiolblffjjgok/
 
@@ -17,3 +17,5 @@ Assume nodejs and npm are installed. Also install grunt-cli:`npm install -g grun
 3. `grunt`— run build
 
 Build also creates "build" folder that can be loaded as "unpacked extension" for local tests.
+
+

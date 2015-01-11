@@ -19,12 +19,19 @@ LANG_CODE =
   '27': 'Lav'
   '31': 'Afr'
   '34': 'Epo'
-  '35': 'Xal'
+  '35': 'Xal',
+  '1000': 'Tur'
+
+DICT_CODE =
+  '1': 'multitran'
+  '1000': 'turkish'
 
 class Dropdown
   constructor: (opts) ->
     @el = opts.el or document.createElement('div')
+    # onSelect handler set by aggregate class
     @onSelect = opts.onSelect
+
     @menu = @el.querySelector('.dropdown-menu')
     if @menu
       @menu.style.display = 'none'
@@ -38,7 +45,7 @@ class Dropdown
     document.addEventListener 'click', (e) => @hide(e)
     @menu.addEventListener 'click', (e) => @choose(e)
 
-  # Set language on popup init
+  # On init trying to get current language from storage or using default( 1:english)
   initLanguage: ->
     chrome.storage.sync.get({ language: '1'}, (store) =>
       @setTitle(store.language);
@@ -67,14 +74,26 @@ class Dropdown
   show: ->
     @menu.style.display = 'block'
 
+  # Saves chosen language to chrome.storage and decide which dictionary to use
+  # Then called onSelect handler of the container class
   choose: (e) ->
     e.stopPropagation()
     e.preventDefault()
     language = e.target.getAttribute('data-val')
-    chrome.storage.sync.set({language: language}, @onSelect)
+    dictionary = @getDictionary(language)
+    chrome.storage.sync.set({language: language, dictionary: dictionary}, @onSelect)
     @setTitle(language)
     @hide()
 
+  # Some languages are not present in multitran (e.g. turkish)
+  # so we choose another service
+  getDictionary: (lang) ->
+    dict = 'multitran'
+    if lang == 1000
+      dict = DICT_CODE[lang]
+    return dict
+
+  #Set current language label
   setTitle: (language) ->
     html = LANG_CODE[language] + ' <span class="caret"></span>'
     @button.innerHTML = html

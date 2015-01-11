@@ -45,12 +45,10 @@ class Main
       @saveMousePosition(e)
       selection = window.getSelection().toString()
       if selection.length > 0
-        chrome.runtime.sendMessage method: "get_fast_option", (response) =>
-          # if fast translation option is active
-          # then request translation for selection
-          if response.fast
+        chrome.storage.sync.get(fast: true, (items) =>
+          if items.fast
             @requestSearch selection
-          return true
+        )
     setTimeout handler, 10
     return true
 

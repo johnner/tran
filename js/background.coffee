@@ -1,4 +1,9 @@
 ###global tran, chrome###
+
+#load engines
+tran = require('./tran.coffee')                     # multitran.ru
+turkishDictionary = require('./turkishdictionary.coffee')  # turkishdictionary.net
+
 #generates a context menu
 chrome.contextMenus.create(
   title:  'Multitran: "%s"'
@@ -17,7 +22,7 @@ chrome.runtime.onMessage.addListener (request, sender, sendResponse) ->
   if request.method == "get_fast_option"
     chrome.storage.sync.get(fast: true, (items) ->
         sendResponse(fast: items.fast)
-        return true
+        #return true
     )
   #Fast translation initiate search with 'request_search' message from
   #content_script

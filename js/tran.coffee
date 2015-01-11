@@ -1,16 +1,27 @@
 ###global chrome###
 ###
- Translation-module that makes requests to language-engine,
- parses results and sends plugin-global message with translation data
+  Multitran.ru translate engine
+  Provides program interface for making translate queries to multitran and get clean response
+
+  All engines must follow common interface and provide methods:
+    - search (languange, successHandler)  clean translation must be passed into successHandler
+    - click
+
+  Translation-module that makes requests to language-engine,
+  parses results and sends plugin-global message with translation data
 ###
-window.tran =
-  TABLE_CLASS: "___mtt_translate_table",
-  protocol: 'http',
-  host: 'www.multitran.ru',
-  path: '/c/m.exe',
-  query: '&s=',
-  lang: '?l1=2&l2=1', #from russian to english by default
-  xhr: {},
+
+CHAR_CODES = require('./char-codes.coffee');
+
+class Tran
+  constructor: ->
+    @TABLE_CLASS = "___mtt_translate_table"
+    @protocol = 'http'
+    @host = 'www.multitran.ru'
+    @path = '/c/m.exe'
+    @query = '&s='
+    @lang = '?l1=2&l2=1' #from russian to english by default
+    @xhr = {}
 
   ###
     Context menu click handler
@@ -18,10 +29,10 @@ window.tran =
   click: (data) ->
     if typeof data.silent == undefined || data.silent == null
       data.silent = true # true by default
-    selectionText = tran.removeHyphenation data.selectionText
-    tran.search
+    selectionText = @removeHyphenation data.selectionText
+    @search
         value: selectionText
-        success: tran.successtHandler
+        success: @successtHandler.bind(this)
         silent: data.silent  # if translation failed do not show dialog
 
   ###
@@ -35,19 +46,19 @@ window.tran =
   ###
   search: (params) ->
     #value, callback, err
-    chrome.storage.sync.get({language: '1'}, (items) ->
+    chrome.storage.sync.get({language: '1'}, (items) =>
       if language is ''
         language = '1'
-      tran.setLanguage(items.language)
-      url = tran.makeUrl(params.value);
+      @setLanguage(items.language)
+      url = @makeUrl(params.value);
       # decorate success to make preliminary parsing
       origSuccess = params.success
-      params.success = (response) ->
-        translated = tran.parse(response, params.silent)
+      params.success = (response) =>
+        translated = @parse(response, params.silent)
         origSuccess(translated)
 
       # make request (GET request with query parameters in url)
-      tran.request(
+      @request(
         url: url,
         success: params.success,
         error: params.error
@@ -55,20 +66,21 @@ window.tran =
     )
 
   setLanguage: (language) ->
-    tran.lang = '?l1=2&l2=' + language
+    @currentLanguage = language
+    @lang = '?l1=2&l2=' + language
 
   ###
     Request translation and run callback function
     passing translated result or error to callback
   ###
   request: (opts) ->
-    xhr = tran.xhr = new XMLHttpRequest()
-    xhr.onreadystatechange = (e) ->
-      xhr = tran.xhr
+    xhr = @xhr = new XMLHttpRequest()
+    xhr.onreadystatechange = (e) =>
+      xhr = @xhr
       if xhr.readyState < 4
         return
       else if xhr.status != 200
-        tran.errorHandler(xhr)
+        @errorHandler(xhr)
         if (typeof opts.error == 'function')
           opts.error()
         return
@@ -80,13 +92,24 @@ window.tran =
 
 
   makeUrl: (value) ->
-    url = [tran.protocol, '://',
-              tran.host,
-              tran.path,
-              tran.lang,
-              tran.query,
-              encodeURI(value) ].join('')
+    url = [@protocol, '://',
+              @host,
+              @path,
+              @lang,
+              @query,
+              @getEncodedValue(value)
+          ].join('')
+
     return url;
+
+  # replace lang
+  getEncodedValue: (value) ->
+    encoded = encodeURIComponent(value)
+#    if @currentLanguage
+#      codes = CHAR_CODES[@currentLanguage]
+#      for code, mttCode of codes
+#        encoded.replace(code, mttCode)
+    return encoded
 
   errorHandler: (xhr) ->
     console.log('error', xhr)
@@ -95,13 +118,13 @@ window.tran =
    Receiving data from translation-engine and send ready message with data
   ###
   successtHandler: (translated) ->
-      chrome.tabs.getSelected(null, (tab) ->
-        chrome.tabs.sendMessage(tab.id, {
-          action: tran.messageType translated
-          data: translated.outerHTML,
-          success: !translated.classList.contains('failTranslate')
-        })
-      )
+    chrome.tabs.getSelected(null, (tab) =>
+      chrome.tabs.sendMessage(tab.id, {
+        action: @messageType translated
+        data: translated.outerHTML,
+        success: !translated.classList.contains('failTranslate')
+      })
+    )
 
   messageType: (translated) ->
     if translated?.rows?.length == 1
@@ -113,15 +136,15 @@ window.tran =
     Parse response from translation engine
   ###
   parse: (response, silent, translate = null) ->
-      doc = tran.stripScripts(response)
-      fragment = tran.makeFragment(doc)
+      doc = @stripScripts(response)
+      fragment = @makeFragment(doc)
       if fragment
         translate = fragment.querySelector('#translation ~ table')
         if translate
-          translate.className = tran.TABLE_CLASS;
+          translate.className = @TABLE_CLASS;
           translate.setAttribute("cellpadding", "5")
-          tran.fixImages(translate)
-          tran.fixLinks(translate)
+          @fixImages(translate)
+          @fixLinks(translate)
         else if not silent
           translate = document.createElement('div')
           translate.className = 'failTranslate'
@@ -163,8 +186,8 @@ window.tran =
       parser = document.createElement('a')
       for tag in tags
         parser.href = tag[attr]
-        parser.host = tran.host
-        parser.protocol = tran.protocol
+        parser.host = @host
+        parser.protocol = @protocol
         #fix relative links
         if tag.tagName == 'A'
           tag.classList.add 'mtt_link'
@@ -175,3 +198,6 @@ window.tran =
           tag.classList.add 'mtt_img'
 
         tag.setAttribute(attr, parser.href)
+
+
+module.exports = new Tran
