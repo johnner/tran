@@ -11,7 +11,7 @@
   parses results and sends plugin-global message with translation data
 ###
 
-CHAR_CODES = require('./char-codes.coffee');
+#CHAR_CODES = require('./char-codes.coffee');
 
 class Tran
   constructor: ->
@@ -102,14 +102,11 @@ class Tran
 
     return url;
 
-  # replace lang
+  # Replace special language characters to html codes
   getEncodedValue: (value) ->
-    encoded = encodeURIComponent(value)
-#    if @currentLanguage
-#      codes = CHAR_CODES[@currentLanguage]
-#      for code, mttCode of codes
-#        encoded.replace(code, mttCode)
-    return encoded
+    for char, code of CHAR_CODES
+      value = value.replace(char, code)
+    return encodeURIComponent(value)
 
   errorHandler: (xhr) ->
     console.log('error', xhr)
@@ -118,13 +115,15 @@ class Tran
    Receiving data from translation-engine and send ready message with data
   ###
   successtHandler: (translated) ->
-    chrome.tabs.getSelected(null, (tab) =>
-      chrome.tabs.sendMessage(tab.id, {
-        action: @messageType translated
-        data: translated.outerHTML,
-        success: !translated.classList.contains('failTranslate')
-      })
-    )
+    if translated
+      chrome.tabs.getSelected(null, (tab) =>
+
+        chrome.tabs.sendMessage(tab.id, {
+          action: @messageType translated
+          data: translated.outerHTML,
+          success: !translated.classList.contains('failTranslate')
+        })
+      )
 
   messageType: (translated) ->
     if translated?.rows?.length == 1
@@ -198,6 +197,7 @@ class Tran
           tag.classList.add 'mtt_img'
 
         tag.setAttribute(attr, parser.href)
+
 
 
 module.exports = new Tran

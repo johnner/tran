@@ -69,6 +69,7 @@ module.exports = (grunt) ->
     browserify: {
       dist: {
         files: {
+          'build/js/char-codes.js': 'js/content_script/char-codes.coffee',
           'build/js/content_script.js': ['js/content_script/content.coffee'],
           'build/js/popup.js': ['js/popup/popup.coffee']
           'build/js/tran.js': ['js/tran.coffee']
