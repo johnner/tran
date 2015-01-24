@@ -4,7 +4,7 @@
 CHAR_CODES = require('./char-codes.js');
 
 tran = require('./tran.coffee')                             # multitran.ru
-turkishDictionary = require('./turkishdictionary.coffee')   # turkishdictionary.net
+turkishDictionary = require('./turkishdictionary.js')   # turkishdictionary.net
 
 #generates a context menu
 chrome.contextMenus.create(

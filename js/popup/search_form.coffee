@@ -8,7 +8,7 @@ Dropdown = require('./dropdown.coffee')
 
 #translate engines
 tran = require('../tran.coffee')
-turkishdictionary = require('../turkishdictionary.coffee')
+turkishdictionary = require('../turkishdictionary.js')
 
 
 #Translate engines

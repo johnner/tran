@@ -104,10 +104,11 @@ class Tran
 
   # Replace special language characters to html codes
   getEncodedValue: (value) ->
+    # to find spec symbols we first encode them (raw search for that symbol doesn't wor)
     val = encodeURIComponent(value)
     for char, code of CHAR_CODES
-      val = val.replace(char, code)
-    return encodeURIComponent(val)
+      val = val.replace(char, encodeURIComponent(code))
+    return val
 
   errorHandler: (xhr) ->
     console.log('error', xhr)
