@@ -11,7 +11,7 @@
   parses results and sends plugin-global message with translation data
 ###
 
-#CHAR_CODES = require('./char-codes.coffee');
+CHAR_CODES = require('./char-codes.js');
 
 class Tran
   constructor: ->
@@ -104,9 +104,10 @@ class Tran
 
   # Replace special language characters to html codes
   getEncodedValue: (value) ->
+    val = encodeURIComponent(value)
     for char, code of CHAR_CODES
-      value = value.replace(char, code)
-    return encodeURIComponent(value)
+      val = val.replace(char, code)
+    return encodeURIComponent(val)
 
   errorHandler: (xhr) ->
     console.log('error', xhr)

@@ -1,7 +1,7 @@
 ###global tran, chrome###
 
 #load engines
-CHAR_CODES = require('./char-codes.coffee');
+CHAR_CODES = require('./char-codes.js');
 
 tran = require('./tran.coffee')                             # multitran.ru
 turkishDictionary = require('./turkishdictionary.coffee')   # turkishdictionary.net
