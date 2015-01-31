@@ -1,6 +1,6 @@
 {
   "name": "tran",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Translation plugin for Chrome",
   "author": "Anton Zhusman",
   "devDependencies": {
