@@ -83,6 +83,39 @@ module.exports = (grunt) ->
           bundleOptions: {debug: true}
         }
       }
+    },
+
+    traceur: {
+      options: {
+        # traceur options here
+        experimental: true,
+        blockBinding: true,
+        # module naming options,
+#        moduleNaming: {
+#          stripPrefix: "src/es6",
+#          addPrefix: "com/mycompany/project"
+#        },
+        copyRuntime: 'js/es5'
+      },
+      custom: {
+        files: [{
+          expand: true,
+          cwd: 'js/es6',
+          src: ['*.js'],
+          dest: 'js/'
+        }]
+      }
+    },
+
+    '6to5': {
+        options: {
+            sourceMap: true
+        },
+        dist: {
+            files: {
+                'js/turkishdictionary.js': 'js/es6/turkishdictionary.js'
+            }
+        }
     }
   })
   # Compress files and folders.
@@ -97,8 +130,17 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks('grunt-contrib-coffee')
   # browserify things
   grunt.loadNpmTasks('grunt-browserify')
-  # Default task(s).
+  # ES6 -> ES5
+  #grunt.loadNpmTasks('grunt-traceur')
+  grunt.loadNpmTasks('grunt-6to5');
+  grunt.registerTask('es', ['traceur']);
+
+  require('load-grunt-tasks')(grunt); # npm install --save-dev load-grunt-tasks
+
+  # Default task(s)
   grunt.registerTask('default', [
+    #'traceur',
+    '6to5',
     'browserify',
     'coffee',
     'uglify',
@@ -106,4 +148,4 @@ module.exports = (grunt) ->
     'copy',
     #'karma',  # run jasmine tests in browser
     'zip'
-  ])
+  ]);

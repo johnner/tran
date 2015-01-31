@@ -29,7 +29,13 @@ chrome.runtime.onMessage.addListener (request, sender, sendResponse) ->
   #Fast translation initiate search with 'request_search' message from
   #content_script
   else if request.method == 'request_search'
-    request.data.silent = true
-    tran.click(request.data)
+    chrome.storage.sync.get({ language: '1', fast: true}, (items) ->
+      request.data.silent = true
+      if parseInt(items.language,10) == 1000
+        turkishDictionary.translate(request.data)
+      else
+        tran.click(request.data)
+      return true
+    )
   true
 

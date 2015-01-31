@@ -18,10 +18,9 @@ class Main
         if not msg.success and @tooltip.clickTarget is 'textbox'
           return
         else if msg.action is 'similar_words'
-          @tooltip.render msg.data, @attachSimilarWordsHandlers.bind this
+          @tooltip.render msg.data, @attachSimilarWordsHandlers
         else
           @tooltip.render(msg.data)
-      return true
 
   requestSearch: (selection) ->
     chrome.runtime.sendMessage

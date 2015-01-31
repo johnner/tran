@@ -119,7 +119,6 @@ class Tran
   successtHandler: (translated) ->
     if translated
       chrome.tabs.getSelected(null, (tab) =>
-
         chrome.tabs.sendMessage(tab.id, {
           action: @messageType translated
           data: translated.outerHTML,

@@ -1,4 +1,4 @@
-TOOLTIP_CLASS = '__mtt_translate_dialog__v-0-3'
+TOOLTIP_CLASS = '__mtt_translate_dialog__'
 
 class Tooltip
   constructor: (@coordinates) ->
