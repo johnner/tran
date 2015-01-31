@@ -1,8 +1,8 @@
 {
     "name": "Tran",
-    "version": "1.100",
+    "version": "1.11",
     "manifest_version": 2,
-    "description": "Quick translation with multitran (multitran.ru)",
+    "description": "Quick translation with multitran (multitran.ru) and little more",
     "background": {
         "persistent": true,
         "page": "background.html"
