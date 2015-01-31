@@ -28,7 +28,17 @@ class TurkishDictionary {
   }
 
   makeUrl (text) {
+    var text = this.getEncodedValue(text);
     return ['http://www.turkishdictionary.net/?word=', text].join('');
+  }
+  // Replace special language characters to html codes
+  getEncodedValue (value) {
+    // to find spec symbols we first encode them (raw search for that symbol doesn't wor)
+    var val = encodeURIComponent(value)
+    for (let char in CHAR_CODES) {
+      val = val.replace(char, CHAR_CODES[char])
+    }
+    return val;
   }
 
   /*

@@ -45,7 +45,22 @@ var TurkishDictionary = (function () {
     },
     makeUrl: {
       value: function makeUrl(text) {
+        var text = this.getEncodedValue(text);
         return ["http://www.turkishdictionary.net/?word=", text].join("");
+      },
+      writable: true,
+      enumerable: true,
+      configurable: true
+    },
+    getEncodedValue: {
+      // Replace special language characters to html codes
+      value: function getEncodedValue(value) {
+        // to find spec symbols we first encode them (raw search for that symbol doesn't wor)
+        var val = encodeURIComponent(value);
+        for (var char in CHAR_CODES) {
+          val = val.replace(char, CHAR_CODES[char]);
+        }
+        return val;
       },
       writable: true,
       enumerable: true,
