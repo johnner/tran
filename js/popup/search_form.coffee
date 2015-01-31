@@ -38,6 +38,7 @@ class SearchForm
     if @input.value.length > 0
       #choose engine and search for translation (by default english-multitran)
       chrome.storage.sync.get({language: '1', dictionary: 'multitran'}, (items) =>
+        console.log('ITEMS:', items);
         TRANSLATE_ENGINES[items.dictionary].search
           value: @input.value
           success: @successHandler.bind(@)
@@ -61,13 +62,19 @@ class SearchForm
   getValue: ->
     return @input.value
 
-  inputHandler: (e) ->
-    value = @input.value
-    tran.request(
-      url: url,
-      success: params.success,
-      error: params.error
-    )
+  # inputHandler: (e) ->
+  #   chrome.storage.sync.get({language: '1', dictionary: 'multitran'}, (items) =>
+  #     TRANSLATE_ENGINES[items.dictionary].request
+  #       value: @input.value
+  #       success: @successHandler.bind(@)
+  #       error: params.error
+  #   )
+    # value = @input.value
+    # tran.request(
+    #   url: url,
+    #   success: params.success,
+    #   error: params.error
+    # )
 
 
 

@@ -143,7 +143,7 @@ module.exports = (grunt) ->
     '6to5',
     'browserify',
     'coffee',
-    'uglify',
+    #'uglify',
     'less',
     'copy',
     #'karma',  # run jasmine tests in browser

@@ -88,9 +88,9 @@ class Dropdown
   # Some languages are not present in multitran (e.g. turkish)
   # so we choose another service
   getDictionary: (lang) ->
-    dict = 'multitran'
-    if lang == 1000
-      dict = DICT_CODE[lang]
+    console.log('choose dict: for',lang);
+    dict = DICT_CODE[lang] || 'multitran'
+    console.log('dict',dict)
     return dict
 
   #Set current language label
