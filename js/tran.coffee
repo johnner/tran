@@ -107,7 +107,16 @@ class Tran
     # to find spec symbols we first encode them (raw search for that symbol doesn't wor)
     val = encodeURIComponent(value)
     for char, code of CHAR_CODES
-      val = val.replace(char, encodeURIComponent(code))
+      if typeof code == 'object'
+        # russian has special codes
+        cc = code.val
+        console.log('rus', cc);
+      else
+        console.log('latin', cc)
+        # for all langs except russian encode html-codes needed
+        # для всех остальных языков
+        cc = encodeURIComponent(code)
+      val = val.replace(char, cc)
     return val
 
   errorHandler: (xhr) ->
