@@ -110,9 +110,7 @@ class Tran
       if typeof code == 'object'
         # russian has special codes
         cc = code.val
-        console.log('rus', cc);
       else
-        console.log('latin', cc)
         # for all langs except russian encode html-codes needed
         # для всех остальных языков
         cc = encodeURIComponent(code)
