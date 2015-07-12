@@ -1,20 +1,18 @@
-var CHAR_CODES = {
-  // turkishdictionary codings
-  '%C4%B1': '%FD', //ı (Lowercase i-dotless)  actually it is &#305; but turkishdictionary need it this way 
-  '%C5%9F': '%FE', //ş
-  '%C4%9F': '%F0', //ğ  (silent character)
-  '%C3%A7': '%E7', //ç
-  '%C3%B6': '%F6', //ö
-  '%C3%BC': '%FC', //ü
-  '%C3%A2': '%E2', // â
+// turkishdictionary codings
+var DICT = {
+    304: '%DD', //i
+    350: '%DE', //S
+    286: '%D0', //G
+    287: '%F0', //G
+    351: '%FE', //S
+    305: '%FD', //I
+    252: '%FC', //ü
+    220: '%DC', //Ü
+    231: '%E7', //ç
+    199: '%C7', //Ç
+    246: '%F6', //ö
+    214: '%D6', //Ö
+    39: '',  //'
+};
 
-   // '' : '', //Ç
-   // '' : '', //Ğ
-   // '' : '', //Ö
-   // '' : '', //Ş
-   // '' : '', //Ü
-   // '' : '', //İ
-   // '' : '', //Â
-}
-
-module.exports = CHAR_CODES;
+module.exports = DICT;

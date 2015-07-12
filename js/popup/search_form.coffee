@@ -62,20 +62,5 @@ class SearchForm
   getValue: ->
     return @input.value
 
-  # inputHandler: (e) ->
-  #   chrome.storage.sync.get({language: '1', dictionary: 'multitran'}, (items) =>
-  #     TRANSLATE_ENGINES[items.dictionary].request
-  #       value: @input.value
-  #       success: @successHandler.bind(@)
-  #       error: params.error
-  #   )
-    # value = @input.value
-    # tran.request(
-    #   url: url,
-    #   success: params.success,
-    #   error: params.error
-    # )
-
-
 
 module.exports = SearchForm

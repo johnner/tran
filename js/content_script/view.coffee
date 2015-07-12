@@ -51,15 +51,23 @@ class Main
     setTimeout handler, 10
     return true
 
-  attachSimilarWordsHandlers: (fragment) ->
+  attachSimilarWordsHandlers: (fragment) =>
     for link in fragment.querySelectorAll 'a'
-      do (word = link.textContent) =>
+      # sanitize
+      link.removeAttribute('onclick');
+      link.onclick = null;
+      clone = link.cloneNode(true);
+      link.parentNode.replaceChild(clone, link);
+      do (word = clone.textContent) =>
         # Prevent link from being followed.
-        link.addEventListener 'click', (e) -> e.preventDefault()
+        clone.addEventListener 'click', (e) ->
+          e.stopPropagation();
+          e.preventDefault();
         # Don't let @mouseUpEvent fire again with the wrong word.
-        link.addEventListener 'mouseup', (e) =>
+        self = this
+        clone.addEventListener 'mouseup', (e) =>
           e.stopPropagation()
-          @requestSearch word
+          self.requestSearch word
     return true
 
 module.exports = Main
