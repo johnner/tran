@@ -1,3 +1,6 @@
+1.2.1.1:
+- fix turkish
+
 1.2.1:
 - fix accidental tooltip at Google Sheets
 
