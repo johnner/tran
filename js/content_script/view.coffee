@@ -42,7 +42,7 @@ class Main
     # fix for accidental tooltip appearance when clicked on text
     handler = =>
       @saveMousePosition(e)
-      selection = window.getSelection().toString()
+      selection = @getSelection()
       if selection.length > 0
         chrome.storage.sync.get(fast: true, (items) =>
           if items.fast
@@ -50,6 +50,14 @@ class Main
         )
     setTimeout handler, 10
     return true
+
+  getSelection: ->
+      range = window.getSelection().getRangeAt(0)
+      content = range.cloneContents()
+      span = document.createElement('SPAN')
+      span.appendChild(content);
+      selection = span.textContent.trim()
+      return selection
 
   attachSimilarWordsHandlers: (fragment) =>
     for link in fragment.querySelectorAll 'a'

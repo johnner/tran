@@ -1,3 +1,6 @@
+1.2.1:
+- fix accidental tooltip at Google Sheets
+
 1.2.0:
 - allow ctrl+c in tooltip
 - fix suggested translation links in tooltip
