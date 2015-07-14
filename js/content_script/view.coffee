@@ -52,10 +52,9 @@ class Main
     return true
 
   getSelection: ->
-      range = window.getSelection().getRangeAt(0)
-      content = range.cloneContents()
+      txt = window.getSelection().toString();
       span = document.createElement('SPAN')
-      span.appendChild(content);
+      span.innerHTML = txt;
       selection = span.textContent.trim()
       return selection
 
