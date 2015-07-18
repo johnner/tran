@@ -59,10 +59,13 @@ module.exports = function (grunt) {
           'build/js/content_script.js': ['js/content_script/content.coffee'],
           'build/js/popup.js': ['js/popup/popup.coffee'],
           'build/js/tran.js': ['js/tran.coffee'],
-          'build/js/turkishdictionary.js': ['js/turkishdictionary.js'],
-          'build/js/background.js': 'js/background.coffee'
+          'build/js/turkishdictionary.js': 'js/turkishdictionary.js',
+          'build/js/background.js': 'js/background.coffee',
+          'build/js/options.js': 'js/options/options.js',
+          'build/js/utils.js': 'js/utils.js'
         },
         options: {
+          sourceMap: true,
           transform: ['coffeeify'],
           debug: true,
           bundleOptions: {debug: true}
@@ -76,7 +79,9 @@ module.exports = function (grunt) {
         },
         dist: {
             files: {
-                'js/turkishdictionary.js': 'js/es6/turkishdictionary.js'
+              'js/turkishdictionary.js': 'js/es6/turkishdictionary.js',
+              'js/options/options.js': 'js/es6/options.js',
+              'js/utils.js': 'js/es6/utils.js'
             }
         }
     }
