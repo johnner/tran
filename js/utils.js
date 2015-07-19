@@ -15,6 +15,7 @@ var Utils = (function () {
         return new Promise(function (resolve, reject) {
           // Do the usual XHR stuff
           var req = new XMLHttpRequest();
+          req.withCredentials = true;
           req.open("GET", url);
 
           req.onload = function () {

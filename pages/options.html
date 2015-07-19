@@ -31,23 +31,18 @@
     <p>
        <span>Memorize option (Experimental):</span>
         <input id="memorize" type="checkbox" checked/><br />
-        <b class="description">
+        <div class="description">
           "Memorize" button becomes visible at translation dialog if this option enabled.
             <br>
             Click on the "Memorize" button saves the word and its translation into your personal dictionary at
             <a href="http://tran-service.com/">tran-service.com</a>
-        </b>
-        <b class="description need-sign hidden">
+        </div>
+        <div id="need-sign" class="description hidden">
           <p>You should <a href="http://tran-service.com/signup/" title="create an account">sign up</a>
             at tran-service.com for proper use of this feature.</p>
-          <p>If you already have an account please sign in:</p>
-          <p>
-            <span>Login:</span><input type="text" name="login"/>
-            <span>Password:</span><input type="password" name="password" />
-            <button id="login">Sign in</button>
-          </p>
-        </b>
-        <b class="description signed hidden"></b>
+          <p>If you already have an account please <a href="http://tran-service.com/login/">sign in</a></p>
+        </div>
+        <div id="signed" class="description hidden">Authorization: ok</div>
     </p>
     <div id="status"></div>
     <button id="save">Save</button>

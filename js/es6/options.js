@@ -1,7 +1,11 @@
 var _ = require('../utils.js');
+var SERVICE_URL = 'http://tran-service.com/user/';
 
 class Options {
-  constructor () {}
+  constructor () {
+    this.signed = document.getElementById('signed');
+    this.needSign = document.getElementById('need-sign');
+  }
 
   /** Restores select box and checkbox state using
    * the preferences stored in chrome.storage.*/
@@ -22,11 +26,6 @@ class Options {
       this.storage('set', this.options, this.onSave)
     }
   }
-
-  check_login () {
-    console.log('check login')
-  }
-
 
   onSave () {
     // let user know that options are saved.
@@ -53,23 +52,33 @@ class Options {
     }
   }
 
+  /** toggle memorize option */
   memorize () {
     if (this.options.memorize) {
-      _.get('http://tran-service.com').then(function (response) {
-        console.log('success');
-      },
-      function (response) {
-        console.log('error');
-      });
-      //if (this.check_login()) {
-      //  need_sign
-      //} else {
-      //
-      //}
+      this.check_login();
+    } else {
+      this.signed.classList.add('hidden');
+      this.needSign.classList.add('hidden');
     }
   }
 
-  /** getter */
+  check_login () {
+    _.get(SERVICE_URL).then(
+      res => this.memok(res),
+      res => this.memfail(res)
+    );
+  }
+
+  /** memorization is activated */
+  memok (response) {
+    this.authorized = true;
+  }
+
+  /** memorization failed */
+  memfail (response) {
+      this.authorized = false;
+  }
+
   get options () {
     return {
         language: document.getElementById('language').value,
@@ -78,16 +87,26 @@ class Options {
     }
   }
 
-  /** setter */
   set options (values={}) {
       document.getElementById('language').value = values.language;
       document.getElementById('fast').checked = values.fast;
       document.getElementById('memorize').checked = values.memorize;
   }
+
+  set authorized (state=false) {
+    if (state) {
+      this.signed.classList.remove('hidden');
+      this.needSign.classList.add('hidden');
+    } else {
+      this.needSign.classList.remove('hidden');
+      this.signed.classList.add('hidden');
+    }
+  }
+
 }
 
 var options = new Options();
 
-document.addEventListener('DOMContentLoaded', evt => options.restore(evt));
-document.getElementById('save').addEventListener('click', evt => options.save());
-document.getElementById('memorize').addEventListener('click', evt=>options.memorize())
+document.addEventListener('DOMContentLoaded', evt=> options.restore());
+document.getElementById('save').addEventListener('click', evt=> options.save());
+document.getElementById('memorize').addEventListener('click', evt=> options.memorize());

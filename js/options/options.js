@@ -6,9 +6,13 @@ var _prototypeProperties = function (child, staticProps, instanceProps) {
 };
 
 var _ = require("../utils.js");
+var SERVICE_URL = "http://tran-service.com/user/";
 
 var Options = (function () {
-  function Options() {}
+  function Options() {
+    this.signed = document.getElementById("signed");
+    this.needSign = document.getElementById("need-sign");
+  }
 
   _prototypeProperties(Options, null, {
     restore: {
@@ -37,14 +41,6 @@ var Options = (function () {
         if (!params.restored) {
           this.storage("set", this.options, this.onSave);
         }
-      },
-      writable: true,
-      enumerable: true,
-      configurable: true
-    },
-    check_login: {
-      value: function checkLogin() {
-        console.log("check login");
       },
       writable: true,
       enumerable: true,
@@ -96,27 +92,54 @@ var Options = (function () {
       configurable: true
     },
     memorize: {
+
+      /** toggle memorize option */
       value: function memorize() {
         if (this.options.memorize) {
-          _.get("http://tran-service.com").then(function (response) {
-            console.log("success");
-          }, function (response) {
-            console.log("error");
-          });
-          //if (this.check_login()) {
-          //  need_sign
-          //} else {
-          //
-          //}
+          this.check_login();
+        } else {
+          this.signed.classList.add("hidden");
+          this.needSign.classList.add("hidden");
         }
       },
       writable: true,
       enumerable: true,
       configurable: true
     },
-    options: {
+    check_login: {
+      value: function checkLogin() {
+        var _this = this;
+        _.get(SERVICE_URL).then(function (res) {
+          return _this.memok(res);
+        }, function (res) {
+          return _this.memfail(res);
+        });
+      },
+      writable: true,
+      enumerable: true,
+      configurable: true
+    },
+    memok: {
 
-      /** getter */
+      /** memorization is activated */
+      value: function memok(response) {
+        this.authorized = true;
+      },
+      writable: true,
+      enumerable: true,
+      configurable: true
+    },
+    memfail: {
+
+      /** memorization failed */
+      value: function memfail(response) {
+        this.authorized = false;
+      },
+      writable: true,
+      enumerable: true,
+      configurable: true
+    },
+    options: {
       get: function () {
         return {
           language: document.getElementById("language").value,
@@ -124,14 +147,25 @@ var Options = (function () {
           memorize: document.getElementById("memorize").checked
         };
       },
-
-
-      /** setter */
       set: function () {
         var values = arguments[0] === undefined ? {} : arguments[0];
         document.getElementById("language").value = values.language;
         document.getElementById("fast").checked = values.fast;
         document.getElementById("memorize").checked = values.memorize;
+      },
+      enumerable: true,
+      configurable: true
+    },
+    authorized: {
+      set: function () {
+        var state = arguments[0] === undefined ? false : arguments[0];
+        if (state) {
+          this.signed.classList.remove("hidden");
+          this.needSign.classList.add("hidden");
+        } else {
+          this.needSign.classList.remove("hidden");
+          this.signed.classList.add("hidden");
+        }
       },
       enumerable: true,
       configurable: true
@@ -144,7 +178,7 @@ var Options = (function () {
 var options = new Options();
 
 document.addEventListener("DOMContentLoaded", function (evt) {
-  return options.restore(evt);
+  return options.restore();
 });
 document.getElementById("save").addEventListener("click", function (evt) {
   return options.save();
