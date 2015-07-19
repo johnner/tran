@@ -9,7 +9,7 @@ turkishDictionary = require('./turkishdictionary.js')   # turkishdictionary.net
 #generates a context menu
 chrome.contextMenus.create(
   title:  'Multitran: "%s"'
-  contexts: ["page", "frame", "editable", "image", "video", "audio", "link", "selection"]
+  contexts: ["editable", "selection"]
   onclick:  (data) ->
     data.silent = false
     tran.click(data)
