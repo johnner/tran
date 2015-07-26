@@ -6,7 +6,8 @@ var _prototypeProperties = function (child, staticProps, instanceProps) {
 };
 
 var _ = require("../utils.js");
-var SERVICE_URL = "http://tran-service.com/user/";
+//var SERVICE_URL = 'http://tran-service.com/user/';
+var SERVICE_URL = "http://localhost:5000/api/user/";
 
 var Options = (function () {
   function Options() {
@@ -95,8 +96,13 @@ var Options = (function () {
 
       /** toggle memorize option */
       value: function memorize() {
+        var _this = this;
         if (this.options.memorize) {
-          this.check_login();
+          this.check_auth().then(function (res) {
+            return _this.authorized = true;
+          }, function (res) {
+            return _this.authorized = false;
+          });
         } else {
           this.signed.classList.add("hidden");
           this.needSign.classList.add("hidden");
@@ -108,11 +114,11 @@ var Options = (function () {
     },
     check_login: {
       value: function checkLogin() {
-        var _this = this;
+        var _this2 = this;
         _.get(SERVICE_URL).then(function (res) {
-          return _this.memok(res);
+          return _this2.memok(res);
         }, function (res) {
-          return _this.memfail(res);
+          return _this2.memfail(res);
         });
       },
       writable: true,
@@ -169,6 +175,80 @@ var Options = (function () {
       },
       enumerable: true,
       configurable: true
+    },
+    check_auth: {
+      value: function checkAuth() {
+        return new Promise((function (resolve, reject) {
+          this.storage("get", "auth_token", (function (data) {
+            if (!data.auth_token) {
+              reject();
+            } else {
+              _.get(SERVICE_URL, { headers: { "X-AUTH-TOKEN": data.auth_token } }).then(function (res) {
+                return resolve(res);
+              }, function (res) {
+                return reject(res);
+              });
+            }
+          }).bind(this));
+        }).bind(this));
+      },
+      writable: true,
+      enumerable: true,
+      configurable: true
+    },
+    signin: {
+      value: function signin() {
+        var _this3 = this;
+        var cred = {
+          login: document.getElementById("login").value,
+          password: document.getElementById("password").value
+        };
+
+        _.post(SERVICE_URL, { data: cred }).then(function (res) {
+          return _this3.authSuccess(res);
+        }, function (res) {
+          return _this3.authFail(res);
+        });
+      },
+      writable: true,
+      enumerable: true,
+      configurable: true
+    },
+    authSuccess: {
+      value: function authSuccess(data) {
+        this.storage("set", { auth_token: data }, function (data) {
+          return function (data) {};
+        });
+        this.authorized = true;
+      },
+      writable: true,
+      enumerable: true,
+      configurable: true
+    },
+    authFail: {
+      value: function authFail(data) {
+        console.log("fail auth", data);
+        var status = document.querySelector(".error-login");
+        status.textContent = "Bad login or password.";
+        var hideStatus = function () {
+          status.textContent = "";
+        };
+        setTimeout(hideStatus, 2750);
+      },
+      writable: true,
+      enumerable: true,
+      configurable: true
+    },
+    revoke: {
+      value: function revoke(event) {
+        event.preventDefault();
+        this.storage("set", { auth_token: null }, (function (data) {
+          this.authorized = false;
+        }).bind(this));
+      },
+      writable: true,
+      enumerable: true,
+      configurable: true
     }
   });
 
@@ -185,4 +265,10 @@ document.getElementById("save").addEventListener("click", function (evt) {
 });
 document.getElementById("memorize").addEventListener("click", function (evt) {
   return options.memorize();
+});
+document.getElementById("signinBtn").addEventListener("click", function (evt) {
+  return options.signin();
+});
+document.querySelector("#revoke").addEventListener("click", function (evt) {
+  return options.revoke(evt);
 });

@@ -40,9 +40,17 @@
         <div id="need-sign" class="description hidden">
           <p>You should <a href="http://tran-service.com/signup/" title="create an account">sign up</a>
             at tran-service.com for proper use of this feature.</p>
-          <p>If you already have an account please <a href="http://tran-service.com/login/">sign in</a></p>
+          <p>If you already have an account please sign in:
+            <br>
+            <span>email:</span>
+            <input type="text" name="login" id="login" />
+            <span>password</span>
+            <input type="password" name="password" id="password" />
+            <input type="button" value="Sign in" id="signinBtn">
+            <div class="error-login"></div>
+          </p>
         </div>
-        <div id="signed" class="description hidden">Authorization: ok</div>
+        <div id="signed" class="description hidden">Authorization: ok <a id="revoke" title="revoke authorization" href="">(revoke)</a></div>
     </p>
     <div id="status"></div>
     <button id="save">Save</button>

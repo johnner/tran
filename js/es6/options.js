@@ -1,5 +1,6 @@
 var _ = require('../utils.js');
-var SERVICE_URL = 'http://tran-service.com/user/';
+//var SERVICE_URL = 'http://tran-service.com/user/';
+var SERVICE_URL = 'http://localhost:5000/api/user/';
 
 class Options {
   constructor () {
@@ -55,7 +56,10 @@ class Options {
   /** toggle memorize option */
   memorize () {
     if (this.options.memorize) {
-      this.check_login();
+      this.check_auth().then(
+        res => this.authorized = true,
+        res => this.authorized = false
+    )
     } else {
       this.signed.classList.add('hidden');
       this.needSign.classList.add('hidden');
@@ -103,6 +107,52 @@ class Options {
     }
   }
 
+  check_auth () {
+    return new Promise(function(resolve, reject) {
+      this.storage('get', 'auth_token', function (data) {
+        if (!data.auth_token) {
+          reject();
+        } else {
+          _.get(SERVICE_URL, {headers:{'X-AUTH-TOKEN': data.auth_token}}).then(
+            res => resolve(res),
+            res => reject(res)
+          )
+        }
+      }.bind(this));
+    }.bind(this));
+  }
+
+  signin () {
+    var cred = {
+      login: document.getElementById('login').value,
+      password: document.getElementById('password').value
+    }
+
+    _.post(SERVICE_URL, {data:cred}).then(
+      res => this.authSuccess(res),
+      res => this.authFail(res)
+    )
+  }
+
+  authSuccess(data) {
+    this.storage('set', {'auth_token': data}, data => function (data) {});
+    this.authorized = true;
+  }
+
+  authFail (data) {
+    console.log('fail auth', data);
+    var status = document.querySelector('.error-login')
+    status.textContent = 'Bad login or password.'
+    let hideStatus = function () { status.textContent = ''}
+    setTimeout(hideStatus, 2750);
+  }
+
+  revoke (event) {
+    event.preventDefault();
+    this.storage('set', {'auth_token': null}, function (data) {
+      this.authorized = false;
+    }.bind(this));
+  }
 }
 
 var options = new Options();
@@ -110,3 +160,5 @@ var options = new Options();
 document.addEventListener('DOMContentLoaded', evt=> options.restore());
 document.getElementById('save').addEventListener('click', evt=> options.save());
 document.getElementById('memorize').addEventListener('click', evt=> options.memorize());
+document.getElementById('signinBtn').addEventListener('click', evt=> options.signin());
+document.querySelector('#revoke').addEventListener('click', evt=> options.revoke(evt))

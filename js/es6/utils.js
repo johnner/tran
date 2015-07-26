@@ -1,13 +1,15 @@
 class Utils {
   constructor () {}
-  get(url) {
+  request (type, url, opts) {
     // Return a new promise.
     return new Promise(function(resolve, reject) {
       // Do the usual XHR stuff
       var req = new XMLHttpRequest();
       req.withCredentials = true;
-      req.open('GET', url);
-
+      req.open(type, url);
+      if (type == 'POST') {
+        req.setRequestHeader("Content-Type", "application/json");
+      }
       req.onload = function() {
         // This is called even on 404 etc
         // so check the status
@@ -27,9 +29,22 @@ class Utils {
         reject(Error("Network Error"));
       };
 
+      // Set headers
+      if (opts.headers) {
+        for (let key of Object.keys(opts.headers)) {
+          req.setRequestHeader(key, opts.headers[key]);
+        }
+      }
       // Make the request
-      req.send();
+      req.send(JSON.stringify(opts.data));
     });
+  }
+  get(url, opts={data:''}) {
+    return this.request('GET', url, opts);
+  }
+
+  post(url, opts={data:''}) {
+    return this.request('POST', url, opts);
   }
 }
 module.exports = new Utils()
