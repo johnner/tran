@@ -5,7 +5,7 @@ var _prototypeProperties = function (child, staticProps, instanceProps) {
   if (instanceProps) Object.defineProperties(child.prototype, instanceProps);
 };
 
-var _ = require("../../utils.js");
+var _ = require("../utils.js");
 //var SERVICE_URL = 'http://tran-service.com/user/';
 var SERVICE_URL = "http://localhost:5000/api/user/";
 

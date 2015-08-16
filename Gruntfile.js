@@ -55,14 +55,14 @@ module.exports = function (grunt) {
     browserify: {
       dist: {
         files: {
-          'build/js/char-codes.js': 'js/content_script/char-codes.js',
-          'build/js/content_script.js': ['js/content_script/content.coffee'],
-          'build/js/popup.js': ['js/popup/popup.coffee'],
-          'build/js/tran.js': ['js/tran.coffee'],
-          'build/js/turkishdictionary.js': 'js/turkishdictionary.js',
-          'build/js/background.js': 'js/background.coffee',
+          'build/js/char-codes.js': 'js/es5/content_script/char-codes.js',
+          'build/js/content_script.js': 'js/es5/content_script/content.coffee',
+          'build/js/popup.js': 'js/es5/popup/popup.coffee',
+          'build/js/tran.js': 'js/es5/tran.coffee',
+          'build/js/turkishdictionary.js': 'js/es5/turkishdictionary.js',
+          'build/js/background.js': 'js/es5/background.coffee',
           'build/js/options.js': 'js/es5/options/options.js',
-          'build/js/utils.js': 'js/utils.js'
+          'build/js/utils.js': 'js/es5/utils.js'
         },
         options: {
           sourceMap: true,
@@ -79,9 +79,11 @@ module.exports = function (grunt) {
         },
         dist: {
             files: {
-              'js/turkishdictionary.js': 'js/es6/turkishdictionary.js',
-              'js/es5/options/options.js': 'js/es6/options.js',
-              'js/utils.js': 'js/es6/utils.js'
+              'js/es5/char-codes.js': 'js/es6/char-codes.js',
+              'js/es5/char-codes-turk.js': 'js/es6/char-codes-turk.js',
+              'js/es5/turkishdictionary.js': 'js/es6/turkishdictionary.js',
+              'js/es5/options/options.js': 'js/es6/options/options.js',
+              'js/es5/utils.js': 'js/es6/utils.js'
             }
         }
     }
