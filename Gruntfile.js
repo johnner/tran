@@ -56,7 +56,7 @@ module.exports = function (grunt) {
       dist: {
         files: {
           'build/js/char-codes.js': 'js/es5/content_script/char-codes.js',
-          'build/js/content_script.js': 'js/es5/content_script/content.coffee',
+          'build/js/content_script.js': 'js/es5/content_script/content.js',
           'build/js/popup.js': 'js/es5/popup/popup.coffee',
           'build/js/tran.js': 'js/es5/tran.coffee',
           'build/js/turkishdictionary.js': 'js/es5/turkishdictionary.js',
@@ -73,6 +73,7 @@ module.exports = function (grunt) {
       }
     },
 
+    // SOURCE CODE
     '6to5': {
         options: {
             sourceMap: true
@@ -83,7 +84,12 @@ module.exports = function (grunt) {
               'js/es5/char-codes-turk.js': 'js/es6/char-codes-turk.js',
               'js/es5/turkishdictionary.js': 'js/es6/turkishdictionary.js',
               'js/es5/options/options.js': 'js/es6/options/options.js',
-              'js/es5/utils.js': 'js/es6/utils.js'
+              'js/es5/utils.js': 'js/es6/utils.js',
+
+              'js/es5/content_script/content.js': 'js/es6/content_script/content.js',
+              'js/es5/content_script/tooltip.js': 'js/es6/content_script/tooltip.js',
+              'js/es5/content_script/view.js': 'js/es6/content_script/view.js',
+
             }
         }
     }
