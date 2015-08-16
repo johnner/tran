@@ -1,6 +1,9 @@
+@import 'materialize.less';
+
 @font-helvetica: "Helvetica Neue",Helvetica,Arial,sans-serif;
 
 .__mtt_translate_dialog__ {
+
     position: absolute!important;
     background-color: #ffffff !important;
     z-index: 999999;
@@ -16,6 +19,9 @@
     color: #333!important;
     box-sizing: border-box;
 
+    .word-add {
+      display: none;
+    }
     .___mtt_translate_table {
         box-sizing: border-box;
         border-spacing: 0px;
@@ -70,4 +76,16 @@
       height: 16px!important;
     }
 
+}
+
+.__mtt_translate_dialog__.memorize {
+  .word-add {
+    display: block;
+    position: absolute;
+    right: 3px;
+    top: 3px;
+    .material-icons {
+      line-height: 32px;
+    }
+  }
 }

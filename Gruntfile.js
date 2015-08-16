@@ -35,6 +35,7 @@ module.exports = function (grunt) {
           cleancss: true
         },
         files: {
+          'build/css/materialize.css': 'less/materialize.less',
           "build/css/bootstrap.css": "less/bootstrap.less",
           "build/css/dialog.css": "less/dialog.less",
           "build/css/options.css": "less/options.less",

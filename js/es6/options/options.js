@@ -1,6 +1,5 @@
 var _ = require('../utils.js');
-//var SERVICE_URL = 'http://tran-service.com/user/';
-var SERVICE_URL = 'http://localhost:5000/api/user/';
+var SERVICE_URL = 'http://tran-service.com/api/user/';
 
 class Options {
   constructor () {
@@ -25,6 +24,8 @@ class Options {
     // save options if only it is not restored onload
     if (!params.restored) {
       this.storage('set', this.options, this.onSave)
+    } else {
+      this.memorize();
     }
   }
 
@@ -33,6 +34,7 @@ class Options {
     var status = document.getElementById('status')
     status.textContent = 'Options saved.'
     let hideStatus = function () { status.textContent = ''}
+    this.memorize();
     setTimeout(hideStatus, 750);
   }
 
@@ -40,7 +42,6 @@ class Options {
   onRestore (items) {
       // set checkboxes
       this.options = items;
-      this.memorize()
       this.save({restored:true})
   }
 
@@ -62,6 +63,7 @@ class Options {
         res => this.authorized = false
     )
     } else {
+      this.revoke();
       this.signed.classList.add('hidden');
       this.needSign.classList.add('hidden');
     }
@@ -92,19 +94,21 @@ class Options {
     }
   }
 
-  set options (values={}) {
+  set options (values) {
       document.getElementById('language').value = values.language;
       document.getElementById('fast').checked = values.fast;
       document.getElementById('memorize').checked = values.memorize;
   }
 
-  set authorized (state=false) {
-    if (state) {
-      this.signed.classList.remove('hidden');
-      this.needSign.classList.add('hidden');
-    } else {
-      this.needSign.classList.remove('hidden');
-      this.signed.classList.add('hidden');
+  set authorized (state) {
+    if (this.options.memorize) {
+      if (state) {
+        this.signed.classList.remove('hidden');
+        this.needSign.classList.add('hidden');
+      } else {
+        this.needSign.classList.remove('hidden');
+        this.signed.classList.add('hidden');
+      }
     }
   }
 
@@ -136,7 +140,7 @@ class Options {
   }
 
   authSuccess(data) {
-    this.storage('set', {'auth_token': data}, data => function (data) {});
+    this.storage('set', {'auth_token': data}, data => this.save());
     this.authorized = true;
   }
 
@@ -149,17 +153,18 @@ class Options {
   }
 
   revoke (event) {
-    event.preventDefault();
+    event && event.preventDefault();
     this.storage('set', {'auth_token': null}, function (data) {
       this.authorized = false;
     }.bind(this));
   }
 }
 
-var options = new Options();
-
-document.addEventListener('DOMContentLoaded', evt=> options.restore());
-document.getElementById('save').addEventListener('click', evt=> options.save());
-document.getElementById('memorize').addEventListener('click', evt=> options.memorize());
-document.getElementById('signinBtn').addEventListener('click', evt=> options.signin());
-document.querySelector('#revoke').addEventListener( 'click', evt=> options.revoke(evt))
+document.addEventListener('DOMContentLoaded', function(event) {
+  var options = new Options();
+  options.restore();
+  document.getElementById('save').addEventListener('click', evt=> options.save());
+  document.getElementById('memorize').addEventListener('click', evt=> options.memorize());
+  document.getElementById('signinBtn').addEventListener('click', evt=> options.signin());
+  document.querySelector('#revoke').addEventListener( 'click', evt=> options.revoke(evt))
+});

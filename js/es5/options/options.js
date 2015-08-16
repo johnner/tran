@@ -5,8 +5,7 @@ var _createClass = (function () { function defineProperties(target, props) { for
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
 var _ = require('../utils.js');
-//var SERVICE_URL = 'http://tran-service.com/user/';
-var SERVICE_URL = 'http://localhost:5000/api/user/';
+var SERVICE_URL = 'http://tran-service.com/api/user/';
 
 var Options = (function () {
   function Options() {
@@ -40,6 +39,8 @@ var Options = (function () {
       // save options if only it is not restored onload
       if (!params.restored) {
         this.storage('set', this.options, this.onSave);
+      } else {
+        this.memorize();
       }
     }
   }, {
@@ -51,6 +52,7 @@ var Options = (function () {
       var hideStatus = function hideStatus() {
         status.textContent = '';
       };
+      this.memorize();
       setTimeout(hideStatus, 750);
     }
 
@@ -60,7 +62,6 @@ var Options = (function () {
     value: function onRestore(items) {
       // set checkboxes
       this.options = items;
-      this.memorize();
       this.save({ restored: true });
     }
 
@@ -93,6 +94,7 @@ var Options = (function () {
           return _this.authorized = false;
         });
       } else {
+        this.revoke();
         this.signed.classList.add('hidden');
         this.needSign.classList.add('hidden');
       }
@@ -158,8 +160,10 @@ var Options = (function () {
   }, {
     key: 'authSuccess',
     value: function authSuccess(data) {
+      var _this4 = this;
+
       this.storage('set', { 'auth_token': data }, function (data) {
-        return function (data) {};
+        return _this4.save();
       });
       this.authorized = true;
     }
@@ -177,7 +181,7 @@ var Options = (function () {
   }, {
     key: 'revoke',
     value: function revoke(event) {
-      event.preventDefault();
+      event && event.preventDefault();
       this.storage('set', { 'auth_token': null }, (function (data) {
         this.authorized = false;
       }).bind(this));
@@ -191,24 +195,22 @@ var Options = (function () {
         memorize: document.getElementById('memorize').checked
       };
     },
-    set: function set() {
-      var values = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-
+    set: function set(values) {
       document.getElementById('language').value = values.language;
       document.getElementById('fast').checked = values.fast;
       document.getElementById('memorize').checked = values.memorize;
     }
   }, {
     key: 'authorized',
-    set: function set() {
-      var state = arguments.length <= 0 || arguments[0] === undefined ? false : arguments[0];
-
-      if (state) {
-        this.signed.classList.remove('hidden');
-        this.needSign.classList.add('hidden');
-      } else {
-        this.needSign.classList.remove('hidden');
-        this.signed.classList.add('hidden');
+    set: function set(state) {
+      if (this.options.memorize) {
+        if (state) {
+          this.signed.classList.remove('hidden');
+          this.needSign.classList.add('hidden');
+        } else {
+          this.needSign.classList.remove('hidden');
+          this.signed.classList.add('hidden');
+        }
       }
     }
   }]);
@@ -216,21 +218,20 @@ var Options = (function () {
   return Options;
 })();
 
-var options = new Options();
-
-document.addEventListener('DOMContentLoaded', function (evt) {
-  return options.restore();
-});
-document.getElementById('save').addEventListener('click', function (evt) {
-  return options.save();
-});
-document.getElementById('memorize').addEventListener('click', function (evt) {
-  return options.memorize();
-});
-document.getElementById('signinBtn').addEventListener('click', function (evt) {
-  return options.signin();
-});
-document.querySelector('#revoke').addEventListener('click', function (evt) {
-  return options.revoke(evt);
+document.addEventListener('DOMContentLoaded', function (event) {
+  var options = new Options();
+  options.restore();
+  document.getElementById('save').addEventListener('click', function (evt) {
+    return options.save();
+  });
+  document.getElementById('memorize').addEventListener('click', function (evt) {
+    return options.memorize();
+  });
+  document.getElementById('signinBtn').addEventListener('click', function (evt) {
+    return options.signin();
+  });
+  document.querySelector('#revoke').addEventListener('click', function (evt) {
+    return options.revoke(evt);
+  });
 });
 //# sourceMappingURL=options.js.map
