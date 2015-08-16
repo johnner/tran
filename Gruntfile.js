@@ -61,7 +61,7 @@ module.exports = function (grunt) {
           'build/js/tran.js': ['js/tran.coffee'],
           'build/js/turkishdictionary.js': 'js/turkishdictionary.js',
           'build/js/background.js': 'js/background.coffee',
-          'build/js/options.js': 'js/options/options.js',
+          'build/js/options.js': 'js/es5/options/options.js',
           'build/js/utils.js': 'js/utils.js'
         },
         options: {
@@ -80,7 +80,7 @@ module.exports = function (grunt) {
         dist: {
             files: {
               'js/turkishdictionary.js': 'js/es6/turkishdictionary.js',
-              'js/options/options.js': 'js/es6/options.js',
+              'js/es5/options/options.js': 'js/es6/options.js',
               'js/utils.js': 'js/es6/utils.js'
             }
         }

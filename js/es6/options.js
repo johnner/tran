@@ -1,4 +1,4 @@
-var _ = require('../utils.js');
+var _ = require('../../utils.js');
 //var SERVICE_URL = 'http://tran-service.com/user/';
 var SERVICE_URL = 'http://localhost:5000/api/user/';
 
@@ -40,6 +40,7 @@ class Options {
   onRestore (items) {
       // set checkboxes
       this.options = items;
+      this.memorize()
       this.save({restored:true})
   }
 
@@ -161,4 +162,4 @@ document.addEventListener('DOMContentLoaded', evt=> options.restore());
 document.getElementById('save').addEventListener('click', evt=> options.save());
 document.getElementById('memorize').addEventListener('click', evt=> options.memorize());
 document.getElementById('signinBtn').addEventListener('click', evt=> options.signin());
-document.querySelector('#revoke').addEventListener('click', evt=> options.revoke(evt))
+document.querySelector('#revoke').addEventListener( 'click', evt=> options.revoke(evt))
