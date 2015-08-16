@@ -12,7 +12,7 @@ class Tooltip {
 
   createEl () {
     this.el = document.createElement('div');
-    self = this;
+    var self = this;
     chrome.storage.sync.get({ memorize: false}, function (items) {
       var tclass = TOOLTIP_CLASS;
       if (items.memorize) {
@@ -38,6 +38,7 @@ class Tooltip {
     document.addEventListener('keydown', e => this.keydown(e))
     document.addEventListener('keyup', e => this.keyup(e))
   }
+
   render (data, transform = null) {
     if (!this.el) {
       this.createEl();

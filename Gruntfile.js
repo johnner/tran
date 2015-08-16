@@ -74,12 +74,15 @@ module.exports = function (grunt) {
     },
 
     // SOURCE CODE
-    '6to5': {
+    'babel': {
         options: {
-            sourceMap: true
+          experimental: true,
+          sourceMap: true
+          //modules: "amd"
         },
         dist: {
             files: {
+              'js/es5/polyfills/Array.from.js': 'js/es6/polyfills/Array.from.js',
               'js/es5/char-codes.js': 'js/es6/char-codes.js',
               'js/es5/char-codes-turk.js': 'js/es6/char-codes-turk.js',
               'js/es5/turkishdictionary.js': 'js/es6/turkishdictionary.js',
@@ -107,13 +110,13 @@ module.exports = function (grunt) {
   // browserify things
   grunt.loadNpmTasks('grunt-browserify')
   // ES6 -> ES5
-  grunt.loadNpmTasks('grunt-6to5');
+  grunt.loadNpmTasks('grunt-babel');
 
   require('load-grunt-tasks')(grunt); // npm install --save-dev load-grunt-tasks
 
   // Default task(s)
   grunt.registerTask('default', [
-    '6to5',
+    'babel',
     'browserify',
     //'uglify',
     'less',

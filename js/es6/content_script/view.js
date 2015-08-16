@@ -2,27 +2,32 @@ var Tooltip = require('./tooltip.js')
 var TEXTBOX_TAGS = ['input', 'textarea']
 
 class Main {
+
   constructor () {
+    this.addEventListeners();
+    this.coordinates = { mouseX: 0, mouseY: 0 };
+    this.tooltip = new Tooltip(this.coordinates);
+    chrome.runtime.onMessage.addListener(this.renderResult.bind(this));
+  }
+
+  addEventListeners () {
     window.addEventListener('mousedown', e => this.mouseDownEvent(e))
     document.addEventListener('mousedown', e => this.mouseDownEvent(e))
     window.addEventListener('mouseup', e => this.mouseUpEvent(e))
     document.addEventListener('contextmenu', e => this.saveMousePosition(e))
-    this.coordinates = { mouseX: 0, mouseY: 0 };
+  }
 
-    this.tooltip = new Tooltip(this.coordinates);
-
-    chrome.runtime.onMessage.addListener(function (msg) {
-      if (msg.action == 'open_tooltip' || msg.action == 'similar_words') {
-        //don't show annoying tooltip when typing
-        if (!msg.success && this.tooltip.clickTarget == 'textbox') {
-          return
-        } else if (msg.action == 'similar_words') {
-          this.tooltip.render(msg.data, this.attachSimilarWordsHandlers);
-        } else {
-          this.tooltip.render(msg.data)
-        }
+  renderResult (msg) {
+    if (msg.action == 'open_tooltip' || msg.action == 'similar_words') {
+      //don't show annoying tooltip when typing
+      if (!msg.success && this.tooltip.clickTarget == 'textbox') {
+        return
+      } else if (msg.action == 'similar_words') {
+        this.tooltip.render(msg.data, this.attachSimilarWordsHandlers.bind(this));
+      } else {
+        this.tooltip.render(msg.data)
       }
-    });
+    }
   }
 
   requestSearch (selection) {
@@ -49,19 +54,19 @@ class Main {
 
   mouseUpEvent (e) {
     // fix for accidental tooltip appearance when clicked on text
-    handler = function () {
-      this.saveMousePosition(e);
-      selection = this.getSelection()
-      if (selection.length > 0) {
-        chrome.storage.sync.get({fast: true}, function (items) {
-          if (items.fast) {
-            this.requestSearch(selection);
-          }
-        });
-      }
-    }
-    setTimeout(handler, 10);
+    setTimeout(this.clickHandler.bind(this, e), 10);
     return true;
+  }
+
+  clickHandler (e) {
+    this.saveMousePosition(e);
+    var selection = this.getSelection()
+    var self = this;
+    if (selection.length > 0) {
+      chrome.storage.sync.get({fast: true}, function (items) {
+        if (items.fast) { self.requestSearch(selection); }
+      });
+    }
   }
 
   getSelection (e) {
@@ -73,7 +78,7 @@ class Main {
   }
 
   attachSimilarWordsHandlers (fragment) {
-    for (let link of fragment.querySelectorAll('a')) {
+    for (let link of Array.from(fragment.querySelectorAll('a'))) {
       // sanitize
       link.removeAttribute('onclick');
       link.onclick = null;
@@ -85,7 +90,7 @@ class Main {
         e.stopPropagation(); e.preventDefault();
       });
       // Don't let @mouseUpEvent fire again with the wrong word.
-      self = this;
+      var self = this;
       clone.addEventListener('mouseup', function (e) {
         e.stopPropagation()
         self.requestSearch(word);
