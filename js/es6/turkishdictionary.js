@@ -36,7 +36,8 @@ class TurkishDictionary {
   // Replace special language characters to html codes
   getEncodedValue (value) {
     // to find spec symbols we first encode them (raw search for that symbol doesn't wor)
-    return this.makeStringTransferable(value);
+    return encodeURIComponent(value);
+    //return this.makeStringTransferable(value);
   }
 
     /** converting script from the turkishdict */
