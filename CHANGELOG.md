@@ -1,3 +1,6 @@
+1.2.10
+- fit tooltip in window
+
 1.2.9
 - fixed fast translate option
 
