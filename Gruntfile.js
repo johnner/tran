@@ -35,7 +35,6 @@ module.exports = function (grunt) {
           cleancss: true
         },
         files: {
-          "build/css/bootstrap.css": "less/bootstrap.less",
           "build/css/dialog.css": "less/dialog.less",
           "build/css/options.css": "less/options.less",
           "build/css/popup.css": "less/popup.less"
@@ -55,14 +54,17 @@ module.exports = function (grunt) {
     browserify: {
       dist: {
         files: {
-          'build/js/char-codes.js': 'js/content_script/char-codes.js',
-          'build/js/content_script.js': ['js/content_script/content.coffee'],
-          'build/js/popup.js': ['js/popup/popup.coffee'],
-          'build/js/tran.js': ['js/tran.coffee'],
-          'build/js/turkishdictionary.js': ['js/turkishdictionary.js'],
-          'build/js/background.js': 'js/background.coffee'
+          'build/js/char-codes.js': 'js/es5/content_script/char-codes.js',
+          'build/js/content_script.js': 'js/es5/content_script/content.js',
+          'build/js/popup.js': 'js/es5/popup/popup.coffee',
+          'build/js/tran.js': 'js/es5/tran.coffee',
+          'build/js/turkishdictionary.js': 'js/es5/turkishdictionary.js',
+          'build/js/background.js': 'js/es5/background.coffee',
+          'build/js/options.js': 'js/es5/options/options.js',
+          'build/js/utils.js': 'js/es5/utils.js'
         },
         options: {
+          sourceMap: true,
           transform: ['coffeeify'],
           debug: true,
           bundleOptions: {debug: true}
@@ -70,13 +72,26 @@ module.exports = function (grunt) {
       }
     },
 
-    '6to5': {
+    // SOURCE CODE
+    'babel': {
         options: {
-            sourceMap: true
+          experimental: true,
+          sourceMap: true
+          //modules: "amd"
         },
         dist: {
             files: {
-                'js/turkishdictionary.js': 'js/es6/turkishdictionary.js'
+              'js/es5/polyfills/Array.from.js': 'js/es6/polyfills/Array.from.js',
+              'js/es5/char-codes.js': 'js/es6/char-codes.js',
+              'js/es5/char-codes-turk.js': 'js/es6/char-codes-turk.js',
+              'js/es5/turkishdictionary.js': 'js/es6/turkishdictionary.js',
+              'js/es5/options/options.js': 'js/es6/options/options.js',
+              'js/es5/utils.js': 'js/es6/utils.js',
+
+              'js/es5/content_script/content.js': 'js/es6/content_script/content.js',
+              'js/es5/content_script/tooltip.js': 'js/es6/content_script/tooltip.js',
+              'js/es5/content_script/view.js': 'js/es6/content_script/view.js',
+
             }
         }
     }
@@ -94,13 +109,13 @@ module.exports = function (grunt) {
   // browserify things
   grunt.loadNpmTasks('grunt-browserify')
   // ES6 -> ES5
-  grunt.loadNpmTasks('grunt-6to5');
+  grunt.loadNpmTasks('grunt-babel');
 
   require('load-grunt-tasks')(grunt); // npm install --save-dev load-grunt-tasks
 
   // Default task(s)
   grunt.registerTask('default', [
-    '6to5',
+    'babel',
     'browserify',
     //'uglify',
     'less',
