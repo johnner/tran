@@ -28,7 +28,7 @@ Array.from || !(function () {
           i = Object(e);arguments.length > 1;
     }if (arguments.length > 1) {
       if ((a = arguments[1], !t(a))) throw new TypeError("When provided, the second argument to `Array.from` must be a function");arguments.length > 2 && (u = arguments[2]);
-    }for (var f, c, l = o(i.length), h = t(n) ? Object(new n(l)) : new Array(l), m = 0; l > m;) f = i[m], c = a ? "undefined" == typeof u ? a(f, m) : a.call(u, f, m) : f, r(h, m, { value: c, configurable: !0, enumerable: !0, writable: !0 }), ++m;return h.length = l, h;
+    }for (var f, c, l = o(i.length), h = t(n) ? Object(new n(l)) : new Array(l), m = 0; l > m;) f = i[m], c = a ? "undefined" == typeof u ? a(f, m) : a.call(u, f, m) : f, r(h, m, { value: c, configurable: !0, enumerable: !0, writable: !0 }), ++m;return (h.length = l, h);
   };r(Array, "from", { value: u, configurable: !0, writable: !0 });
 })();
 //# sourceMappingURL=Array.from.js.map
