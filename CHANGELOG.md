@@ -1,3 +1,6 @@
+1.2.9
+- fixed fast translate option
+
 1.2.1.1:
 - fix turkish
 

@@ -82,6 +82,9 @@ class Tooltip {
       this.el.style.left = this.coordinates.mouseX + 'px';
       this.el.style.top = this.coordinates.mouseY + 'px';
       document.body.appendChild(this.el);
+      if (this.coordinates.mouseX + this.el.offsetWidth > window.innerWidth) {
+        this.el.style.left = (this.coordinates.mouseX - this.el.offsetWidth) + 'px';
+      }
   }
 
   checkMemorize () {
