@@ -1,11 +1,11 @@
 <html>
-    <head>
-        <meta charset="utf-8">
-        <title>Translate options</title>
-		<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
-		<link type="text/css" rel="stylesheet" href="css/options.css" />
-    </head>
-    <body>
+<head>
+    <meta charset="utf-8">
+    <title>Translate options</title>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+    <link type="text/css" rel="stylesheet" href="css/options.css" />
+</head>
+<body>
     <p>
         <span>Choose language:</span>
         <select id="language">
@@ -28,8 +28,8 @@
         <b class="description">If enabled, then translation dialog would appear when
         you select text or double click the word</b>
     </p>
-    <p>
-       <span>Memorize option (Experimental):</span>
+    <div class="hidden">
+        <span>Memorize option (Experimental):</span>
         <input id="memorize" type="checkbox" checked/><br />
         <div class="description">
           "Memorize" button becomes visible at translation dialog if this option enabled.
@@ -51,9 +51,9 @@
           </p>
         </div>
         <div id="signed" class="description hidden">Authorization: ok <a id="revoke" title="revoke authorization" href="">(revoke)</a></div>
-    </p>
+    </div>
     <div id="status"></div>
     <button id="save">Save</button>
     <script src="js/options.js"></script>
-    </body>
+</body>
 </html>

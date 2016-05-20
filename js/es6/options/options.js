@@ -15,7 +15,7 @@ class Options {
       language: '1',
       fast: true,
       memorize: false
-    }
+    };
     this.storage('get', defaults, this.onRestore);
   }
 
@@ -31,9 +31,9 @@ class Options {
 
   onSave () {
     // let user know that options are saved.
-    var status = document.getElementById('status')
-    status.textContent = 'Options saved.'
-    let hideStatus = function () { status.textContent = ''}
+    var status = document.getElementById('status');
+    status.textContent = 'Options saved.';
+    let hideStatus = function () { status.textContent = ''};
     this.memorize();
     setTimeout(hideStatus, 750);
   }

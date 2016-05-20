@@ -8,7 +8,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 var HOST = 'http://localhost:5000';
 
-var TOOLTIP_CLASS = '__mtt_translate_dialog__';
+var TOOLTIP_CLASS_PREFIX = '__mtt_translate_dialog__';
 var ctrlDown = false;
 var ctrlKey = 17;
 var cmdKey = 91;
@@ -33,7 +33,7 @@ var Tooltip = (function () {
       this.elContainer = this.createContainer();
       this.el.appendChild(this.memorizeButton);
       this.el.appendChild(this.elContainer);
-      this.el.classList.add(TOOLTIP_CLASS);
+      this.el.classList.add(TOOLTIP_CLASS_PREFIX);
       this.addListeners();
     }
   }, {
@@ -65,7 +65,7 @@ var Tooltip = (function () {
     value: function createContainer() {
       var docFragment = document.createDocumentFragment();
       var container = document.createElement('div');
-      container.classList.add('container');
+      container.classList.add(TOOLTIP_CLASS_PREFIX + 'container');
       return container;
     }
   }, {

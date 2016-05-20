@@ -1,5 +1,5 @@
-var Tooltip = require('./tooltip.js')
-var TEXTBOX_TAGS = ['input', 'textarea']
+var Tooltip = require('./tooltip.js');
+var TEXTBOX_TAGS = ['input', 'textarea'];
 
 class Main {
 
@@ -11,17 +11,17 @@ class Main {
   }
 
   addEventListeners () {
-    window.addEventListener('mousedown', e => this.mouseDownEvent(e))
-    document.addEventListener('mousedown', e => this.mouseDownEvent(e))
-    window.addEventListener('mouseup', e => this.mouseUpEvent(e))
-    document.addEventListener('contextmenu', e => this.saveMousePosition(e))
+    window.addEventListener('mousedown', e => this.mouseDownEvent(e));
+    document.addEventListener('mousedown', e => this.mouseDownEvent(e));
+    window.addEventListener('mouseup', e => this.mouseUpEvent(e));
+    document.addEventListener('contextmenu', e => this.saveMousePosition(e));
   }
 
   renderResult (msg) {
     if (msg.action == 'open_tooltip' || msg.action == 'similar_words') {
       //don't show annoying tooltip when typing
       if (!msg.success && this.tooltip.clickTarget == 'textbox') {
-        return
+        return;
       } else if (msg.action == 'similar_words') {
         this.tooltip.render(msg.data, this.attachSimilarWordsHandlers.bind(this));
       } else {
@@ -40,8 +40,8 @@ class Main {
   }
 
   saveMousePosition (e) {
-    this.coordinates.mouseX = e.pageX + 5
-    this.coordinates.mouseY = e.pageY + 10
+    this.coordinates.mouseX = e.pageX + 5;
+    this.coordinates.mouseY = e.pageY + 10;
     this.tooltip.setCoordinates(this.coordinates);
   }
 
@@ -60,7 +60,7 @@ class Main {
 
   clickHandler (e) {
     this.saveMousePosition(e);
-    var selection = this.getSelection()
+    var selection = this.getSelection();
     var self = this;
     if (selection.length > 0) {
       chrome.storage.sync.get({fast: true}, function (items) {
@@ -71,7 +71,7 @@ class Main {
 
   getSelection (e) {
       var txt = window.getSelection().toString();
-      var span = document.createElement('SPAN')
+      var span = document.createElement('SPAN');
       span.innerHTML = txt;
       var selection = span.textContent.trim();
       return selection
@@ -92,11 +92,11 @@ class Main {
       // Don't let @mouseUpEvent fire again with the wrong word.
       var self = this;
       clone.addEventListener('mouseup', function (e) {
-        e.stopPropagation()
+        e.stopPropagation();
         self.requestSearch(word);
       })
     }
     return true;
   }
 }
-module.exports = Main
+module.exports = Main;

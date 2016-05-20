@@ -2,8 +2,8 @@
 //var HOST = 'http://tran-service.com'
 var HOST = 'http://localhost:5000';
 
-var TOOLTIP_CLASS = '__mtt_translate_dialog__'
-var ctrlDown = false
+var TOOLTIP_CLASS_PREFIX = '__mtt_translate_dialog__';
+var ctrlDown = false;
 var ctrlKey = 17;
 var cmdKey = 91;
 var cKey = 67;
@@ -23,7 +23,7 @@ class Tooltip {
     this.elContainer = this.createContainer();
     this.el.appendChild(this.memorizeButton);
     this.el.appendChild(this.elContainer);
-    this.el.classList.add(TOOLTIP_CLASS);
+    this.el.classList.add(TOOLTIP_CLASS_PREFIX);
     this.addListeners();
 
   }
@@ -39,7 +39,7 @@ class Tooltip {
     var tmpl = `<a title="${add_title}"
                    class="btn-floating waves-effect waves-light blue word-add">
                   <i class="material-icons">+</i>
-                </a>`
+                </a>`;
     t.innerHTML = tmpl;
     return t.content;
   }
@@ -53,7 +53,7 @@ class Tooltip {
   createContainer () {
     var docFragment = document.createDocumentFragment();
     var container = document.createElement('div');
-    container.classList.add('container');
+    container.classList.add(TOOLTIP_CLASS_PREFIX + 'container');
     return container;
   }
 
@@ -65,11 +65,11 @@ class Tooltip {
   }
 
   setListeners () {
-    window.addEventListener('mousedown', e => this.destroy(e))
-    document.addEventListener('mousedown', e => this.destroy(e))
-    window.addEventListener('blur', e => this.destroy(e))
-    document.addEventListener('keydown', e => this.keydown(e))
-    document.addEventListener('keyup', e => this.keyup(e))
+    window.addEventListener('mousedown', e => this.destroy(e));
+    document.addEventListener('mousedown', e => this.destroy(e));
+    window.addEventListener('blur', e => this.destroy(e));
+    document.addEventListener('keydown', e => this.keydown(e));
+    document.addEventListener('keyup', e => this.keyup(e));
   }
 
   render (data, transform = null) {
@@ -88,7 +88,7 @@ class Tooltip {
     var self = this;
     chrome.storage.sync.get({memorize: false, auth_token: null}, function (storage) {
       if (storage.memorize && storage.auth_token) {
-        self.el.classList.add('memorize')
+        self.el.classList.add('memorize');
       } else {
         self.el.classList.remove('memorize');
       }
@@ -116,7 +116,7 @@ class Tooltip {
     if (this.el && this.el.parentNode == document.body) {
       document.body.removeChild(this.el);
       this.el = null;
-      this.clickTarget = null  // reset click target
+      this.clickTarget = null;  // reset click target
     }
   }
 
@@ -125,4 +125,4 @@ class Tooltip {
   }
 }
 
-module.exports = Tooltip
+module.exports = Tooltip;
