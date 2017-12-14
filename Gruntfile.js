@@ -1,3 +1,6 @@
+const fs = require('fs');
+const jsonfile = require('jsonfile');
+
 module.exports = function (grunt) {
 
   // Project configuration.
@@ -39,15 +42,6 @@ module.exports = function (grunt) {
           "build/css/options.css": "less/options.less",
           "build/css/popup.css": "less/popup.less"
         }
-      }
-    },
-
-    // make a zipfile
-    zip: {
-      tran: {
-        cwd: 'build/',
-        src: 'build/**/*',
-        dest: 'tran.zip'
       }
     },
 
@@ -94,33 +88,56 @@ module.exports = function (grunt) {
 
             }
         }
-    }
-  })
+    },
+
+    // make a zipfile
+    zip: {
+      tran: {
+        cwd: 'build/',
+        src: 'build/**/*',
+        dest: 'tran.zip'
+      }
+    },
+
+    makezip: {target: {}},
+    upversion: {target: {}}
+  });
+
   // Compress files and folders.
-  grunt.loadNpmTasks('grunt-zip')
+  grunt.loadNpmTasks('grunt-zip');
   // Copy files and folders.
-  grunt.loadNpmTasks('grunt-contrib-copy')
+  grunt.loadNpmTasks('grunt-contrib-copy');
   // Load the plugin that provides the "uglify" task.
-  grunt.loadNpmTasks('grunt-contrib-uglify')
+  grunt.loadNpmTasks('grunt-contrib-uglify');
   // LESS compiler
-  grunt.loadNpmTasks('grunt-contrib-less')
+  grunt.loadNpmTasks('grunt-contrib-less');
   // Coffee compiler
-  grunt.loadNpmTasks('grunt-contrib-coffee')
+  grunt.loadNpmTasks('grunt-contrib-coffee');
   // browserify things
-  grunt.loadNpmTasks('grunt-browserify')
+  grunt.loadNpmTasks('grunt-browserify');
   // ES6 -> ES5
   grunt.loadNpmTasks('grunt-babel');
 
   require('load-grunt-tasks')(grunt); // npm install --save-dev load-grunt-tasks
 
   // Default task(s)
-  grunt.registerTask('default', [
-    'babel',
-    'browserify',
-    //'uglify',
-    'less',
-    'copy',
-    //'karma',  // run jasmine tests in browser
-    'zip'
-  ]);
-}
+  grunt.registerTask('default', ['babel', 'browserify',/*'uglify',*/ 'less', 'copy', 'upversion', 'makezip']);
+
+  grunt.registerMultiTask('makezip', 'Make zip file ready to upload to the CWS', function() {
+    grunt.log.writeln('Building zip file ...');
+    const manifest = JSON.parse(fs.readFileSync('manifest.json', 'utf8'));
+    let buildName = `tran-${manifest.version}.zip`;
+    grunt.config.set('zip.tran.dest', `./zip/${buildName}`);
+    grunt.task.run('zip');
+  });
+
+  grunt.registerMultiTask('upversion', 'Update versions', function () {
+    const manifest = jsonfile.readFileSync('manifest.json', 'utf8');
+    const packagejson = jsonfile.readFileSync('package.json', 'utf8');
+    packagejson.version = manifest.version;
+    console.log('version =', packagejson.version);
+    jsonfile.writeFileSync('package.json', packagejson, {spaces: 2}, function (err) {
+      console.error(err);
+    })
+  });
+};
