@@ -5,3 +5,4 @@
 node_modules
 build
 tran.zip
+js/**/*.map

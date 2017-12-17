@@ -3,7 +3,7 @@
 #load engines
 CHAR_CODES = require('./char-codes.js');
 
-tran = require('./tran.coffee')                             # multitran.ru
+tran = require('./tran.js')                             # multitran.ru
 turkishDictionary = require('./turkishdictionary.js')   # turkishdictionary.net
 
 #generates a context menu
