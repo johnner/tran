@@ -9,6 +9,7 @@
  Translation-module that makes requests to language-engine,
  parses results and sends plugin-global message with translation data
  **/
+// var iconv = require('iconv-lite');
 
 const CHAR_CODES = require('./char-codes.js');
 
@@ -71,6 +72,28 @@ class Tran {
     })
   }
 
+
+  //Parse response from translation engine
+  parse(response, silent, translate) {
+    translate = translate || null;
+    let doc = this.stripScripts(response);
+    let fragment = this.makeFragment(doc);
+    if (fragment) {
+      translate = fragment.querySelector('#translation ~ table');
+      if (translate) {
+        translate.className = this.TABLE_CLASS;
+        translate.setAttribute("cellpadding", "5");
+        this.fixImages(translate);
+        this.fixLinks(translate);
+      } else if (!silent) {
+        translate = document.createElement('div');
+        translate.className = 'failTranslate';
+        translate.innerText = "Unfortunately, could not translate";
+      }
+    }
+    return translate;
+  }
+
   setLanguage(language) {
     this.currentLanguage = language;
     this.lang = `?l1=2&l2=${language}`;
@@ -99,8 +122,9 @@ class Tran {
       }
       return xhr;
     };
-
+    xhr.overrideMimeType("text/html;charset=cp1251");
     xhr.open("GET", opts.url, true);
+
     xhr.send();
   }
 
@@ -152,27 +176,6 @@ class Tran {
     } else {
       return 'open_tooltip';
     }
-  }
-
-  //Parse response from translation engine
-  parse(response, silent, translate) {
-    translate = translate || null;
-    let doc = this.stripScripts(response);
-    let fragment = this.makeFragment(doc);
-    if (fragment) {
-      translate = fragment.querySelector('#translation ~ table');
-      if (translate) {
-        translate.className = this.TABLE_CLASS;
-        translate.setAttribute("cellpadding", "5");
-        this.fixImages(translate);
-        this.fixLinks(translate);
-      } else if (!silent) {
-        translate = document.createElement('div');
-        translate.className = 'failTranslate';
-        translate.innerText = "Unfortunately, could not translate";
-      }
-    }
-    return translate;
   }
 
   //  Strip script tags from response html

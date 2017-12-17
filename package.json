@@ -21,6 +21,7 @@
     "grunt-contrib-less": "~0.11.0",
     "grunt-contrib-uglify": "~0.2.2",
     "grunt-zip": "~0.13.0",
+    "iconv-lite": "^0.4.19",
     "jsonfile": "^4.0.0",
     "load-grunt-tasks": "^3.0.0"
   }
