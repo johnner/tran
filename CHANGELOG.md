@@ -1,47 +1,55 @@
-1.2.10
+## CHANGELOG:
+
+`1.3.1 (18.12.17)`
+- Fix images and styles
+
+`1.3.0 (17.12.17)`
+- Fixed encoding for Windows platform
+
+`1.2.10`
 - fit tooltip in window
 
-1.2.9
+`1.2.9`
 - fixed fast translate option
 
-1.2.1.1:
-- fix turkish
+`1.2.5`
+- fix turkish encoding
+- change popup size (now it's bigger)
 
-1.2.1:
+`1.2.1`
 - fix accidental tooltip at Google Sheets
 
-1.2.0:
+`1.2.0`
 - allow ctrl+c in tooltip
 - fix suggested translation links in tooltip
 - fix turkish words with multiple ü,ç etc
 
-1.1.3 minor:
+`1.1.3 minor`
 - fix char parsing (words with "Ъъ")
 
-1.1.2 minor:
+`1.1.2 minor`
 - fix some char parsing
 
-1.1 release:
+`1.1 release`
  - long-waited fix for nasty bug that stopped translation of the words with special letters (ä,ë,é,ö,ü, etc). Spanish, Italian, German – all is well supported now.
 - add turkish translation (yeap, it's not in the multitran list :P actually it's experimental yet)
 - fix stretched transcription images for some sites
 
-0.590 - fixes: 
+`0.590 - fixes` 
   - remove hidden hyphenation that prevented translation
   - fix transcription displaying problems (on some sites)
   - similar words now open in the same tooltip
 
-0.581 - fix popup focus
+`0.581 - fix popup focus`
 
-NEW FEATURE!
+- NEW FEATURE!
 Fast translation. Double click on the word or select some text to translate instantly.
 
-How to use:
-1. Double click on the word or select some text anywhere (really, that's it.)
+  *How to use*:
+  Double click on the word or select some text anywhere (really, that's it.)
 
 ---
 Standart mode:
 1. Select some text
 2. right mouse click on it
 3. choose "Multitran" in menu to translate the word
-
