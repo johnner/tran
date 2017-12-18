@@ -125,8 +125,8 @@ module.exports = function (grunt) {
 
   grunt.registerMultiTask('makezip', 'Make zip file ready to upload to the CWS', function() {
     grunt.log.writeln('Building zip file ...');
-    const manifest = JSON.parse(fs.readFileSync('manifest.json', 'utf8'));
-    let buildName = `tran-${manifest.version}.zip`;
+    const packagejson = jsonfile.readFileSync('package.json', 'utf8');
+    let buildName = `tran-${packagejson.version}.zip`;
     grunt.config.set('zip.tran.dest', `./zip/${buildName}`);
     grunt.task.run('zip');
   });
@@ -134,7 +134,8 @@ module.exports = function (grunt) {
   grunt.registerMultiTask('upversion', 'Update versions', function () {
     const manifest = jsonfile.readFileSync('manifest.json', 'utf8');
     const packagejson = jsonfile.readFileSync('package.json', 'utf8');
-    packagejson.version = manifest.version;
+    let version = manifest.version.split('.');
+    packagejson.version = `${version[0]}.${version[1][0]}.${version[1][1]}`;
     console.log('version =', packagejson.version);
     jsonfile.writeFileSync('package.json', packagejson, {spaces: 2}, function (err) {
       console.error(err);
