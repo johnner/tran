@@ -214,29 +214,36 @@ class Tran {
 
 
   fixUrl(fragment=null, tag, attr) {
-    let tags = {};
+    let elements = {};
     if (fragment) {
-      tags = fragment.querySelectorAll(tag);
+      elements = fragment.querySelectorAll(tag);
     }
     let parser = document.createElement('a');
-    for (let tag in tags) {
-      if (tags.hasOwnProperty(tag)) {
-        parser.href = tag[attr];
-        parser.host = this.host;
-        parser.protocol = this.protocol;
-        // fix relative links
-        if (tag.tagMessage === 'A') {
-          tag.classList.add('mtt_link');
-          if (parser.pathname.indexOf('m.exe') !== -1) {
-            parser.pathname = '/c' + parser.pathname;
-            tag.setAttribute('target', '_blank');
-            tag.setAttribute(attr, parser.href);
-          }
-        } else if (tag.tagName === 'IMG') {
-          tag.classList.add('mtt_img');
+    elements.forEach((el) => {
+      parser.href = el[attr];
+      parser.host = this.host;
+      parser.protocol = this.protocol;
+      // fix relative links
+      if (tag == 'a') {
+        el.classList.add('mtt_link');
+        if (parser.pathname.indexOf('m.exe') !== -1) {
+          parser.pathname = '/c' + parser.pathname;
+          el.setAttribute('target', '_blank');
+          el.setAttribute(attr, parser.href);
         }
+      } else if (tag == 'img') {
+        let url = this.getUrl(el.src);
+        el.classList.add('mtt_img');
+        el.src = `${this.protocol}://${this.host}/${url.pathname}`;
       }
-    }
+    });
+  }
+
+  // todo: move to utils
+  getUrl(url) {
+    const a = document.createElement('a');
+    a.href = url;
+    return a;
   }
 }
 

@@ -40,7 +40,8 @@ module.exports = function (grunt) {
         files: {
           "build/css/dialog.css": "less/dialog.less",
           "build/css/options.css": "less/options.less",
-          "build/css/popup.css": "less/popup.less"
+          "build/css/popup.css": "less/popup.less",
+          "build/css/bootstrap.css": "less/bootstrap.less"
         }
       }
     },
