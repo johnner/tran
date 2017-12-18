@@ -1,13 +1,16 @@
 {
   "name": "tran",
-  "version": "1.2.10",
+  "version": "1.3.1",
   "description": "Translation plugin for Chrome",
   "author": "Anton Zhusman",
+  "scripts": {
+    "build": "grunt"
+  },
   "devDependencies": {
     "6to5ify": "^3.1.2",
     "babelify": "^6.1.3",
-    "coffee-script": "^1.7.1",
     "coffeeify": "^0.6.0",
+    "coffeescript": "^2.1.0",
     "grunt": "~0.4.4",
     "grunt-6to5": "^2.0.0",
     "grunt-babel": "^5.0.1",
@@ -18,6 +21,8 @@
     "grunt-contrib-less": "~0.11.0",
     "grunt-contrib-uglify": "~0.2.2",
     "grunt-zip": "~0.13.0",
+    "iconv-lite": "^0.4.19",
+    "jsonfile": "^4.0.0",
     "load-grunt-tasks": "^3.0.0"
   }
 }

@@ -1,3 +1,6 @@
+const fs = require('fs');
+const jsonfile = require('jsonfile');
+
 module.exports = function (grunt) {
 
   // Project configuration.
@@ -37,17 +40,9 @@ module.exports = function (grunt) {
         files: {
           "build/css/dialog.css": "less/dialog.less",
           "build/css/options.css": "less/options.less",
-          "build/css/popup.css": "less/popup.less"
+          "build/css/popup.css": "less/popup.less",
+          "build/css/bootstrap.css": "less/bootstrap.less"
         }
-      }
-    },
-
-    // make a zipfile
-    zip: {
-      tran: {
-        cwd: 'build/',
-        src: 'build/**/*',
-        dest: 'tran.zip'
       }
     },
 
@@ -57,7 +52,7 @@ module.exports = function (grunt) {
           'build/js/char-codes.js': 'js/es5/content_script/char-codes.js',
           'build/js/content_script.js': 'js/es5/content_script/content.js',
           'build/js/popup.js': 'js/es5/popup/popup.coffee',
-          'build/js/tran.js': 'js/es5/tran.coffee',
+          'build/js/tran.js': 'js/es5/tran.js',
           'build/js/turkishdictionary.js': 'js/es5/turkishdictionary.js',
           'build/js/background.js': 'js/es5/background.coffee',
           'build/js/options.js': 'js/es5/options/options.js',
@@ -86,41 +81,65 @@ module.exports = function (grunt) {
               'js/es5/char-codes-turk.js': 'js/es6/char-codes-turk.js',
               'js/es5/turkishdictionary.js': 'js/es6/turkishdictionary.js',
               'js/es5/options/options.js': 'js/es6/options/options.js',
+              'js/es5/tran.js': 'js/es6/tran.js',
               'js/es5/utils.js': 'js/es6/utils.js',
 
               'js/es5/content_script/content.js': 'js/es6/content_script/content.js',
               'js/es5/content_script/tooltip.js': 'js/es6/content_script/tooltip.js',
               'js/es5/content_script/view.js': 'js/es6/content_script/view.js',
-
             }
         }
-    }
-  })
+    },
+
+    // make a zipfile
+    zip: {
+      tran: {
+        cwd: 'build/',
+        src: 'build/**/*',
+        dest: 'tran.zip'
+      }
+    },
+
+    makezip: {target: {}},
+    upversion: {target: {}}
+  });
+
   // Compress files and folders.
-  grunt.loadNpmTasks('grunt-zip')
+  grunt.loadNpmTasks('grunt-zip');
   // Copy files and folders.
-  grunt.loadNpmTasks('grunt-contrib-copy')
+  grunt.loadNpmTasks('grunt-contrib-copy');
   // Load the plugin that provides the "uglify" task.
-  grunt.loadNpmTasks('grunt-contrib-uglify')
+  grunt.loadNpmTasks('grunt-contrib-uglify');
   // LESS compiler
-  grunt.loadNpmTasks('grunt-contrib-less')
+  grunt.loadNpmTasks('grunt-contrib-less');
   // Coffee compiler
-  grunt.loadNpmTasks('grunt-contrib-coffee')
+  grunt.loadNpmTasks('grunt-contrib-coffee');
   // browserify things
-  grunt.loadNpmTasks('grunt-browserify')
+  grunt.loadNpmTasks('grunt-browserify');
   // ES6 -> ES5
   grunt.loadNpmTasks('grunt-babel');
 
   require('load-grunt-tasks')(grunt); // npm install --save-dev load-grunt-tasks
 
   // Default task(s)
-  grunt.registerTask('default', [
-    'babel',
-    'browserify',
-    //'uglify',
-    'less',
-    'copy',
-    //'karma',  // run jasmine tests in browser
-    'zip'
-  ]);
-}
+  grunt.registerTask('default', ['babel', 'browserify',/*'uglify',*/ 'less', 'copy', 'upversion', 'makezip']);
+
+  grunt.registerMultiTask('makezip', 'Make zip file ready to upload to the CWS', function() {
+    grunt.log.writeln('Building zip file ...');
+    const packagejson = jsonfile.readFileSync('package.json', 'utf8');
+    let buildName = `tran-${packagejson.version}.zip`;
+    grunt.config.set('zip.tran.dest', `./zip/${buildName}`);
+    grunt.task.run('zip');
+  });
+
+  grunt.registerMultiTask('upversion', 'Update versions', function () {
+    const manifest = jsonfile.readFileSync('manifest.json', 'utf8');
+    const packagejson = jsonfile.readFileSync('package.json', 'utf8');
+    let version = manifest.version.split('.');
+    packagejson.version = `${version[0]}.${version[1][0]}.${version[1][1]}`;
+    console.log('version =', packagejson.version);
+    jsonfile.writeFileSync('package.json', packagejson, {spaces: 2}, function (err) {
+      console.error(err);
+    })
+  });
+};
