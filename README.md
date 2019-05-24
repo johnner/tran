@@ -6,9 +6,6 @@ Chrome extension for quick translating with multitran.ru (or some other translat
 https://chrome.google.com/webstore/detail/lhjldahfbiadelganmhjiolblffjjgok/
 
 
-Build command: `grunt` creates zip ready for publish.
-
-
 ####Full installation:
 1. `npm i` — install project dependencies
 2. `npm run start`
