@@ -9,3 +9,5 @@ js/**/*.map
 secrets.*.js
 .vscode
 *_deprecated*
+*.pem
+*.crx
