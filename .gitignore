@@ -6,3 +6,6 @@ node_modules
 build
 tran.zip
 js/**/*.map
+secrets.*.js
+.vscode
+*_deprecated*

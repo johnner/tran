@@ -1,4 +1,8 @@
 ## CHANGELOG:
+`1.4.0 (24.05.19)`
+- Upgrade project to ES6, webpack
+- Fixed critical issue with updated source format
+- Updated response encoding
 
 `1.3.1 (18.12.17)`
 - Fix images and styles
