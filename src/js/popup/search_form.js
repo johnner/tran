@@ -22,6 +22,7 @@ class SearchForm {
     this.contentEl = document.getElementById('content')
     this.form = document.querySelector('form');
     this.addListeners();
+    // TODO: update to UI KIT element
     this.dropdown = new Dropdown({
       el: document.querySelector('.dropdown-el'),
       onSelect: () => this.search()

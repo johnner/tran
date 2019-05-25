@@ -6,76 +6,70 @@
   <title>Multitran translate</title>
 
   <body>
-      <form id="tran-form" class="form-horizontal">
-        <fieldset>
-          <!-- Form Name -->
-          <legend class="header-title">
-            <a id="header-link" tabindex="-1" href="http://www.multitran.ru/c/m.exe?s=" title="Multitran.ru">Multitran</a>
-          </legend>
+    <div class="uk-container">
+      <h1 class="uk-heading-small">
+        <a class="uk-link-heading" tabindex="-1" href="http://www.multitran.ru/c/m.exe?s=" title="Multitran.ru">Multitran</a>
+      </h1>
+      <form class="uk-grid uk-background-default" uk-grid uk-sticky>
+        <div class="uk-width-1-2">
+          <input id="translate-txt" name="translate-txt" class="uk-input" placeholder="Введите слово для перевода" type="text">
+        </div>
 
-          <!-- Button Drop Down -->
-          <div class="form-group">
-            <label class="col-md-3 control-label" for="translate-txt" tabindex="-1"></label>
-            <div class="col-md-3">
-              <div class="input-group input-words">
-                <input id="translate-txt" name="translate-txt" class="form-control" placeholder="Введите слово для перевода" type="text">
-                <div class="input-group-btn dropdown-el">
-                  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                    Язык
-                    <span class="caret"></span>
-                  </button>
-                  <ul class="dropdown-menu pull-right">
-                    <li>
-                      <a href="#" data-val="1" class="language-type">Английский</a>
-                    </li>
-                    <li>
-                      <a href="#" data-val="3" class="language-type">Немецкий</a>
-                    </li>
-                    <li>
-                      <a href="#" data-val="4" class="language-type">Французский</a>
-                    </li>
-                    <li>
-                      <a href="#" data-val="5" class="language-type">Испанский</a>
-                    </li>
-                    <li>
-                      <a href="#" data-val="23" class="language-type">Итальянский</a>
-                    </li>
-                    <li>
-                      <a href="#" data-val="24" class="language-type">Нидерландский</a>
-                    </li>
-                    <li>
-                      <a href="#" data-val="27" class="language-type">Латышский</a>
-                    </li>
-                    <li>
-                      <a href="#" data-val="26" class="language-type">Эстонский</a>
-                    </li>
-                    <li>
-                      <a href="#" data-val="31" class="language-type">Африкаанс</a>
-                    </li>
-                    <li>
-                      <a href="#" data-val="34" class="language-type">Эсперанто</a>
-                    </li>
-                    <li>
-                      <a href="#" data-val="35" class="language-type">Калмыцкий</a>
-                    </li>
-                    <li>
-                      <a href="#" data-val="1000" class="language-type">Турецкий (turkishdictionary.net)</a>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-              <!-- Button -->
-              <label class="col-md-3 control-label" for="translate-button"></label>
-              <div class="col-md-3 input-btn">
-                <button id="translate-button" name="translate-btn" class="btn btn-primary">Translate</button>
-              </div>
-            </div>
+        <div class="uk-inline uk-width-1-4 select-language">
+          <button class="uk-button uk-button-default uk-width-expand" type="button">Язык</button>
+          <div uk-dropdown="mode: click">
+            <ul class="dropdown-menu uk-nav uk-dropdown-nav">
+              <li>
+                <a href="#" data-val="1" class="language-type">Английский</a>
+              </li>
+              <li>
+                <a href="#" data-val="3" class="language-type">Немецкий</a>
+              </li>
+              <li>
+                <a href="#" data-val="4" class="language-type">Французский</a>
+              </li>
+              <li>
+                <a href="#" data-val="5" class="language-type">Испанский</a>
+              </li>
+              <li>
+                <a href="#" data-val="23" class="language-type">Итальянский</a>
+              </li>
+              <li>
+                <a href="#" data-val="24" class="language-type">Нидерландский</a>
+              </li>
+              <li>
+                <a href="#" data-val="27" class="language-type">Латышский</a>
+              </li>
+              <li>
+                <a href="#" data-val="26" class="language-type">Эстонский</a>
+              </li>
+              <li>
+                <a href="#" data-val="31" class="language-type">Африкаанс</a>
+              </li>
+              <li>
+                <a href="#" data-val="34" class="language-type">Эсперанто</a>
+              </li>
+              <li>
+                <a href="#" data-val="35" class="language-type">Калмыцкий</a>
+              </li>
+              <li>
+                <a href="#" data-val="1000" class="language-type">Турецкий (turkishdictionary.net)</a>
+              </li>
+            </ul>
           </div>
-        </fieldset>
+        </div>
+
+        <button id="translate-button" class="uk-button uk-button-primary uk-width-1-4" name="translate-btn">Translate</button>
       </form>
 
       <div id="content"></div>
-      <div class="spinner lds-ring"><div></div><div></div><div></div><div></div></div>
+      <div class="spinner lds-ring">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+    </div>
   </body>
 
 </html>

@@ -1,38 +1,20 @@
-// POPUP STYLES
+@import "./_import";
+
 
 body {
   width: 530px;
   max-height: 500px;
   overflow: auto;
-  height: 520px;
+  height: 120px;
+  font-family: 'ProximaNova', sans-serif;
 }
 
-#tran-form {
-  width: 100%;
-  padding: 20px;
-  margin-bottom: 0;
-  padding-bottom: 5px;
+#translate-txt {
+  font-size: 15px;
+}
 
-  .header-title {
-    margin-left: -15px;
-  }
-
-  #header-link {
-
-    &:link,
-    &:visited {
-      text-decoration: underline;
-    }
-
-    &:hover,
-    &:active {
-      text-decoration: none;
-    }
-  }
-
-  .dropdown-menu .active {
-    background-color: #fff6e0;
-  }
+.select-language {
+  padding: 0 5px;
 }
 
 #content .___mtt_translate_table {
@@ -53,15 +35,6 @@ body {
   padding: 0 15px 15px 15px;
 }
 
-.input-words {
-  width: 76%;
-  float: left;
-}
-
-.input-btn {
-  padding-left: 5px;
-  float: left;
-}
 
 // Spinner
 .lds-ring {
@@ -71,6 +44,7 @@ body {
   height: 64px;
   left: 42%;
 }
+
 .lds-ring div {
   box-sizing: border-box;
   display: block;
@@ -83,21 +57,25 @@ body {
   animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
   border-color: #428bca transparent transparent transparent;
 }
+
 .lds-ring div:nth-child(1) {
   animation-delay: -0.45s;
 }
+
 .lds-ring div:nth-child(2) {
   animation-delay: -0.3s;
 }
+
 .lds-ring div:nth-child(3) {
   animation-delay: -0.15s;
 }
+
 @keyframes lds-ring {
   0% {
     transform: rotate(0deg);
   }
+
   100% {
     transform: rotate(360deg);
   }
 }
-
