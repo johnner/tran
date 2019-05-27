@@ -5,7 +5,7 @@ const LANG_CODE = {
   '4': 'Французский',
   '5': 'Испанский',
   '23': 'Итальянский',
-  '24': 'Нидерландский',
+  '24': 'Голландский',
   '26': 'Эстонский',
   '27': 'Латышский',
   '34': 'Эсперанто',
@@ -17,6 +17,10 @@ const DICT_CODE = {
   '1000': 'turkish'
 }
 
+const DICT_LABEL = {
+  'multitran': 'Multitran',
+  'turkish': 'turkishdictionary.net'
+}
 
 /*
   Dropdown language menu
@@ -87,8 +91,7 @@ class Dropdown {
     this.hide();
   }
 
-  // Some languages are not present in multitran(e.g.turkish)
-  // so we choose another service
+  // Some languages are not present in multitran (e.g.turkish)
   getSourceDictionary(lang) {
     const dict = DICT_CODE[lang] || 'multitran';
     return dict;
@@ -96,8 +99,9 @@ class Dropdown {
 
   // Set current language label
   setTitle(languageId) {
-    const html = LANG_CODE[languageId];
-    this.button.innerHTML = html;
+    const languageLabel = LANG_CODE[languageId];
+    const labelEl = this.button.querySelector('.label');
+    labelEl.innerHTML = languageLabel;
   }
 }
 

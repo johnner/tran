@@ -8,7 +8,7 @@
   <body>
     <div class="uk-container">
       <h1 class="uk-heading-small">
-        tran <span class="heading">slate with <a class="uk-link-heading" tabindex="-1" href="http://www.multitran.ru/c/m.exe?s=" title="Multitran.ru">Multitran</a></span>
+        tran <span class="heading">slate with <a class="uk-link-heading" tabindex="-1" href="http://www.multitran.ru" title="Multitran.ru">Multitran</a></span>
       </h1>
       <form class="uk-grid uk-background-default" uk-grid uk-sticky>
         <div class="uk-width-1-2">
@@ -16,7 +16,10 @@
         </div>
 
         <div class="uk-inline uk-width-1-4 select-language">
-          <button class="uk-button uk-button-default uk-width-expand" type="button">Язык</button>
+          <button class="uk-button uk-button-default uk-width-expand" type="button">
+            <span class="label">Язык</span>
+            <span uk-icon="icon:  triangle-down"></span>
+          </button>
           <div uk-dropdown="mode: click">
             <ul class="dropdown-menu uk-nav uk-dropdown-nav">
               <li>
@@ -35,7 +38,7 @@
                 <a href="#" data-val="23" class="language-type">Итальянский</a>
               </li>
               <li>
-                <a href="#" data-val="24" class="language-type">Нидерландский</a>
+                <a href="#" data-val="24" class="language-type">Голландский</a>
               </li>
               <li>
                 <a href="#" data-val="27" class="language-type">Латышский</a>
@@ -53,7 +56,9 @@
           </div>
         </div>
 
-        <button id="translate-button" class="uk-button uk-button-primary uk-width-1-4" name="translate-btn">Перевести</button>
+        <button id="translate-button" class="uk-button uk-button-primary uk-width-1-4" name="translate-btn">
+          Перевести
+        </button>
       </form>
 
       <div id="content"></div>
