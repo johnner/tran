@@ -14,10 +14,12 @@ const TRANSLATE_ENGINES = {
   @constructor
 */
 class SearchForm {
+
   constructor() {
     this.input = document.getElementById('translate-txt')
     this.input.focus();
     this.spinner = document.querySelector('.spinner');
+    this._spinnerDisplay = this.spinner.style.display;
     this.hideSpinner();
     this.contentEl = document.getElementById('content')
     this.form = document.querySelector('form');
@@ -79,7 +81,7 @@ class SearchForm {
   }
 
   showSpinner() {
-    this.spinner.style.display = 'inline-block';
+    this.spinner.style.display = this._spinnerDisplay;
   }
 
   hideSpinner() {

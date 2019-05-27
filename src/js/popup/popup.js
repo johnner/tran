@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const tranForm = document.querySelector('form');
   const form = new SearchForm(tranForm);
 
-  const link = document.getElementById('header-link');
+  const link = document.querySelector('.uk-link-heading');
   if (link) {
     link.addEventListener('click', (e) => {
       e.preventDefault();
