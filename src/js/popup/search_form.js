@@ -22,9 +22,10 @@ class SearchForm {
     this.contentEl = document.getElementById('content')
     this.form = document.querySelector('form');
     this.addListeners();
-    // TODO: update to UI KIT element
+
     this.dropdown = new Dropdown({
-      el: document.querySelector('.dropdown-el'),
+      el: document.querySelector('.dropdown-menu'),
+      button: document.querySelector('.select-language > button'),
       onSelect: () => this.search()
     });
   }

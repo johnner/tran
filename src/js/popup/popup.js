@@ -14,6 +14,7 @@ UIkit.use(Icons);
 document.addEventListener('DOMContentLoaded', () => {
   const tranForm = document.querySelector('form');
   const form = new SearchForm(tranForm);
+
   const link = document.getElementById('header-link');
   if (link) {
     link.addEventListener('click', (e) => {
