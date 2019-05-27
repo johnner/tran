@@ -33,6 +33,7 @@ class Dropdown {
     this.onSelect = opts.onSelect || function () { };
     this.items = this.el.getElementsByTagName('A');
     this.addListeners();
+    this.setActiveItem();
   }
 
   addListeners() {
@@ -60,6 +61,7 @@ class Dropdown {
   // Read current language from Chrome Storage and color active line
   setActiveItem() {
     chrome.storage.sync.get({ language: '1' }, (store) => {
+      this.setTitle(store.language);
       for (const item of this.items) {
         if (item.getAttribute('data-val') === store.language) {
           item.classList.add('active');
