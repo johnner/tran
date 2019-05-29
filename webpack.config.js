@@ -1,20 +1,12 @@
 const webpack = require('webpack');
 const path = require('path');
-const fileSystem = require('fs');
 const env = require('./utils/env');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const WriteFilePlugin = require('write-file-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
-
-// load the secrets
-const alias = {};
-const secretsPath = path.join(__dirname, ('secrets.' + env.NODE_ENV + '.js'));
 const fileExtensions = ['jpg', 'jpeg', 'png', 'gif', 'eot', 'otf', 'svg', 'ttf', 'woff', 'woff2'];
 
-if (fileSystem.existsSync(secretsPath)) {
-  alias['secrets'] = secretsPath;
-}
 
 var options = {
   mode: process.env.NODE_ENV || 'development',
@@ -30,6 +22,11 @@ var options = {
   },
   chromeExtensionBoilerplate: {
     notHotReload: ['content_script']
+  },
+  resolve: {
+    alias: {
+      'vue$': 'vue/dist/vue.esm.js'
+    }
   },
   module: {
     rules: [
@@ -57,9 +54,6 @@ var options = {
         exclude: /node_modules/
       }
     ]
-  },
-  resolve: {
-    alias: alias
   },
   plugins: [
     // clean the build folder

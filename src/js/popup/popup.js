@@ -7,7 +7,6 @@ import Icons from 'uikit/dist/js/uikit-icons';
 import "../../less/popup.less";
 import SearchForm from './search_form.js';
 
-
 // loads the Icon plugin
 UIkit.use(Icons);
 

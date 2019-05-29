@@ -12,10 +12,11 @@
 // var iconv = require('iconv-lite');
 
 import CHAR_CODES from './char-codes.js';
+import TranslationParser from './parsers/multitran/translation-parser';
 
 class Tran {
   constructor() {
-    this.TABLE_CLASS = "___mtt_translate_table";
+    this.tableClassName = "___mtt_translate_table";
     this.protocol = 'http';
     this.host = 'www.multitran.ru';
     this.path = '/c/m.exe';
@@ -34,7 +35,7 @@ class Tran {
     let selectionText = this.removeHyphenation(data.selectionText);
     this.search({
       value: selectionText,
-      success: this.successtHandler.bind(this),
+      success: (result) => this.successtHandler(result),
       silent: data.silent // if translation failed do not show dialog
     });
   }
@@ -56,9 +57,9 @@ class Tran {
         items.language = '1';
       }
       this.setLanguage(items.language);
-      let url = this.makeUrl(params.value);
+      const url = this.makeUrl(params.value);
       // decorate success to make preliminary parsing
-      let origSuccess = params.success;
+      const origSuccess = params.success;
       params.success = (response) => {
         let translated = this.parse(response, params.silent);
         origSuccess.call(this, translated);
@@ -72,26 +73,9 @@ class Tran {
     })
   }
 
-
-  //Parse response from translation engine
-  parse(response, silent, translate) {
-    translate = translate || null;
-    let doc = this.stripScripts(response);
-    let fragment = this.makeFragment(doc);
-    if (fragment) {
-      translate = fragment.querySelector('#translation ~ table');
-      if (translate) {
-        translate.className = this.TABLE_CLASS;
-        translate.setAttribute("cellpadding", "5");
-        this.fixImages(translate);
-        this.fixLinks(translate);
-      } else if (!silent) {
-        translate = document.createElement('div');
-        translate.className = 'failTranslate';
-        translate.innerText = "Unfortunately, could not translate";
-      }
-    }
-    return translate;
+  // Parse response from the multitran
+  parse(response, silent) {
+    return new TranslationParser({ sourceHtml: response });
   }
 
   setLanguage(language) {
@@ -117,7 +101,7 @@ class Tran {
           opts.error.call(this);
         }
         return;
-      } else if (xhr.readyState == 4) {
+      } else if (xhr.readyState === 4) {
         return opts.success(e.target.response);
       }
       return xhr;
@@ -176,29 +160,6 @@ class Tran {
     } else {
       return 'open_tooltip';
     }
-  }
-
-  //  Strip script tags from response html
-  stripScripts(res) {
-    let div = document.createElement('div');
-    div.innerHTML = res;
-    let scripts = div.getElementsByTagName('script');
-    let i = scripts.length;
-    while (i--) {
-      scripts[i].parentNode.removeChild(scripts[i]);
-    }
-    return div.innerHTML;
-  }
-
-  makeFragment(doc, fragment) {
-    fragment = fragment || null;
-    let div = document.createElement("div");
-    div.innerHTML = doc;
-    fragment = document.createDocumentFragment();
-    while (div.firstChild) {
-      fragment.appendChild(div.firstChild);
-    }
-    return fragment;
   }
 
   fixImages(fragment) {

@@ -8,7 +8,10 @@
   <body>
     <div class="uk-container">
       <h1 class="uk-heading-small">
-        tran <span class="heading">slate with <a class="uk-link-heading" tabindex="-1" href="http://www.multitran.ru" title="Multitran.ru">Multitran</a></span>
+        tran
+        <span class="heading">slate with
+          <a class="uk-link-heading" tabindex="-1" href="http://www.multitran.ru" title="Multitran.ru">Multitran</a>
+        </span>
       </h1>
       <form class="uk-grid uk-background-default" uk-grid uk-sticky>
         <div class="uk-width-1-2">
@@ -61,7 +64,13 @@
         </button>
       </form>
 
-      <div id="content"></div>
+      <div id="content" v-if="seen">
+        <div v-for="header in headers">
+          <span v-if="header.speechPart">{{ header.speechPart }}</span>
+          <a :href="header.url">{{ header.word }}</a>
+          <span v-if="header.transcription">{{ header.transcription }}</span>
+        </div>
+      </div>
       <div uk-spinner class="uk-flex uk-flex-center spinner"></div>
     </div>
   </body>

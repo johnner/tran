@@ -1,3 +1,4 @@
+import Vue from 'vue'
 import Dropdown from './dropdown.js';
 import tran from '../tran.js';
 import turkishdictionary from '../turkishdictionary.js';
@@ -30,6 +31,14 @@ class SearchForm {
       button: document.querySelector('.select-language > button'),
       onSelect: () => this.search()
     });
+
+    this.vm = new Vue({
+      el: '#content',
+      data: {
+        seen: false,
+        headers: []
+      }
+    });
   }
 
   addListeners() {
@@ -41,16 +50,16 @@ class SearchForm {
   }
 
   search(e) {
-    e && e.preventDefault && e.preventDefault()
+    e && e.preventDefault && e.preventDefault();
 
     if (this.input.value.length > 0) {
-      this.clean(this.contentEl);
+      // this.clean(this.contentEl);
       this.showSpinner();
       // choose engine and search for translation (by default english-multitran)
       chrome.storage.sync.get({ language: '1', dictionary: 'multitran' }, (items) => {
         TRANSLATE_ENGINES[items.dictionary].search({
           value: this.input.value,
-          success: (res) => this.successHandler(res)
+          success: (res) => this.successHandler(res, items.dictionary)
         });
       });
     }
@@ -58,7 +67,8 @@ class SearchForm {
 
   successHandler(response) {
     this.hideSpinner();
-    this.contentEl.appendChild(response)
+    this.vm.seen = true;
+    this.vm.headers = response ? response.headers : [];
   }
 
   clean(el) {

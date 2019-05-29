@@ -17,11 +17,6 @@ const DICT_CODE = {
   '1000': 'turkish'
 }
 
-const DICT_LABEL = {
-  'multitran': 'Multitran',
-  'turkish': 'turkishdictionary.net'
-}
-
 /*
   Dropdown language menu
   example:
@@ -105,4 +100,4 @@ class Dropdown {
   }
 }
 
-export default Dropdown
+export default Dropdown;
