@@ -54,6 +54,7 @@ class SearchForm {
 
     if (this.input.value.length > 0) {
       // this.clean(this.contentEl);
+      this.vm.headers = [];
       this.showSpinner();
       // choose engine and search for translation (by default english-multitran)
       chrome.storage.sync.get({ language: '1', dictionary: 'multitran' }, (items) => {
@@ -68,13 +69,8 @@ class SearchForm {
   successHandler(response) {
     this.hideSpinner();
     this.vm.seen = true;
+    console.log('=== response', response);
     this.vm.headers = response ? response.headers : [];
-  }
-
-  clean(el) {
-    while (el.lastChild) {
-      el.removeChild(el.lastChild);
-    }
   }
 
   onContentClick(e) {

@@ -76,6 +76,18 @@ class Tran {
   // Parse response from the multitran
   parse(response, silent) {
     return new TranslationParser({ sourceHtml: response });
+    // console.log('=======parsed', parsed);
+    // if (resultTableEl) {
+    //   resultTableEl.className = this.tableClassName;
+    //   resultTableEl.setAttribute("cellpadding", "5");
+    //   this.fixImages(resultTableEl);
+    //   this.fixLinks(resultTableEl);
+    // } else if (!silent) {
+    //   resultTableEl = document.createElement('div');
+    //   resultTableEl.className = 'failTranslate';
+    //   resultTableEl.innerText = "Unfortunately, could not translate";
+    // }
+    // return resultTableEl;
   }
 
   setLanguage(language) {

@@ -65,10 +65,32 @@
       </form>
 
       <div id="content" v-if="seen">
-        <div v-for="header in headers">
-          <span v-if="header.speechPart">{{ header.speechPart }}</span>
-          <a :href="header.url">{{ header.word }}</a>
-          <span v-if="header.transcription">{{ header.transcription }}</span>
+
+        <div class="uk-card uk-card-default uk-card-body uk-margin" v-for="header in headers">
+          <h3 class="uk-card-title">
+            <a :href="header.url">{{ header.word }}</a>
+            <span class="uk-preserve-width" v-if="header.transcription">{{ header.transcription }}</span>
+            <span class="uk-width-small" v-if="header.speechPart">{{ header.speechPart }}</span>
+          </h3>
+          <table class="uk-table uk-table-divider">
+            <thead>
+                <tr>
+                    <th class="uk-table-shrink">Тематика</th>
+                    <th class="uk-table-expand">Значения</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="subject in header.subjects">
+                    <td>{{ subject.name }}</td>
+                    <td>
+                        <div v-for="meaning in subject.meanings">
+                          {{ meaning.text }}
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
         </div>
       </div>
       <div uk-spinner class="uk-flex uk-flex-center spinner"></div>

@@ -7,9 +7,9 @@ class Meaning {
   }
 }
 
-class Translation {
+class Subject {
   constructor(opts) {
-    this.subject = opts.subject;
+    this.name = opts.name;
     this.meanings = [];
   }
 
@@ -25,11 +25,11 @@ class Header {
     this.transcription = opts.transcription;
     this.speechPart = opts.speechPart;
     this.phrasesLink = opts.phrasesLink;
-    this.translations = [];
+    this.subjects = [];
   }
 
-  addTranslation(translation) {
-    this.translations.push(translation);
+  addSubject(subject) {
+    this.subjects.push(subject);
   }
 }
 
@@ -39,11 +39,10 @@ class TranslationParser {
   constructor(opts) {
     this.sourceHtml = JSON.parse(JSON.stringify(opts.sourceHtml));
     const doc = this._stripScripts();
-    const fragment = this._makeFragment(doc);
-    this.sourceHtmlEl = fragment.querySelector('#translation ~ table');
-
+    this.fragment = this._makeFragment(doc);
     this.headers = [];
     this._parse();
+    this._deduplicate();
   }
 
   //  Strip script tags from response html
@@ -60,7 +59,7 @@ class TranslationParser {
 
   _makeFragment(doc) {
     const fragment = document.createDocumentFragment();
-    const div = document.createElement("div");
+    const div = document.createElement('div');
     div.innerHTML = doc;
     while (div.firstChild) {
       fragment.appendChild(div.firstChild);
@@ -79,60 +78,126 @@ class TranslationParser {
   }
 
   _parse() {
-    const rows = this.sourceHtmlEl.querySelectorAll('tr');
+    const rows = this.fragment.querySelectorAll('#translation ~ table tr');
+    const headerRowIndexes = [];
     let header;
+    // extract headers
+    for (let i = 0; i < rows.length; i++) {
+      const row = rows.item(i);
+      header = this._extractHeader(row);
+      if (header) {
+        headerRowIndexes.push(i);
+        this.headers.push(header);
+      }
+    }
 
-    for (const row of rows) {
-      const td = row.querySelector('td');
+    let hIdx = 0;
+    let lastIdx = headerRowIndexes.length - 1;
 
-      if (td.classList.contains('gray')) {
-        if (td.querySelector('a:first-child')) {
-          header = new Header({
-            word: td.querySelector('a:first-child').innerHTML,
-            url: `${MtURL}${td.querySelector('a:first-child').getAttribute('href')}`,
-            transcription: td.querySelector('span') ? td.querySelector('span').innerHTML : '',
-            speechPart: td.querySelector('em') ? td.querySelector('em').innerHTML : ''
-            // TODO: add phrases
-            // phrasesLink:
-          });
-          this.headers.push(header);
+    // extract subjects and meanings
+    for (let i = 0; i < rows.length; i++) {
+      if (
+        (i > headerRowIndexes[hIdx] && i < headerRowIndexes[hIdx + 1]) ||
+        (i > headerRowIndexes[lastIdx])
+      ) {
+        const subject = this._extractSubject(rows[i]);
+        if (subject) {
+          if (this.headers[hIdx]) {
+            this.headers[hIdx].addSubject(subject);
+            this._addMeanings(rows[i], subject);
+          }
+        }
+      } else if (i === headerRowIndexes[hIdx + 1]) {
+        hIdx++;
+      }
+    }
+  }
+
+  _addMeanings(row, subject) {
+    const values = this._extractValues(row);
+      for (const value of values) {
+        const meaning = this._extractMeaning(value);
+        if (meaning) {
+          subject.addMeaning(meaning);
         }
       }
+  }
 
-      if (header) {
-        let translation = undefined;
-        const tds = row.querySelectorAll('td');
-        const subjTd = tds[0];
-        const transTd = tds[1];
-        if (subjTd && transTd) {
-          if (subjTd.classList.contains('subj')) {
-            translation = new Translation({
-              subject: subjTd.querySelector('a').innerHTML
-            });
-            header.addTranslation(translation);
-          }
-          if (transTd.classList.contains('trans')) {
-            const trans = this.convertHTMLEntity(transTd.innerHTML).split('; ');
-            for (const tran of trans) {
-              const fragment = this._makeFragment(tran);
-              const authors = []
-              fragment.querySelectorAll('i > a').forEach(a => {
-                authors.push({
-                  name: a.innerText,
-                  url: `${MtURL}${a.getAttribute('href')}`
-                });
-              })
-              if (fragment.querySelector('a')) {
-                const meaning = new Meaning({
-                  text: fragment.querySelector('a').innerText,
-                  url: `${MtURL}${fragment.querySelector('a').getAttribute('href')}`,
-                  comment: fragment.querySelector('span'),
-                  authors: authors
-                });
-                translation.addMeaning(meaning);
-              }
-            }
-          }
+  _extractHeader(row) {
+    const td = row.querySelector('td');
+    if (this._hasWord(td)) {
+      return new Header({
+        word: td.querySelector('a:first-child').innerHTML,
+        url: `${MtURL}${td.querySelector('a:first-child').getAttribute('href')}`,
+        transcription: this._getTranscription(td),
+        speechPart: td.querySelector('em') ? td.querySelector('em').innerHTML : ''
+        // TODO: add phrases
+        // phrasesLink:
+      });
+    }
+  }
+
+  _getTranscription(td) {
+    const el = td.querySelector('span');
+    let transcription = '';
+    if (el && el.innerHTML.indexOf('[') > -1 && el.innerHTML.indexOf(']') > -1) {
+      transcription = el.innerHTML;
+    }
+    return transcription;
+  }
+
+  _hasWord(td) {
+    return td && td.classList.contains('gray') && td.querySelector('a:first-child');
+  }
+
+  _extractSubject(row) {
+    const subjectEl = row.querySelector('td.subj');
+    if (subjectEl) {
+      return new Subject({
+        name: subjectEl.querySelector('a').innerText
+      });
+    }
+  }
+
+  _extractValues(row) {
+    const valuesEl = row.querySelector('.trans');
+    let values = [];
+    if (valuesEl) {
+      values = this.convertHTMLEntity(valuesEl.innerHTML).split('; ');
+    }
+    return values;
+  }
+
+  _extractMeaning(value) {
+    const fragment = this._makeFragment(value);
+    const authors = []
+    fragment.querySelectorAll('i > a').forEach(a => {
+      authors.push({
+        name: a.innerText.trim(),
+        url: `${MtURL}${a.getAttribute('href')}`
+      });
+    })
+    if (fragment.querySelector('a')) {
+      return new Meaning({
+        text: fragment.querySelector('a').innerText.trim(),
+        url: `${MtURL}${fragment.querySelector('a').getAttribute('href')}`,
+        comment: fragment.querySelector('span'),
+        authors: authors
+      });
+    }
+  }
+
+  _deduplicate() {
+    let len = this.headers.length;
+    while (len--) {
+      for (let i = 0; i < len; i++) {
+        if (
+          this.headers[i].word.toLowerCase() === this.headers[len].word.toLowerCase() &&
+          (this.headers[i].speechPart === this.headers[len].speechPart || !this.headers[len].speechPart)
+        ) {
+          this.headers[i].subjects = this.headers[i].subjects.concat(this.headers[len].subjects);
+          this.headers.splice(len, 1);
+          break;
         }
       }
     }
