@@ -16,6 +16,14 @@ class Subject {
   addMeaning(meaning) {
     this.meanings.push(meaning);
   }
+
+  hasMeaning(meaning) {
+    for (let i = 0; i < this.meanings.length; i++) {
+      if (this.meanings[i].text.trim() === meaning) {
+        return true;
+      }
+    }
+  }
 }
 
 class Header {
@@ -195,7 +203,7 @@ class TranslationParser {
           this._checkSameWords(this.headers[i].word, this.headers[len].word) &&
           this._checkSpeechParts(this.headers[i].speechPart, this.headers[len].speechPart)
         ) {
-          this.headers[i].subjects = this.headers[i].subjects.concat(this.headers[len].subjects);
+          this._concatSubjects(this.headers[i], this.headers[len]);
           this.headers.splice(len, 1);
           break;
         }
@@ -204,11 +212,31 @@ class TranslationParser {
   }
 
   _checkSameWords(word1, word2) {
-    return word1.toLowerCase().replace('!', '') === word2.toLowerCase().replace('!', '');
+    const w1 = word1.toLowerCase();
+    const w2 = word2.toLowerCase();
+    return w1.replace('!', '') === w2.replace('!', '') ||
+      w1.replace('-', '') === w2.replace(' ', '') ||
+      w1.replace(' ', '') === w2.replace('-', '');
   }
 
   _checkSpeechParts(part1, part2) {
     return (part1 === part2) || !part2;
+  }
+
+  _concatSubjects(header1, header2) {
+    header1.subjects = header1.subjects.concat(header2.subjects);
+    for (let i = 0; i < header1.subjects.length; i++) {
+      for (let j = i + 1; j < header1.subjects.length; j++) {
+        if (header1.subjects[i].name === header1.subjects[j].name) {
+          header1.subjects[j].meanings.forEach(meaning => {
+            if (!header1.subjects[i].hasMeaning(meaning.text)) {
+              header1.subjects[i].addMeaning(meaning);
+            }
+          });
+          header1.subjects.splice(j, 1);
+        }
+      }
+    }
   }
 }
 
