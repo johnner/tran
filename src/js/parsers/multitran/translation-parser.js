@@ -115,22 +115,22 @@ class TranslationParser {
 
   _addMeanings(row, subject) {
     const values = this._extractValues(row);
-      for (const value of values) {
-        const meaning = this._extractMeaning(value);
-        if (meaning) {
-          subject.addMeaning(meaning);
-        }
+    for (const value of values) {
+      const meaning = this._extractMeaning(value);
+      if (meaning) {
+        subject.addMeaning(meaning);
       }
+    }
   }
 
   _extractHeader(row) {
     const td = row.querySelector('td');
     if (this._hasWord(td)) {
       return new Header({
-        word: td.querySelector('a:first-child').innerHTML,
+        word: td.querySelector('a:first-child').innerHTML.replace('!', ''),
         url: `${MtURL}${td.querySelector('a:first-child').getAttribute('href')}`,
-        transcription: this._getTranscription(td),
-        speechPart: td.querySelector('em') ? td.querySelector('em').innerHTML : ''
+        transcription: this._getTranscription(td).trim(),
+        speechPart: td.querySelector('em') ? td.querySelector('em').innerText.trim() : ''
         // TODO: add phrases
         // phrasesLink:
       });
@@ -154,7 +154,7 @@ class TranslationParser {
     const subjectEl = row.querySelector('td.subj');
     if (subjectEl) {
       return new Subject({
-        name: subjectEl.querySelector('a').innerText
+        name: subjectEl.querySelector('a').innerText.trim()
       });
     }
   }
@@ -192,8 +192,8 @@ class TranslationParser {
     while (len--) {
       for (let i = 0; i < len; i++) {
         if (
-          this.headers[i].word.toLowerCase() === this.headers[len].word.toLowerCase() &&
-          (this.headers[i].speechPart === this.headers[len].speechPart || !this.headers[len].speechPart)
+          this._checkSameWords(this.headers[i].word, this.headers[len].word) &&
+          this._checkSpeechParts(this.headers[i].speechPart, this.headers[len].speechPart)
         ) {
           this.headers[i].subjects = this.headers[i].subjects.concat(this.headers[len].subjects);
           this.headers.splice(len, 1);
@@ -201,6 +201,14 @@ class TranslationParser {
         }
       }
     }
+  }
+
+  _checkSameWords(word1, word2) {
+    return word1.toLowerCase().replace('!', '') === word2.toLowerCase().replace('!', '');
+  }
+
+  _checkSpeechParts(part1, part2) {
+    return (part1 === part2) || !part2;
   }
 }
 
