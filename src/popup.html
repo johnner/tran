@@ -64,8 +64,7 @@
         </button>
       </form>
 
-      <div id="content" v-if="seen">
-
+      <div id="content" class="translation" v-if="seen">
         <div class="uk-card uk-card-default uk-card-body uk-margin" v-for="header in headers">
           <h3 class="uk-card-title">
             <a :href="header.url">{{ header.word }}</a>
@@ -74,23 +73,22 @@
           </h3>
           <table class="uk-table uk-table-divider">
             <thead>
-                <tr>
-                    <th class="uk-table-shrink">Тематика</th>
-                    <th class="uk-table-expand">Значения</th>
-                </tr>
+              <tr>
+                <th class="uk-table-shrink">Тематика</th>
+                <th class="uk-table-expand">Значения</th>
+              </tr>
             </thead>
             <tbody>
-                <tr v-for="subject in header.subjects">
-                    <td>{{ subject.name }}</td>
-                    <td>
-                        <div v-for="meaning in subject.meanings">
-                          {{ meaning.text }}
-                        </div>
-                    </td>
-                </tr>
+              <tr v-for="subject in header.subjects">
+                <td>{{ subject.name }}</td>
+                <td>
+                  <div v-for="meaning in subject.meanings">
+                    {{ meaning.text }}
+                  </div>
+                </td>
+              </tr>
             </tbody>
-        </table>
-
+          </table>
         </div>
       </div>
       <div uk-spinner class="uk-flex uk-flex-center spinner"></div>

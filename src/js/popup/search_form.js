@@ -69,7 +69,6 @@ class SearchForm {
   successHandler(response) {
     this.hideSpinner();
     this.vm.seen = true;
-    console.log('=== response', response);
     this.vm.headers = response ? response.headers : [];
   }
 
