@@ -10,6 +10,8 @@ class Meaning {
 class Subject {
   constructor(opts) {
     this.name = opts.name;
+    this.fullName = opts.fullName;
+    this.url = opts.url;
     this.meanings = [];
   }
 
@@ -161,8 +163,11 @@ class TranslationParser {
   _extractSubject(row) {
     const subjectEl = row.querySelector('td.subj');
     if (subjectEl) {
+      const a = subjectEl.querySelector('a');
       return new Subject({
-        name: subjectEl.querySelector('a').innerText.trim()
+        name: a.innerText.trim(),
+        fullName: a.getAttribute('title'),
+        url: `${MtURL}${a.getAttribute('href')}`
       });
     }
   }
@@ -216,7 +221,8 @@ class TranslationParser {
     const w2 = word2.toLowerCase();
     return w1.replace('!', '') === w2.replace('!', '') ||
       w1.replace('-', '') === w2.replace(' ', '') ||
-      w1.replace(' ', '') === w2.replace('-', '');
+      w1.replace(' ', '') === w2.replace('-', '') ||
+      w1.replace('...', '') === w2.replace('...', '')
   }
 
   _checkSpeechParts(part1, part2) {

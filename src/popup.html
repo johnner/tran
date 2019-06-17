@@ -80,7 +80,11 @@
             </thead>
             <tbody>
               <tr v-for="subject in header.subjects">
-                <td>{{ subject.name }}</td>
+                <td>
+                  <a title="subject.fullName" href="{{ subject.url }}">
+                    {{ subject.fullName || subject.name }}
+                  </a>
+                </td>
                 <td>
                   <div v-for="meaning in subject.meanings">
                     {{ meaning.text }}
