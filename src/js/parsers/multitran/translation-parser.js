@@ -1,3 +1,6 @@
+import SpeechParts from './speech-parts';
+
+
 class Meaning {
   constructor(opts) {
     this.text = opts.text;
@@ -33,7 +36,7 @@ class Header {
     this.word = opts.word;
     this.url = opts.url;
     this.transcription = opts.transcription;
-    this.speechPart = opts.speechPart;
+    this.speechPart = SpeechParts[opts.speechPart] || opts.speechPart;
     this.phrasesLink = opts.phrasesLink;
     this.subjects = [];
   }
@@ -223,7 +226,8 @@ class TranslationParser {
     return w1.replace('!', '') === w2.replace('!', '') ||
       w1.replace('-', '') === w2.replace(' ', '') ||
       w1.replace(' ', '') === w2.replace('-', '') ||
-      w1.replace('...', '') === w2.replace('...', '')
+      w1.replace('...', '') === w2.replace('...', '') ||
+      w1.replace('\'', '') === w2.replace('\'', '')
   }
 
   _checkSpeechParts(part1, part2) {
