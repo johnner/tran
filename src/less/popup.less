@@ -11,6 +11,23 @@ body {
 
 form.uk-grid {
   margin-bottom: 5px;
+
+  &.uk-sticky-fixed {
+    left: 0;
+    padding: 5px 15px;
+
+    .uk-first-column {
+      padding-left: 0;
+    }
+
+    .translate-button {
+      padding-left: 18px;
+    }
+  }
+
+  .translate-button {
+    padding-left: 22px;
+  }
 }
 
 #translate-txt {
@@ -18,7 +35,7 @@ form.uk-grid {
 }
 
 .select-language {
-  padding: 0 5px;
+  padding: 0 3px;
 
   button {
     padding: 0;
@@ -38,7 +55,7 @@ form.uk-grid {
 .translation {
 
   .uk-card-body {
-    padding: 10px;
+    padding: 0 10px;
 
     &.uk-card-default {
       box-shadow: 2px 2px 6px -5px @dark-grey;
@@ -52,12 +69,16 @@ form.uk-grid {
     .uk-table {
 
       th {
-        padding: 0px 10px;
+        padding: 0px 4px;
       }
 
       td {
-
+        padding: 5px;
         color: @dark-grey;
+
+        &:first-child {
+          width: 112px;
+        }
 
         .meaning-comment {
           color: @light-grey;
