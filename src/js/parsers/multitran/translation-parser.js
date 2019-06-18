@@ -221,13 +221,15 @@ class TranslationParser {
   }
 
   _checkSameWords(word1, word2) {
-    const w1 = word1.toLowerCase();
-    const w2 = word2.toLowerCase();
-    return w1.replace('!', '') === w2.replace('!', '') ||
+    const w1 = word1.toLowerCase().trim();
+    const w2 = word2.toLowerCase().trim();
+    const isSimilar = w1.replace('!', '') === w2.replace('!', '') ||
       w1.replace('-', '') === w2.replace(' ', '') ||
       w1.replace(' ', '') === w2.replace('-', '') ||
       w1.replace('...', '') === w2.replace('...', '') ||
-      w1.replace('\'', '') === w2.replace('\'', '')
+      w1.split('\'').join('') ===  w2.split('\'').join('') ||
+      w1.replace('\'', '') === w2.replace('\'', '');
+    return isSimilar;
   }
 
   _checkSpeechParts(part1, part2) {
