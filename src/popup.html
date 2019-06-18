@@ -87,7 +87,9 @@
                 </td>
                 <td>
                   <div v-for="meaning in subject.meanings">
-                    {{ meaning.text }}
+                    <span>{{ meaning.text }}</span>
+                    <span class="meaning-comment">{{ meaning.comment }}</span>
+                    <span class="meaning-authors" v-for="author in meaning.authors">{{ author }}</span>
                   </div>
                 </td>
               </tr>

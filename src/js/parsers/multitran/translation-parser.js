@@ -191,10 +191,11 @@ class TranslationParser {
       });
     })
     if (fragment.querySelector('a')) {
+      const comment = fragment.querySelector('span');
       return new Meaning({
         text: fragment.querySelector('a').innerText.trim(),
         url: `${MtURL}${fragment.querySelector('a').getAttribute('href')}`,
-        comment: fragment.querySelector('span'),
+        comment: comment ? comment.innerText.trim() : '',
         authors: authors
       });
     }
