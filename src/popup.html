@@ -96,9 +96,15 @@
             </tbody>
           </table>
         </div>
+        <div v-if="!headers.length" class="uk-card no-result">
+          <h4 class="uk-card-title uk-heading-small">No results</h4>
+          <!-- TODO: uncomment when add support -->
+          <!-- <p>
+            Add new translation
+          </p> -->
+        </div>
+        <div uk-spinner class="uk-flex uk-flex-center spinner"></div>
       </div>
-      <div uk-spinner class="uk-flex uk-flex-center spinner"></div>
-    </div>
   </body>
 
 </html>
