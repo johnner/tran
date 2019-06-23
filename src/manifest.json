@@ -23,6 +23,8 @@
     "browsingData",
     "tabs",
     "storage",
+    "clipboardRead",
+    "clipboardWrite",
     "http://www.multitran.ru/"
   ],
   "content_scripts": [

@@ -37,15 +37,33 @@ class SearchForm {
       data: {
         seen: false,
         headers: []
+      },
+      methods: {
+        onClickMeaning: (e) => {this.onClickMeaning(e);}
       }
     });
+
+    const clipboard = this.getClipboard();
+    if (clipboard) {
+      this.input.value = clipboard;
+      this.search();
+    }
+  }
+
+  getClipboard() {
+    //Create a textbox field where we can insert text to.
+    var pasteText = document.createElement("textarea")
+    document.body.appendChild(pasteText);
+    pasteText.focus();
+    document.execCommand('paste');
+    const value = pasteText.value;
+    pasteText.remove();
+    return value;
   }
 
   addListeners() {
     if (this.form && this.contentEl) {
-
       this.form.addEventListener('submit', (e) => this.search(e));
-      this.contentEl.addEventListener('click', (e) => this.onContentClick(e));
     }
   }
 
@@ -72,15 +90,6 @@ class SearchForm {
     this.vm.headers = response ? response.headers : [];
   }
 
-  onContentClick(e) {
-    e.preventDefault();
-    const linkTags = ['A', 'a'];
-    if (linkTags.includes(e.target.tagName)) {
-      this.input.value = e.target.innerText;
-      this.search(e);
-    }
-  }
-
   getValue() {
     return this.input.value;
   }
@@ -91,6 +100,11 @@ class SearchForm {
 
   hideSpinner() {
     this.spinner.style.display = 'none';
+  }
+
+  onClickMeaning(e) {
+    e.preventDefault();
+    console.log('=clicked', e);
   }
 }
 

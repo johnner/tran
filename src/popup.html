@@ -81,14 +81,16 @@
             <tbody>
               <tr v-for="subject in header.subjects">
                 <td>
-                  <a :title="subject.fullName" href="#">
-                    {{ subject.fullName || subject.name }}
-                  </a>
+                  {{ subject.fullName || subject.name }}
                 </td>
                 <td>
-                  <div v-for="meaning in subject.meanings">
-                    <span>{{ meaning.text }}</span>
-                    <span class="meaning-comment">{{ meaning.comment }}</span>
+                  <div v-for="meaning in subject.meanings" class="meaning">
+                    <a :title="subject.fullName" href="meaning.url" v-on:click="onClickMeaning">
+                      <span>{{ meaning.text }}</span>
+                    </a>
+                    <span class="meaning-comment">
+                      {{ meaning.comment }}
+                    </span>
                     <span class="meaning-authors" v-for="author in meaning.authors">{{ author }}</span>
                   </div>
                 </td>
